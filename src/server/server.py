@@ -27,8 +27,8 @@ class PropioServicer(testgrpc_pb2_grpc.PropioServicer):
         udao = UsuarioDAO()
         print("La clase se creoo")
         #udao.agregarUsuario(2, request.cualEsNombre, request.cualEsPaswword,"Cam","Matho", True, False,123)
-        queDevuelve = udao.agregarUsuario(9, nombre, password, "no9r", "ceat9rhoc", True, False, 123)
-        print("Esto devuelve: " + queDevuelve)
+        queDevuelve = udao.agregarUsuario(12, nombre, password, "no12r", "ceat12rhoc", True, False, 123)
+        print("Esto devuelve: " + str(queDevuelve))
         return testgrpc_pb2.siImprimio(yaLoImprimio = queDevuelve)
         
 

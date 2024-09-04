@@ -1,7 +1,7 @@
 # DistribuidosGRPC
 Entrega tp GRPC de sistemas distribuidos
 
--Lenguajes a utilizar
+-Lenguajes a utilizar 
     -Python
     -NodeJS
 -Motor Base de datos

@@ -43,6 +43,7 @@ class UsuarioDAO(ConexionBD):
         return usTraido
 
     def agregarUsuario(self, id, usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda):
+        print(f"Valores a insertar: id={id}, usuario={usuario}, password={password}, nombre={nombre}, apellido={apellido}, esHabilitado={esHabilitado}, esCasaCentral={esCasaCentral}, idTienda={idTienda}")
         print("agregar usuario")
         devolve = False
         try:
@@ -54,9 +55,13 @@ class UsuarioDAO(ConexionBD):
             devolve = True
             #inscripcion = self._micur.fetchone()
                 
-
         except mysql.connector.errors.IntegrityError as err:
-            print("Error: " + str(err))
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        
 
         finally:
             print("Cerrando conexion")
@@ -64,7 +69,8 @@ class UsuarioDAO(ConexionBD):
             print("Coneccion derada")
         
         print("PASO POR ACA")
-        print("Udao devuelve: " + devolve)
+        nose = True
+        print("Udao devuelve: " + str(nose))
         print("COMO ME ROMPES EL MENSAJE")
         return devolve
     
