@@ -48,7 +48,7 @@ message TraerTodosLosUsuariosPorNombreResponse {
 }
 
 message TraerUsuarioPorTiendaRequest {
-  string tienda = 1;
+  int64 idTienda = 1;
 }
 
 message TraerUsuarioPorTiendaResponse {
