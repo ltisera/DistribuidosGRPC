@@ -4,7 +4,9 @@ Entrega tp GRPC de sistemas distribuidos
 -Lenguajes a utilizar
     -Python
     -NodeJS
-
+-Motor Base de datos
+    -MySQL Server 9.0.1
+    
 Librerias Utilizadas
 Python
 Comandos ejecutados en el cmd
