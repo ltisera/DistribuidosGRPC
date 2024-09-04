@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package testgrpc;
+
+service Usuario {
+  rpc AgregarUsuario(AgregarUsuarioRequest) returns (AgregarUsuarioResponse) {}
+  rpc TraerTodosLosUsuarios(TraerTodosLosUsuariosRequest) returns (TraerTodosLosUsuariosResponse) {}
+  rpc TraerTodosLosUsuariosPorNombre(TraerTodosLosUsuariosPorNombreRequest) returns (TraerTodosLosUsuariosPorNombreResponse) {}
+  rpc TraerUsuarioPorTienda(TraerUsuarioPorTiendaRequest) returns (TraerUsuarioPorTiendaResponse) {} 
+}
+
+message UsuarioGrpcDTO {
+  int64 id = 1;
+  string usuario = 2;
+  string password = 3;
+  string nombre = 4;
+  string apellido = 5;
+  bool habilitado = 6;
+  bool casaCentral = 7;
+  int64 idTienda = 8;
+}
+
+message AgregarUsuarioRequest {
+  UsuarioGrpcDTO usuarioGrpcDTO = 1;
+}
+
+message AgregarUsuarioResponse {
+    UsuarioGrpcDTO usuarioGrpcDTO = 1;
+}
+
+message UsuarioList {
+  repeated UsuarioGrpcDTO usuarios = 1;
+}
+
+message TraerTodosLosUsuariosRequest {
+}
+
+message TraerTodosLosUsuariosResponse {
+    UsuarioList usuarioList = 1;
+}
+
+message TraerTodosLosUsuariosPorNombreRequest {
+  string nombre = 1;
+}
+
+message TraerTodosLosUsuariosPorNombreResponse {
+  UsuarioList usuarioList = 1;
+}
+
+message TraerUsuarioPorTiendaRequest {
+  int64 idTienda = 1;
+}
+
+message TraerUsuarioPorTiendaResponse {
+    UsuarioGrpcDTO usuarioGrpcDTO = 1;
+}
