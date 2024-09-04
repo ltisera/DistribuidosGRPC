@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package testgrpc;
+
+service Producto {
+  rpc AgregarProducto(AgregarProductoRequest) returns (AgregarProductoResponse) {}
+  rpc ModificarProducto(ModificarProductoRequest) returns (ModificarProductoResponse) {}
+  rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
+  rpc TraerTodosLosProductos(TraerTodosLosProductosRequest) returns (TraerTodosLosProductosResponse) {}
+  rpc TraerTodosLosProductosPorNombre(TraerTodosLosProductosPorNombreRequest) returns (TraerTodosLosProductosPorNombreResponse) {}
+  rpc TraerTodosLosProductosPorTalle(TraerTodosLosProductosPorTalleRequest) returns (TraerTodosLosProductosPorTalleResponse) {}
+  rpc TraerTodosLosProductosPorColor(TraerTodosLosProductosPorColorRequest) returns (TraerTodosLosProductosPorColorResponse) {}
+  rpc TraerProductoPorCodigo(TraerProductoPorCodigoRequest) returns (TraerProductoPorCodigoResponse) {}
+}
+
+message ProductoGrpcDTO {
+  int64 id = 1;
+  string nombre = 2;
+  string foto = 3;
+}
+
+message AgregarProductoRequest {
+  ProductoGrpcDTO productoGrpcDTO = 1;
+}
+
+message AgregarProductoResponse {
+    ProductoGrpcDTO productoGrpcDTO = 1;
+}
+
+message ProductoList {
+  repeated ProductoGrpcDTO productos = 1;
+}
+
+message ModificarProductoRequest {
+  ProductoGrpcDTO productoGrpcDTO = 1;
+}
+
+message ModificarProductoResponse {
+    ProductoGrpcDTO productoGrpcDTO = 1;
+}
+
+message EliminarProductoRequest {
+  int64 id = 1;
+}
+
+message EliminarProductoResponse {
+    int64 id = 1;
+}
+
+message TraerTodosLosProductosRequest {
+}
+
+message TraerTodosLosProductosResponse {
+    ProductoList productoList = 1;
+}
+
+message TraerTodosLosProductosPorNombreRequest {
+  string nombre = 1;
+}
+
+message TraerTodosLosProductosPorNombreResponse {
+  ProductoList productoList = 1;
+}
+
+message TraerTodosLosProductosPorTalleRequest {
+  string talle = 1;
+}
+
+message TraerTodosLosProductosPorTalleResponse {
+  ProductoList productoList = 1;
+}
+
+message TraerTodosLosProductosPorColorRequest {
+  string color = 1;
+}
+
+message TraerTodosLosProductosPorColorResponse {
+  ProductoList productoList = 1;
+}
+
+message TraerProductoPorCodigoRequest {
+  int64 codigo = 1;
+}
+
+message TraerProductoPorCodigoResponse {
+    ProductoGrpcDTO productoGrpcDTO = 1;
+}
