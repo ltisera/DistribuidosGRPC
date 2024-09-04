@@ -3,12 +3,12 @@ syntax = "proto3";
 package testgrpc;
 
 service Propio {
-  rpc Imprimi (nombre) returns (siImprimio) {}
+  rpc Imprimi (usuario) returns (siImprimio) {}
 }
 
-message nombre {
+message usuario {
   string cualEsNombre = 1;
-  string cualEsApellido = 2;
+  string cualEsPassword = 2;
 }
 
 message siImprimio {

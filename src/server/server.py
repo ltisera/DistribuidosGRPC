@@ -6,9 +6,9 @@ import testgrpc_pb2_grpc
 class PropioServicer(testgrpc_pb2_grpc.PropioServicer):
     def Imprimi(self, request, context):
         if(request.cualEsNombre != "LUCAS"):
-            nombre_completo = f"{request.cualEsNombre} {request.cualEsApellido}"
+            nombre_completo = f"{request.cualEsNombre} {request.cualEsPassword}"
             print(f"Nombre completo recibido: {nombre_completo}")
-            print("Apellido:" + request.cualEsApellido)
+            print("Password:" + request.cualEsPassword)
             print("Nombre:" + request.cualEsNombre)
             return testgrpc_pb2.siImprimio(yaLoImprimio=True)
         else:

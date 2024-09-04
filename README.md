@@ -13,7 +13,7 @@ Comandos ejecutados en el cmd
     python -m pip install grpcio-tools
     py compilaProto.py <--- Usar en caso de modificar el proto
 
-    npm install @grpc/grpc-js @grpc/proto-loader
+    npm install @grpc/grpc-js @grpc/proto-loader express
 
 Para Ejecutar
 
