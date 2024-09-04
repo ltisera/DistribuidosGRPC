@@ -10,10 +10,12 @@ Entrega tp GRPC de sistemas distribuidos
 Librerias Utilizadas
 Python
 Comandos ejecutados en el cmd
-    python -m pip install grpcio-tools
+    pip install mysql-connector-python grpcio-tools
+    npm install @grpc/grpc-js @grpc/proto-loader express
+
+
     py compilaProto.py <--- Usar en caso de modificar el proto
 
-    npm install @grpc/grpc-js @grpc/proto-loader express
 
 Para Ejecutar
 
