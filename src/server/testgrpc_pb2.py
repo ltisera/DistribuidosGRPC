@@ -24,17 +24,17 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0etestgrpc.proto\x12\nhelloworld\"6\n\x06nombre\x12\x14\n\x0c\x63ualEsNombre\x18\x01 \x01(\t\x12\x16\n\x0e\x63ualEsApellido\x18\x02 \x01(\t\"\"\n\nsiImprimio\x12\x14\n\x0cyaLoImprimio\x18\x01 \x01(\x08\x32\x41\n\x06Propio\x12\x37\n\x07Imprimi\x12\x12.helloworld.nombre\x1a\x16.helloworld.siImprimio\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0etestgrpc.proto\x12\x08testgrpc\"6\n\x06nombre\x12\x14\n\x0c\x63ualEsNombre\x18\x01 \x01(\t\x12\x16\n\x0e\x63ualEsApellido\x18\x02 \x01(\t\"\"\n\nsiImprimio\x12\x14\n\x0cyaLoImprimio\x18\x01 \x01(\x08\x32=\n\x06Propio\x12\x33\n\x07Imprimi\x12\x10.testgrpc.nombre\x1a\x14.testgrpc.siImprimio\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'testgrpc_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_NOMBRE']._serialized_start=30
-  _globals['_NOMBRE']._serialized_end=84
-  _globals['_SIIMPRIMIO']._serialized_start=86
-  _globals['_SIIMPRIMIO']._serialized_end=120
-  _globals['_PROPIO']._serialized_start=122
-  _globals['_PROPIO']._serialized_end=187
+  _globals['_NOMBRE']._serialized_start=28
+  _globals['_NOMBRE']._serialized_end=82
+  _globals['_SIIMPRIMIO']._serialized_start=84
+  _globals['_SIIMPRIMIO']._serialized_end=118
+  _globals['_PROPIO']._serialized_start=120
+  _globals['_PROPIO']._serialized_end=181
 # @@protoc_insertion_point(module_scope)

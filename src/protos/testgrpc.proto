@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package helloworld;
+package testgrpc;
 
 service Propio {
   rpc Imprimi (nombre) returns (siImprimio) {}

@@ -35,7 +35,7 @@ class PropioStub(object):
             channel: A grpc.Channel.
         """
         self.Imprimi = channel.unary_unary(
-                '/helloworld.Propio/Imprimi',
+                '/testgrpc.Propio/Imprimi',
                 request_serializer=testgrpc__pb2.nombre.SerializeToString,
                 response_deserializer=testgrpc__pb2.siImprimio.FromString,
                 _registered_method=True)
@@ -60,9 +60,9 @@ def add_PropioServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'helloworld.Propio', rpc_method_handlers)
+            'testgrpc.Propio', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('helloworld.Propio', rpc_method_handlers)
+    server.add_registered_method_handlers('testgrpc.Propio', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -83,7 +83,7 @@ class Propio(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/helloworld.Propio/Imprimi',
+            '/testgrpc.Propio/Imprimi',
             testgrpc__pb2.nombre.SerializeToString,
             testgrpc__pb2.siImprimio.FromString,
             options,
