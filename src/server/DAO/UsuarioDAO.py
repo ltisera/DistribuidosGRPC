@@ -42,19 +42,19 @@ class UsuarioDAO(ConexionBD):
         
         return usTraido
 
-    def agregarUsuario(self, id, usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda):
-        print(f"Valores a insertar: id={id}, usuario={usuario}, password={password}, nombre={nombre}, apellido={apellido}, esHabilitado={esHabilitado}, esCasaCentral={esCasaCentral}, idTienda={idTienda}")
+    def agregarUsuario(self, usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda):
+        print(f"Valores a insertar: usuario={usuario}, password={password}, nombre={nombre}, apellido={apellido}, esHabilitado={esHabilitado}, esCasaCentral={esCasaCentral}, idTienda={idTienda}")
         print("agregar usuario")
-        devolve = False
+        devolve = 0
         try:
             self.crearConexion()
 
-            self._micur.execute("INSERT INTO " + TUSUARIO + " (idUsuario, usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) values (%s, %s, %s, %s, %s, %s, %s, %s)", (id, usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda))
+            self._micur.execute("INSERT INTO " + TUSUARIO + " (usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) values (%s, %s, %s, %s, %s, %s, %s)", ( usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda))
             self._bd.commit()
             print("Commiteado con esito")
-            devolve = True
-            #inscripcion = self._micur.fetchone()
-                
+            devolve = self._micur.fetchone()
+            print(devolve)
+
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:

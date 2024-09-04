@@ -1,41 +1,51 @@
-
 import os, sys
+
+
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(CURRENT_DIR))
+sys.path.append(CURRENT_DIR + '\\DAO')
+
+PARENT_DIR = os.path.dirname(CURRENT_DIR)  # Un nivel arriba del directorio actual
+PROTO_DIR = os.path.join(PARENT_DIR, 'protos')  # Directorio 'proto' un nivel arriba
+
+sys.path.append(PROTO_DIR)
+
 
 import grpc
 from concurrent import futures
 import mysql
 
-import testgrpc_pb2
-import testgrpc_pb2_grpc
+from protos import usuario_pb2, usuario_pb2_grpc
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(CURRENT_DIR))
-#sys.path.append(CURRENT_DIR + '\\proto')
-sys.path.append(CURRENT_DIR + '\\DAO')
 
 
 from DAO.UsuarioDAO import UsuarioDAO
 
-class PropioServicer(testgrpc_pb2_grpc.PropioServicer):
+class pepito(usuario_pb2_grpc.UsuarioServicer):
     def Imprimi(self, request, context):
-        print("Me aseguro2")
-        print("Me aseguro2")
         
-        nombre = request.cualEsNombre
-        password = request.cualEsPassword
+        usuario = request.usuarioGrpcDTO.usuario
+        password = request.usuarioGrpcDTO.password
+        nombre = request.usuarioGrpcDTO.nombre
+        apellido = request.usuarioGrpcDTO.apellido
+        habilitado = request.usuarioGrpcDTO.habilitado
+        casaCentral = request.usuarioGrpcDTO.casaCentral
+        idTienda = 1
+
         print("Entra: " + nombre + " " + password)
         udao = UsuarioDAO()
         print("La clase se creoo")
         #udao.agregarUsuario(2, request.cualEsNombre, request.cualEsPaswword,"Cam","Matho", True, False,123)
-        queDevuelve = udao.agregarUsuario(12, nombre, password, "no12r", "ceat12rhoc", True, False, 123)
+        queDevuelve = udao.agregarUsuario( usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
         print("Esto devuelve: " + str(queDevuelve))
-        return testgrpc_pb2.siImprimio(yaLoImprimio = queDevuelve)
+        return usuario_pb2.AgregarUsuarioResponse(queDevuelve)
+        
         
 
 def serve():
     print("Me aseguro")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    testgrpc_pb2_grpc.add_PropioServicer_to_server(PropioServicer(), server)
+    usuario_pb2_grpc.add_UsuarioServicer_to_server(pepito(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor iniciado en el puerto 50051")

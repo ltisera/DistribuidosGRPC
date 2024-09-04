@@ -25,7 +25,7 @@ message AgregarUsuarioRequest {
 }
 
 message AgregarUsuarioResponse {
-    UsuarioGrpcDTO usuarioGrpcDTO = 1;
+    int64 idUsuario = 1;
 }
 
 message UsuarioList {
