@@ -3,6 +3,8 @@ from concurrent import futures
 import testgrpc_pb2
 import testgrpc_pb2_grpc
 
+import mysql
+
 class PropioServicer(testgrpc_pb2_grpc.PropioServicer):
     def Imprimi(self, request, context):
         if(request.cualEsNombre != "LUCAS"):
