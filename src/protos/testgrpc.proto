@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package helloworld;
+
+service Propio {
+  rpc Imprimi (nombre) returns (siImprimio) {}
+}
+
+message nombre {
+  string cualEsNombre = 1;
+  string cualEsApellido = 2;
+}
+
+message siImprimio {
+  bool yaLoImprimio = 1;
+}

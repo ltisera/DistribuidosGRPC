@@ -7,6 +7,17 @@ Entrega tp GRPC de sistemas distribuidos
 
 Librerias Utilizadas
 Python
-    -pyMSQL
+Comandos ejecutados en el cmd
+    python -m pip install grpcio-tools
+    py compilaProto.py <--- Usar en caso de modificar el proto
+
+
+Para Ejecutar
+
+py server.py
+py cliente.py 
+*ejecutarlo en consolas diferentes por favor
+*****
+    pyMSQL
     -pyFlask
-    
+    -
