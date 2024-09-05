@@ -4,7 +4,7 @@ const protoLoader = require('@grpc/proto-loader');
 const bodyParser = require('body-parser');
 
 // Cargar el archivo .proto
-const PROTO_PATH = '../protos/testgrpc.proto';
+const PROTO_PATH = '../protos/usuario.proto';
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
     longs: String,
@@ -12,10 +12,10 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     defaults: true,
     oneofs: true
 });
-const testgrpc = grpc.loadPackageDefinition(packageDefinition).testgrpc;
+const pepitoNode = grpc.loadPackageDefinition(packageDefinition).usuario;
 
 // Crear el cliente gRPC
-const client = new testgrpc.Propio('localhost:50051', grpc.credentials.createInsecure());
+const client = new pepitoNode.Usuario('localhost:50051', grpc.credentials.createInsecure());
 
 // Crear la aplicación Express
 const app = express();
@@ -49,14 +49,23 @@ app.get('/', (req, res) => {
 
 // Ruta para manejar el envío del formulario
 app.post('/login', (req, res) => {
-    const { name, password } = req.body;
-
+    const { usuario, password, nombre, apellido, habilitado, casaCentral } = req.body;
     // Llamar al método gRPC con los datos del formulario
-    client.Imprimi({usuarioGrpcDTO.usuario: usuario, usuarioGrpcDTO.password: password, usuarioGrpcDTO.nombre: nombre, usuarioGrpcDTO.apellido: apellido, usuarioGrpcDTO.habilitado: habilitado, usuarioGrpcDTO.casaCentral: casaCentral}, (error, response) => {
+    
+    const usuarioGrpcDTO = {
+        usuario: usuario,
+        password: password,
+        nombre: nombre,
+        apellido: apellido,
+        habilitado: true,
+        casaCentral: false
+    };
+
+    client.AgregarUsuario({ usuarioGrpcDTO }, (error, response) => {
         if (error) {
             res.status(500).send('Error al comunicarse con el servidor gRPC.');
         } else {
-            res.send(`¿Se imprimió el nombre?: ${response.yaLoImprimio}`);
+            res.send(`¿Se imprimió el nombre?: ${response.idUsuario}`);
         }
     });
 });
