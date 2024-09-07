@@ -3,6 +3,7 @@ syntax = "proto3";
 package usuario;
 
 service Usuario {
+  rpc IniciarSesion (IniciarSesionRequest) returns (IniciarSesionResponse);
   rpc AgregarUsuario(AgregarUsuarioRequest) returns (AgregarUsuarioResponse) {}
   rpc TraerTodosLosUsuarios(TraerTodosLosUsuariosRequest) returns (TraerTodosLosUsuariosResponse) {}
   rpc TraerTodosLosUsuariosPorNombre(TraerTodosLosUsuariosPorNombreRequest) returns (TraerTodosLosUsuariosPorNombreResponse) {}
@@ -17,6 +18,15 @@ message UsuarioGrpcDTO {
   bool habilitado = 5;
   bool casaCentral = 6;
   int64 idTienda = 7;
+}
+
+message IniciarSesionRequest {
+  string usuario = 1;
+  string password = 2;
+}
+
+message IniciarSesionResponse {
+  bool exito = 1;
 }
 
 message AgregarUsuarioRequest {

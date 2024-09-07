@@ -14,7 +14,6 @@ class ConexionBD:
         self._bd = None
 
     def crearConexion(self):
-        print("Entro A")
         if (ConexionBD._pbd is None):
             connectionDict = getConfigDB()
             ConexionBD._pbd = mysql.connector.pooling.MySQLConnectionPool(**connectionDict)
