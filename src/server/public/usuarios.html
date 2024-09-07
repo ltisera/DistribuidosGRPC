@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        nav a {
+            color: #383737;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            color: #ffffff;
+            background-color: #575757;
+        }
+        .container {
+            width: 100%;
+            height: calc(100vh - 160px);
+            margin: 0 auto;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        thead, tbody {
+            display: block;
+        }
+        tbody {
+            height: 300px;
+            overflow-y: auto;
+        }
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border: 1px solid #ddd;
+            min-width: 400px;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+        table::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        table::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+
+        table::-webkit-scrollbar-thumb {
+            background: #888; 
+        }
+
+        table::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+        .btn-modify {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-modify:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lista de Usuarios</h1>
+    </header>
+
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/crearUsuario">Agregar Usuario</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+
+    <div class="container">
+        <table id="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Habilitado</th>
+                    <th>Tienda</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/usuarios')
+                .then(response => response.json())
+                .then(users => {
+                    const tableBody = document.querySelector('#users-table tbody');
+                    tableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        row.innerHTML = `
+                            <td>${user.idUsuario}</td>
+                            <td>${user.usuario}</td>
+                            <td>${user.habilitado ? 'Sí' : 'No'}</td>
+                            <td>${user.tienda}</td>
+                            <td><button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button></td>
+                        `;
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar la lista de usuarios:', error);
+                });
+        });
+
+        function modifyUser(usuarioId) {
+            window.location.href = `/usuario/${usuarioId}`;
+        }
+    </script>
+</body>
+</html>
