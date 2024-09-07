@@ -35,22 +35,22 @@ class UsuarioStub(object):
             channel: A grpc.Channel.
         """
         self.AgregarUsuario = channel.unary_unary(
-                '/testgrpc.Usuario/AgregarUsuario',
+                '/usuario.Usuario/AgregarUsuario',
                 request_serializer=usuario__pb2.AgregarUsuarioRequest.SerializeToString,
                 response_deserializer=usuario__pb2.AgregarUsuarioResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosUsuarios = channel.unary_unary(
-                '/testgrpc.Usuario/TraerTodosLosUsuarios',
+                '/usuario.Usuario/TraerTodosLosUsuarios',
                 request_serializer=usuario__pb2.TraerTodosLosUsuariosRequest.SerializeToString,
                 response_deserializer=usuario__pb2.TraerTodosLosUsuariosResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosUsuariosPorNombre = channel.unary_unary(
-                '/testgrpc.Usuario/TraerTodosLosUsuariosPorNombre',
+                '/usuario.Usuario/TraerTodosLosUsuariosPorNombre',
                 request_serializer=usuario__pb2.TraerTodosLosUsuariosPorNombreRequest.SerializeToString,
                 response_deserializer=usuario__pb2.TraerTodosLosUsuariosPorNombreResponse.FromString,
                 _registered_method=True)
         self.TraerUsuarioPorTienda = channel.unary_unary(
-                '/testgrpc.Usuario/TraerUsuarioPorTienda',
+                '/usuario.Usuario/TraerUsuarioPorTienda',
                 request_serializer=usuario__pb2.TraerUsuarioPorTiendaRequest.SerializeToString,
                 response_deserializer=usuario__pb2.TraerUsuarioPorTiendaResponse.FromString,
                 _registered_method=True)
@@ -108,9 +108,9 @@ def add_UsuarioServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'testgrpc.Usuario', rpc_method_handlers)
+            'usuario.Usuario', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('testgrpc.Usuario', rpc_method_handlers)
+    server.add_registered_method_handlers('usuario.Usuario', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -131,7 +131,7 @@ class Usuario(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Usuario/AgregarUsuario',
+            '/usuario.Usuario/AgregarUsuario',
             usuario__pb2.AgregarUsuarioRequest.SerializeToString,
             usuario__pb2.AgregarUsuarioResponse.FromString,
             options,
@@ -158,7 +158,7 @@ class Usuario(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Usuario/TraerTodosLosUsuarios',
+            '/usuario.Usuario/TraerTodosLosUsuarios',
             usuario__pb2.TraerTodosLosUsuariosRequest.SerializeToString,
             usuario__pb2.TraerTodosLosUsuariosResponse.FromString,
             options,
@@ -185,7 +185,7 @@ class Usuario(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Usuario/TraerTodosLosUsuariosPorNombre',
+            '/usuario.Usuario/TraerTodosLosUsuariosPorNombre',
             usuario__pb2.TraerTodosLosUsuariosPorNombreRequest.SerializeToString,
             usuario__pb2.TraerTodosLosUsuariosPorNombreResponse.FromString,
             options,
@@ -212,7 +212,7 @@ class Usuario(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Usuario/TraerUsuarioPorTienda',
+            '/usuario.Usuario/TraerUsuarioPorTienda',
             usuario__pb2.TraerUsuarioPorTiendaRequest.SerializeToString,
             usuario__pb2.TraerUsuarioPorTiendaResponse.FromString,
             options,

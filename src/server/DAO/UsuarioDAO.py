@@ -1,33 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-from server.dao.configs import getConfigDB
-
-class ConexionBD:
-    def __init__(self):
-        self._micur = None
-        self._bd = None
-
-    def crearConexion(self):
-        config = getConfigDB()
-        try:
-            self._bd = mysql.connector.connect(
-                host=config['host'],
-                user=config['user'],
-                port=config['port'],
-                password=config['password'],
-                database=config['database'],
-                auth_plugin=config['auth_plugin']
-            )
-            self._micur = self._bd.cursor(dictionary=True)
-        except Error as e:
-            print(f"Error al conectar con la BD: {e}")
-
-    def cerrarConexion(self):
-        if self._micur:
-            self._micur.close()
-        if self._bd:
-            self._bd.close()
+from server.dao.conexionDB import ConexionBD
 
 class UsuarioDAO(ConexionBD):
     def __init__(self):
