@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Usuario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .form-container h1 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        .form-container input, 
+        .form-container select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+        .form-container .cancel-button {
+            background-color: #6c757d;
+        }
+        .form-container .cancel-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Modificar Usuario</h1>
+        <form id="editUserForm" action="/modificarUsuario" method="post">
+            <input type="hidden" id="userId" name="userId">
+
+            <label for="usuario">Nombre de Usuario:</label>
+            <input type="text" id="usuario" name="usuario" required>
+
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password">
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required>
+
+            <label for="habilitado">Habilitado:</label>
+            <select id="habilitado" name="habilitado" required>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+
+            <label for="casaCentral">Casa Central:</label>
+            <select id="casaCentral" name="casaCentral" required>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+
+            <label for="idTienda">ID de Tienda:</label>
+            <input type="number" id="idTienda" name="idTienda" required>
+
+            <button type="submit">Guardar Cambios</button>
+            <button type="button" class="cancel-button" onclick="window.location.href='/usuarios';">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const usuario = params.get('usuario');
+
+            if (usuario) {
+                fetch(`/api/usuario/${usuario}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('userId').value = data.id;
+                        document.getElementById('usuario').value = data.usuario;
+                        document.getElementById('nombre').value = data.nombre;
+                        document.getElementById('apellido').value = data.apellido;
+                        document.getElementById('habilitado').value = data.habilitado.toString();
+                        document.getElementById('casaCentral').value = data.casaCentral.toString();
+                        document.getElementById('idTienda').value = data.idTienda;
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar los datos del usuario:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

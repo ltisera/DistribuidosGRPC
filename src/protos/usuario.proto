@@ -5,6 +5,8 @@ package usuario;
 service Usuario {
   rpc IniciarSesion (IniciarSesionRequest) returns (IniciarSesionResponse);
   rpc AgregarUsuario(AgregarUsuarioRequest) returns (AgregarUsuarioResponse) {}
+  rpc ObtenerUsuario(ObtenerUsuarioRequest) returns (ObtenerUsuarioResponse) {}
+  rpc ModificarUsuario(ModificarUsuarioRequest) returns (ModificarUsuarioResponse) {}
   rpc TraerTodosLosUsuarios(TraerTodosLosUsuariosRequest) returns (TraerTodosLosUsuariosResponse) {}
   rpc TraerTodosLosUsuariosPorNombre(TraerTodosLosUsuariosPorNombreRequest) returns (TraerTodosLosUsuariosPorNombreResponse) {}
   rpc TraerUsuarioPorTienda(TraerUsuarioPorTiendaRequest) returns (TraerUsuarioPorTiendaResponse) {} 
@@ -18,6 +20,17 @@ message UsuarioGrpcDTO {
   bool habilitado = 5;
   bool casaCentral = 6;
   int64 idTienda = 7;
+}
+
+message UsuarioObtenerGrpcDTO {
+  int64 idUsuario = 1;
+  string usuario = 2;
+  string password = 3;
+  string nombre = 4;
+  string apellido = 5;
+  bool habilitado = 6;
+  bool casaCentral = 7;
+  int64 idTienda = 8;
 }
 
 message IniciarSesionRequest {
@@ -37,8 +50,24 @@ message AgregarUsuarioResponse {
     int64 idUsuario = 1;
 }
 
+message ObtenerUsuarioRequest {
+  int64 idUsuario = 1;
+}
+
+message ObtenerUsuarioResponse {
+    UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
+}
+
+message ModificarUsuarioRequest {
+  UsuarioGrpcDTO usuarioGrpcDTO = 1;
+}
+
+message ModificarUsuarioResponse {
+    int64 idUsuario = 1;
+}
+
 message UsuarioList {
-  repeated UsuarioGrpcDTO usuarios = 1;
+  repeated UsuarioObtenerGrpcDTO usuarios = 1;
 }
 
 message TraerTodosLosUsuariosRequest {
@@ -61,5 +90,5 @@ message TraerUsuarioPorTiendaRequest {
 }
 
 message TraerUsuarioPorTiendaResponse {
-    UsuarioGrpcDTO usuarioGrpcDTO = 1;
+    UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
 }

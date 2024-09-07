@@ -42,6 +42,56 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.AgregarUsuarioResponse()
         
+
+    def ObtenerUsuario(self, request, context):
+        try:
+            udao = UsuarioDAO()
+            idUsuario = request.idUsuario
+            usuario = udao.obtenerUsuario(idUsuario)
+
+
+            if usuario is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details(f'Usuario con id {idUsuario} no encontrado.')
+                return usuario_pb2.ObtenerUsuarioResponse()
+
+            usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+                    idUsuario=usuario[0],
+                    usuario=usuario[1],
+                    password=usuario[2],
+                    nombre=usuario[3],
+                    apellido=usuario[4],
+                    habilitado=usuario[5],
+                    casaCentral=usuario[6],
+                    idTienda=usuario[7]
+                )
+
+            response = usuario_pb2.ObtenerUsuarioResponse(usuarioObtenerGrpcDTO=usuario_dto)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return usuario_pb2.ObtenerUsuarioResponse()
+
+    def ModificarUsuario(self, request, context):
+        try:
+            usuario = request.usuarioGrpcDTO.usuario
+            password = request.usuarioGrpcDTO.password
+            nombre = request.usuarioGrpcDTO.nombre
+            apellido = request.usuarioGrpcDTO.apellido
+            habilitado = request.usuarioGrpcDTO.habilitado
+            casaCentral = request.usuarioGrpcDTO.casaCentral
+            idTienda = request.usuarioGrpcDTO.idTienda
+
+            udao = UsuarioDAO()
+            idUsuario = udao.modificarUsuario( usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
+            response = usuario_pb2.ModificarUsuarioResponse(idUsuario=idUsuario)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return usuario_pb2.ModificarUsuarioResponse()
+
     def TraerTodosLosUsuarios(self, request, context):
         try:
             udao = UsuarioDAO()
@@ -49,7 +99,8 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             usuario_list = usuario_pb2.UsuarioList()
             
             for usuario in usuarios:
-                usuario_dto = usuario_pb2.UsuarioGrpcDTO(
+                usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+                    idUsuario=usuario[0],
                     usuario=usuario[1],
                     password=usuario[2],
                     nombre=usuario[3],
@@ -59,13 +110,12 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
                     idTienda=usuario[7]
                 )
                 usuario_list.usuarios.append(usuario_dto)
-
             response = usuario_pb2.TraerTodosLosUsuariosResponse(usuarioList=usuario_list)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
-            return usuario_pb2.AgregarUsuarioResponse()
+            return usuario_pb2.TraerTodosLosUsuariosResponse()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

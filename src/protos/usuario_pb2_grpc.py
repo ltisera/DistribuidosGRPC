@@ -44,6 +44,16 @@ class UsuarioStub(object):
                 request_serializer=usuario__pb2.AgregarUsuarioRequest.SerializeToString,
                 response_deserializer=usuario__pb2.AgregarUsuarioResponse.FromString,
                 _registered_method=True)
+        self.ObtenerUsuario = channel.unary_unary(
+                '/usuario.Usuario/ObtenerUsuario',
+                request_serializer=usuario__pb2.ObtenerUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.ObtenerUsuarioResponse.FromString,
+                _registered_method=True)
+        self.ModificarUsuario = channel.unary_unary(
+                '/usuario.Usuario/ModificarUsuario',
+                request_serializer=usuario__pb2.ModificarUsuarioRequest.SerializeToString,
+                response_deserializer=usuario__pb2.ModificarUsuarioResponse.FromString,
+                _registered_method=True)
         self.TraerTodosLosUsuarios = channel.unary_unary(
                 '/usuario.Usuario/TraerTodosLosUsuarios',
                 request_serializer=usuario__pb2.TraerTodosLosUsuariosRequest.SerializeToString,
@@ -71,6 +81,18 @@ class UsuarioServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def AgregarUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ObtenerUsuario(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ModificarUsuario(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -106,6 +128,16 @@ def add_UsuarioServicer_to_server(servicer, server):
                     servicer.AgregarUsuario,
                     request_deserializer=usuario__pb2.AgregarUsuarioRequest.FromString,
                     response_serializer=usuario__pb2.AgregarUsuarioResponse.SerializeToString,
+            ),
+            'ObtenerUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.ObtenerUsuario,
+                    request_deserializer=usuario__pb2.ObtenerUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.ObtenerUsuarioResponse.SerializeToString,
+            ),
+            'ModificarUsuario': grpc.unary_unary_rpc_method_handler(
+                    servicer.ModificarUsuario,
+                    request_deserializer=usuario__pb2.ModificarUsuarioRequest.FromString,
+                    response_serializer=usuario__pb2.ModificarUsuarioResponse.SerializeToString,
             ),
             'TraerTodosLosUsuarios': grpc.unary_unary_rpc_method_handler(
                     servicer.TraerTodosLosUsuarios,
@@ -177,6 +209,60 @@ class Usuario(object):
             '/usuario.Usuario/AgregarUsuario',
             usuario__pb2.AgregarUsuarioRequest.SerializeToString,
             usuario__pb2.AgregarUsuarioResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ObtenerUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/usuario.Usuario/ObtenerUsuario',
+            usuario__pb2.ObtenerUsuarioRequest.SerializeToString,
+            usuario__pb2.ObtenerUsuarioResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ModificarUsuario(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/usuario.Usuario/ModificarUsuario',
+            usuario__pb2.ModificarUsuarioRequest.SerializeToString,
+            usuario__pb2.ModificarUsuarioResponse.FromString,
             options,
             channel_credentials,
             insecure,
