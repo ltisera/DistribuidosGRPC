@@ -34,6 +34,11 @@ class UsuarioStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.IniciarSesion = channel.unary_unary(
+                '/usuario.Usuario/IniciarSesion',
+                request_serializer=usuario__pb2.IniciarSesionRequest.SerializeToString,
+                response_deserializer=usuario__pb2.IniciarSesionResponse.FromString,
+                _registered_method=True)
         self.AgregarUsuario = channel.unary_unary(
                 '/usuario.Usuario/AgregarUsuario',
                 request_serializer=usuario__pb2.AgregarUsuarioRequest.SerializeToString,
@@ -58,6 +63,12 @@ class UsuarioStub(object):
 
 class UsuarioServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def IniciarSesion(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def AgregarUsuario(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -86,6 +97,11 @@ class UsuarioServicer(object):
 
 def add_UsuarioServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'IniciarSesion': grpc.unary_unary_rpc_method_handler(
+                    servicer.IniciarSesion,
+                    request_deserializer=usuario__pb2.IniciarSesionRequest.FromString,
+                    response_serializer=usuario__pb2.IniciarSesionResponse.SerializeToString,
+            ),
             'AgregarUsuario': grpc.unary_unary_rpc_method_handler(
                     servicer.AgregarUsuario,
                     request_deserializer=usuario__pb2.AgregarUsuarioRequest.FromString,
@@ -116,6 +132,33 @@ def add_UsuarioServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class Usuario(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def IniciarSesion(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/usuario.Usuario/IniciarSesion',
+            usuario__pb2.IniciarSesionRequest.SerializeToString,
+            usuario__pb2.IniciarSesionResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
 
     @staticmethod
     def AgregarUsuario(request,

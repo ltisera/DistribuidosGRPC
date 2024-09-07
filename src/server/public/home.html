@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Inicio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #575757;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 2rem 0;
+        }
+        .welcome {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .welcome h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+        .welcome p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a la Aplicación</h1>
+    </header>
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/logout"> Cerrar Sesión</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/about">Acerca de</a>
+    </nav>
+    <div class="container">
+        <div class="welcome">
+            <h1>¡Hola, Usuario!</h1>
+            <p>Bienvenido a nuestra aplicación. Usa el menú de navegación para explorar las diferentes secciones.</p>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Mi Aplicación. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
