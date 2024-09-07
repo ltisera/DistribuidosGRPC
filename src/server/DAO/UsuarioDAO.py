@@ -1,84 +1,59 @@
-import os, sys
-
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(CURRENT_DIR))
-
 import mysql.connector
-import json
 from mysql.connector import Error
-from DAO.ConexionBD import ConexionBD
-from DAO.CONFIGS.variablesGlobales import TUSUARIO
+
+from server.dao.configs import getConfigDB
+
+class ConexionBD:
+    def __init__(self):
+        self._micur = None
+        self._bd = None
+
+    def crearConexion(self):
+        config = getConfigDB()
+        try:
+            self._bd = mysql.connector.connect(
+                host=config['host'],
+                user=config['user'],
+                port=config['port'],
+                password=config['password'],
+                database=config['database'],
+                auth_plugin=config['auth_plugin']
+            )
+            self._micur = self._bd.cursor(dictionary=True)
+        except Error as e:
+            print(f"Error al conectar con la BD: {e}")
+
+    def cerrarConexion(self):
+        if self._micur:
+            self._micur.close()
+        if self._bd:
+            self._bd.close()
+
 class UsuarioDAO(ConexionBD):
-    def __int__(self):
-        pass
-    
-    def traerUsuarioXUsuario(self, usuario):
-        usTraido = None
+    def __init__(self):
+        super().__init__()
+
+    def agregarUsuario(self, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda):
+        print(f"Valores a insertar: usuario={usuario}, password={password}, nombre={nombre}, apellido={apellido}, habilitado={habilitado}, casaCentral={casaCentral}, idTienda={idTienda}")
         try:
             self.crearConexion()
-            self.cursorDict()
-            self._micur.execute("SELECT * FROM " + TUSUARIO + " WHERE usuario = %s", (usuario,))
-            usTraido = self._micur.fetchone()
-        except Error as e:
-            print("Error al conectar con la BD", e)
-
-        finally:
-            self.cerrarConexion()
-        
-        return usTraido
-    
-    def traerUsuarioSIMPLE(self, id):
-        usTraido = None
-        try:
-            self.crearConexion()
-            self.cursorDict()
-            self._micur.execute("SELECT * FROM " + TUSUARIO + " WHERE idusuario = %s", (id,))
-            usTraido = self._micur.fetchone()
-        except Error as e:
-            print("Error al conectar con la BD", e)
-
-        finally:
-            self.cerrarConexion()
-        
-        return usTraido
-
-    def agregarUsuario(self, usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda):
-        print(f"Valores a insertar: usuario={usuario}, password={password}, nombre={nombre}, apellido={apellido}, esHabilitado={esHabilitado}, esCasaCentral={esCasaCentral}, idTienda={idTienda}")
-        print("agregar usuario")
-        devolve = 0
-        try:
-            self.crearConexion()
-
-            self._micur.execute("INSERT INTO " + TUSUARIO + " (usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) values (%s, %s, %s, %s, %s, %s, %s)", ( usuario, password, nombre, apellido, esHabilitado, esCasaCentral, idTienda))
+            sql = ("INSERT INTO usuario (usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) "
+                   "VALUES (%s, %s, %s, %s, %s, %s, %s)")
+            values = (usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
+            self._micur.execute(sql, values)
             self._bd.commit()
-            print("Commiteado con esito")
-            devolve = self._micur.fetchone()
-            print(devolve)
-
+            print("Usuario agregado con éxito")
+            return self._micur.lastrowid 
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
             print(f"Database Error: {str(err)}")
         except Exception as e:
             print(f"Unexpected Error: {str(e)}")
-        
-
         finally:
-            print("Cerrando conexion")
             self.cerrarConexion()
-            print("Coneccion derada")
         
-        print("PASO POR ACA")
-        nose = True
-        print("Udao devuelve: " + str(nose))
-        print("COMO ME ROMPES EL MENSAJE")
-        return devolve
-    
+        return None 
 
 if __name__ == '__main__':
     a = UsuarioDAO()
-    #ingresa UAsuario
-    #a.agregarUsuario(1, "hola", "1233", "Camila", "Tisera", True, False, 123)
-    #Lee Usuario
-    print(a.traerUsuarioSIMPLE(1))
-    print("Finnn eaaa")
