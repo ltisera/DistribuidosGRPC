@@ -29,7 +29,7 @@ function iniciarSesion(req, res) {
       req.session.usuario = usuario;
       res.redirect('/home');
     } else {
-        res.redirect('/');
+        res.redirect('/?mensaje=sessionFailed');
     }
   });
 }
