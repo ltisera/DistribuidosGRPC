@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 const usuarioController = require('./controllers/usuarioController');
 
@@ -55,7 +56,17 @@ app.get('/api/usuarios', usuarioController.traerUsuarios);
 
 app.get('/usuario/:idUsuario', usuarioController.mostrarUsuario);
 
+app.get('/modificarUsuario', (req, res) => {
+  if (req.session.authenticated) {
+      res.sendFile(path.join(__dirname, 'public', 'modificarUsuario.html'));
+  } else {
+      res.redirect('/');
+  }
+});
+
 app.post('/modificarUsuario', usuarioController.modificarUsuario);
+
+app.post('/eliminarUsuario', usuarioController.eliminarUsuario);
 
 const PORT = 3000;
 app.listen(PORT, () => {

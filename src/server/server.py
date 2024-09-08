@@ -75,22 +75,40 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
 
     def ModificarUsuario(self, request, context):
         try:
-            usuario = request.usuarioGrpcDTO.usuario
-            password = request.usuarioGrpcDTO.password
-            nombre = request.usuarioGrpcDTO.nombre
-            apellido = request.usuarioGrpcDTO.apellido
-            habilitado = request.usuarioGrpcDTO.habilitado
-            casaCentral = request.usuarioGrpcDTO.casaCentral
-            idTienda = request.usuarioGrpcDTO.idTienda
+            idUsuario = request.usuarioObtenerGrpcDTO.idUsuario
+            usuario = request.usuarioObtenerGrpcDTO.usuario
+            password = request.usuarioObtenerGrpcDTO.password
+            nombre = request.usuarioObtenerGrpcDTO.nombre
+            apellido = request.usuarioObtenerGrpcDTO.apellido
+            habilitado = request.usuarioObtenerGrpcDTO.habilitado
+            casaCentral = request.usuarioObtenerGrpcDTO.casaCentral
+            idTienda = request.usuarioObtenerGrpcDTO.idTienda
+
+
+            print("IdUsuario: ", idUsuario)
 
             udao = UsuarioDAO()
-            idUsuario = udao.modificarUsuario( usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
+            idUsuario = udao.modificarUsuario(idUsuario, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
             response = usuario_pb2.ModificarUsuarioResponse(idUsuario=idUsuario)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.ModificarUsuarioResponse()
+        
+    def EliminarUsuario(self, request, context):
+        try:
+            idUsuario = request.idUsuario
+
+            print("IdUsuario: ", idUsuario)
+            udao = UsuarioDAO()
+            idUsuario = udao.eliminarUsuario(idUsuario)
+            response = usuario_pb2.EliminarUsuarioResponse(idUsuario=idUsuario)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return usuario_pb2.EliminarUsuarioResponse()
 
     def TraerTodosLosUsuarios(self, request, context):
         try:

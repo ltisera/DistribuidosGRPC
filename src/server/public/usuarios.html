@@ -50,14 +50,14 @@
             display: block;
         }
         tbody {
-            height: 300px;
+            height: 500px;
             overflow-y: auto;
         }
         th, td {
             padding: 0.8rem;
             text-align: left;
             border: 1px solid #ddd;
-            min-width: 400px;
+            min-width: 350px;
         }
         th {
             background-color: #333;
@@ -101,6 +101,18 @@
         }
         .btn-modify:hover {
             background-color: #0056b3;
+        }
+        .btn-delete {
+            background-color: #db0505;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-delete:hover {
+            background-color: #940505;
         }
     </style>
 </head>
@@ -151,7 +163,10 @@
                             <td>${user.usuario}</td>
                             <td>${user.habilitado ? 'Sí' : 'No'}</td>
                             <td>${user.tienda}</td>
-                            <td><button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button></td>
+                            <td>
+                                <button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button>
+                                <button class="btn-delete" onclick="deleteUser('${user.idUsuario}')">Eliminar</button>
+                            </td>
                         `;
 
                         tableBody.appendChild(row);
@@ -162,9 +177,29 @@
                 });
         });
 
-        function modifyUser(usuarioId) {
-            window.location.href = `/usuario/${usuarioId}`;
+        function modifyUser(idUsuario) {
+            window.location.href = `/modificarUsuario?idUsuario=${idUsuario}`;
         }
+
+        function deleteUser(idUsuario) {
+        fetch('/eliminarUsuario', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: idUsuario })
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/usuarios?mensaje=successDeleteUser';
+            } else {
+                console.error('Error al eliminar usuario');
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar solicitud de eliminación:', error);
+        });
+    }
     </script>
 </body>
 </html>

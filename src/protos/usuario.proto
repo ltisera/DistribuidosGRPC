@@ -7,6 +7,7 @@ service Usuario {
   rpc AgregarUsuario(AgregarUsuarioRequest) returns (AgregarUsuarioResponse) {}
   rpc ObtenerUsuario(ObtenerUsuarioRequest) returns (ObtenerUsuarioResponse) {}
   rpc ModificarUsuario(ModificarUsuarioRequest) returns (ModificarUsuarioResponse) {}
+  rpc EliminarUsuario(EliminarUsuarioRequest) returns (EliminarUsuarioResponse) {}
   rpc TraerTodosLosUsuarios(TraerTodosLosUsuariosRequest) returns (TraerTodosLosUsuariosResponse) {}
   rpc TraerTodosLosUsuariosPorNombre(TraerTodosLosUsuariosPorNombreRequest) returns (TraerTodosLosUsuariosPorNombreResponse) {}
   rpc TraerUsuarioPorTienda(TraerUsuarioPorTiendaRequest) returns (TraerUsuarioPorTiendaResponse) {} 
@@ -59,10 +60,18 @@ message ObtenerUsuarioResponse {
 }
 
 message ModificarUsuarioRequest {
-  UsuarioGrpcDTO usuarioGrpcDTO = 1;
+  UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
 }
 
 message ModificarUsuarioResponse {
+    int64 idUsuario = 1;
+}
+
+message EliminarUsuarioRequest {
+  int64 idUsuario = 1;
+}
+
+message EliminarUsuarioResponse {
     int64 idUsuario = 1;
 }
 

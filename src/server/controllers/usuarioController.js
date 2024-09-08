@@ -54,7 +54,7 @@ function crearUsuario(req, res) {
     const casaCentralBool = casaCentral === 'on';
 
     agregarUsuario(usuario, password, nombre, apellido, habilitadoBool, casaCentralBool, parseInt(idTienda, 10))
-    .then(() => res.redirect('/home?mensaje=successAddUser'))
+    .then(() => res.redirect('/usuarios'))
       .catch((error) => {
         console.error('Error:', error);
         res.status(500).send('Error al agregar usuario');
@@ -66,6 +66,7 @@ function crearUsuario(req, res) {
 
 // OBETENER USUARIO
 function mostrarUsuario(req, res) {
+  if (req.session.authenticated) {
     const { idUsuario } = req.params;
     client.ObtenerUsuario({ idUsuario: parseInt(idUsuario, 10) }, (error, response) => {
         if (error) {
@@ -77,13 +78,20 @@ function mostrarUsuario(req, res) {
             res.status(404).send('Usuario no encontrado');
         }
     });
+  } else {
+    res.redirect('/');
+  }
 }
 
 // MODIFICAR USUARIO
 function modificarUsuario(req, res) {
-    const { usuario, password, nombre, apellido, habilitado, casaCentral, idTienda } = req.body;
+  if (req.session.authenticated) {
+    const { userId, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda } = req.body;
     
+    console.log("IdUsuario: " + userId)
+
     const usuarioActualizar = {
+        idUsuario: parseInt(userId, 10),
         usuario,
         password,
         nombre,
@@ -93,7 +101,7 @@ function modificarUsuario(req, res) {
         idTienda: parseInt(idTienda, 10)
     };
 
-    client.ModificarUsuario({ usuarioGrpcDTO: usuarioActualizar }, (error, response) => {
+    client.ModificarUsuario({ usuarioObtenerGrpcDTO: usuarioActualizar }, (error, response) => {
         if (error) {
             console.error('Error al modificar usuario:', error);
             res.status(500).send('Error al modificar usuario');
@@ -101,6 +109,27 @@ function modificarUsuario(req, res) {
             res.redirect('/usuarios?mensaje=successModifyUser');
         }
     });
+  } else {
+    res.redirect('/');
+  }
+}
+
+// ELIMINAR USUARIO
+function eliminarUsuario(req, res) {
+  if (req.session.authenticated) {
+    const { userId } = req.body;
+    const idUsuario =  parseInt(userId, 10)
+    client.EliminarUsuario({ idUsuario }, (error, response) => {
+        if (error) {
+            console.error('Error al eliminar usuario:', error);
+            res.status(500).send('Error al eliminar usuario');
+        } else {
+            res.redirect('/usuarios?mensaje=successDeleteUser');
+        }
+    });
+  } else {
+    res.redirect('/');
+  }
 }
 
 // TRAER USUARIOS
@@ -166,5 +195,6 @@ module.exports = {
   crearUsuario,
   traerUsuarios,
   mostrarUsuario,
-  modificarUsuario
+  modificarUsuario,
+  eliminarUsuario
 };
