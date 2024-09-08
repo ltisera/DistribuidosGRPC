@@ -5,24 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Usuarios</title>
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
+
         header {
             background-color: #333;
             color: #fff;
             padding: 1rem;
             text-align: center;
         }
+
         nav {
             display: flex;
             justify-content: center;
             gap: 1rem;
             margin: 1rem 0;
         }
+
         nav a {
             color: #383737;
             text-decoration: none;
@@ -30,10 +34,12 @@
             border-radius: 4px;
             transition: background-color 0.3s;
         }
+
         nav a:hover {
             color: #ffffff;
             background-color: #575757;
         }
+
         .container {
             width: 100%;
             height: calc(100vh - 160px);
@@ -41,31 +47,38 @@
             padding: 1rem;
             overflow-x: auto;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 2rem 0;
         }
+
         thead, tbody {
             display: block;
         }
+
         tbody {
             height: 500px;
             overflow-y: auto;
         }
+
         th, td {
             padding: 0.8rem;
             text-align: left;
             border: 1px solid #ddd;
             min-width: 350px;
         }
+
         th {
             background-color: #333;
             color: #fff;
         }
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
         footer {
             background-color: #333;
             color: #fff;
@@ -90,6 +103,7 @@
         table::-webkit-scrollbar-thumb:hover {
             background: #555; 
         }
+
         .btn-modify {
             background-color: #007bff;
             color: #fff;
@@ -99,9 +113,11 @@
             cursor: pointer;
             text-align: center;
         }
+
         .btn-modify:hover {
             background-color: #0056b3;
         }
+
         .btn-delete {
             background-color: #db0505;
             color: #fff;
@@ -111,9 +127,27 @@
             cursor: pointer;
             text-align: center;
         }
+
         .btn-delete:hover {
             background-color: #940505;
         }
+
+        #popup {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #4caf50;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        #popup.show {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -127,7 +161,18 @@
         <a href="/logout">Cerrar Sesión</a>
     </nav>
 
+    <div id="popup"></div>
+
     <div class="container">
+        <form id="filter-form">
+            <label for="nombre-filter">Filtrar por Nombre:</label>
+            <input type="text" id="nombre-filter" name="nombre" placeholder="Escribe nombre">
+            
+            <label for="tienda-filter">Filtrar por Tienda:</label>
+            <input type="text" id="tienda-filter" name="idTienda" placeholder="Escribe idTienda">
+            
+            <button type="submit">Filtrar</button>
+        </form>
         <table id="users-table">
             <thead>
                 <tr>
@@ -139,6 +184,7 @@
                 </tr>
             </thead>
             <tbody>
+
             </tbody>
         </table>
     </div>
@@ -149,7 +195,79 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/usuarios')
+            fetchUsuarios();
+            document.querySelector('#filter-form').addEventListener('submit', (event) => {
+                event.preventDefault();
+                fetchUsuarios();
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            const mensaje = params.get('mensaje');
+
+            if (mensaje) {
+                let messageText = '';
+                switch (mensaje) {
+                    case 'successAddUser':
+                        messageText = 'Usuario agregado con éxito!';
+                        break;
+                    case 'successModifyUser':
+                        messageText = 'Usuario actualizado con éxito!';
+                        break;
+                    case 'successDeleteUser':
+                        messageText = 'Usuario eliminado con éxito!';
+                        break;
+                    default:
+                        messageText = '';
+                }
+
+                if (messageText) {
+                    console.log("ShowPopUp")
+                    showPopup(messageText);
+                }
+            }
+        });
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            if (popup) {
+                popup.textContent = message;
+                popup.classList.add('show');
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        function modifyUser(idUsuario) {
+            window.location.href = `/modificarUsuario?idUsuario=${idUsuario}`;
+        }
+
+        function deleteUser(idUsuario) {
+            fetch('/eliminarUsuario', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: idUsuario })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/usuarios?mensaje=successDeleteUser';
+                } else {
+                    console.error('Error al eliminar usuario');
+                }
+            })
+            .catch(error => {
+                console.error('Error al enviar solicitud de eliminación:', error);
+            });
+        }
+
+        function fetchUsuarios() {
+            const nombre = encodeURIComponent(document.querySelector('#nombre-filter').value);
+            const idTienda = encodeURIComponent(document.querySelector('#tienda-filter').value);
+
+            if(nombre || idTienda){
+                fetch(`/api/usuarios/filtrados?nombre=${nombre}&idTienda=${idTienda}`)
                 .then(response => response.json())
                 .then(users => {
                     const tableBody = document.querySelector('#users-table tbody');
@@ -175,31 +293,36 @@
                 .catch(error => {
                     console.error('Error al cargar la lista de usuarios:', error);
                 });
-        });
-
-        function modifyUser(idUsuario) {
-            window.location.href = `/modificarUsuario?idUsuario=${idUsuario}`;
-        }
-
-        function deleteUser(idUsuario) {
-        fetch('/eliminarUsuario', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId: idUsuario })
-        })
-        .then(response => {
-            if (response.ok) {
-                window.location.href = '/usuarios?mensaje=successDeleteUser';
             } else {
-                console.error('Error al eliminar usuario');
-            }
-        })
-        .catch(error => {
-            console.error('Error al enviar solicitud de eliminación:', error);
-        });
-    }
+                fetch('/api/usuarios')
+                .then(response => response.json())
+                .then(users => {
+                    const tableBody = document.querySelector('#users-table tbody');
+                    tableBody.innerHTML = '';
+
+                    users.forEach(user => {
+                        const row = document.createElement('tr');
+
+                        row.innerHTML = `
+                            <td>${user.idUsuario}</td>
+                            <td>${user.usuario}</td>
+                            <td>${user.habilitado ? 'Sí' : 'No'}</td>
+                            <td>${user.tienda}</td>
+                            <td>
+                                <button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button>
+                                <button class="btn-delete" onclick="deleteUser('${user.idUsuario}')">Eliminar</button>
+                            </td>
+                        `;
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error al cargar la lista de usuarios:', error);
+                });
+            } 
+            
+        }
     </script>
 </body>
 </html>

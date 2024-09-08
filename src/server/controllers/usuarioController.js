@@ -54,7 +54,15 @@ function crearUsuario(req, res) {
     const casaCentralBool = casaCentral === 'on';
 
     agregarUsuario(usuario, password, nombre, apellido, habilitadoBool, casaCentralBool, parseInt(idTienda, 10))
-    .then(() => res.redirect('/usuarios'))
+    .then(response => {
+        if (response  === '-1') {
+          res.status(400).send("La tienda no existe")
+        } else if (response  === '0') {
+          res.status(400).send("El nombre de usuario ya existe")
+        } else{
+          res.redirect('/usuarios?mensaje=successAddUser')
+        } 
+      })
       .catch((error) => {
         console.error('Error:', error);
         res.status(500).send('Error al agregar usuario');
@@ -87,8 +95,6 @@ function mostrarUsuario(req, res) {
 function modificarUsuario(req, res) {
   if (req.session.authenticated) {
     const { userId, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda } = req.body;
-    
-    console.log("IdUsuario: " + userId)
 
     const usuarioActualizar = {
         idUsuario: parseInt(userId, 10),
@@ -124,7 +130,7 @@ function eliminarUsuario(req, res) {
             console.error('Error al eliminar usuario:', error);
             res.status(500).send('Error al eliminar usuario');
         } else {
-            res.redirect('/usuarios?mensaje=successDeleteUser');
+          res.redirect('/usuarios?mensaje=successDeleteUser');
         }
     });
   } else {
@@ -138,6 +144,44 @@ function traerUsuarios(req, res) {
     client.TraerTodosLosUsuarios({}, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodosLosUsuarios: ' + error.message);
+        return res.status(400).send('Error al traer usuarios');
+      }
+      try {
+        if (response && response.usuarioList && response.usuarioList.usuarios) {
+          const usuarios = response.usuarioList.usuarios.map(usuario => ({
+            idUsuario: usuario.idUsuario,
+            usuario: usuario.usuario,
+            tienda: usuario.idTienda,
+            habilitado: usuario.habilitado
+          }));
+          res.json(usuarios);
+        } else {
+          console.error('Respuesta del servidor no contiene UsuarioList.');
+          res.status(400).send('Error en la respuesta del servidor');
+        }
+      } catch (e) {
+        console.error('Error al procesar la respuesta:', e);
+        res.status(500).send('Error al procesar la respuesta');
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
+}
+
+// TRAER USUARIOS FILTRADOS
+function traerUsuariosFiltrados(req, res) {
+  if (req.session.authenticated) {
+    let {idTienda, nombre} = req.query
+    if(!idTienda){
+      idTienda = 0
+    }
+    if(!nombre){
+      nombre = " "
+    }
+    client.TraerTodosLosUsuariosFiltrados({idTienda, nombre}, (error, response) => {
+      if (error) {
+        console.error('Error al llamar al método TraerTodosLosUsuariosFiltrados: ' + error.message);
         return res.status(400).send('Error al traer usuarios');
       }
       try {
@@ -183,7 +227,7 @@ function agregarUsuario(usuario, password, nombre, apellido, habilitado, casaCen
         reject('Error al llamar al método AgregarUsuario: ' + error.message);
       } else {
         console.log('Respuesta:', response);
-        resolve();
+        resolve(response.idUsuario);
       }
     });
   });
@@ -196,5 +240,6 @@ module.exports = {
   traerUsuarios,
   mostrarUsuario,
   modificarUsuario,
-  eliminarUsuario
+  eliminarUsuario,
+  traerUsuariosFiltrados
 };

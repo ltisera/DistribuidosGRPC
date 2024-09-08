@@ -84,9 +84,6 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             casaCentral = request.usuarioObtenerGrpcDTO.casaCentral
             idTienda = request.usuarioObtenerGrpcDTO.idTienda
 
-
-            print("IdUsuario: ", idUsuario)
-
             udao = UsuarioDAO()
             idUsuario = udao.modificarUsuario(idUsuario, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
             response = usuario_pb2.ModificarUsuarioResponse(idUsuario=idUsuario)
@@ -100,7 +97,6 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
         try:
             idUsuario = request.idUsuario
 
-            print("IdUsuario: ", idUsuario)
             udao = UsuarioDAO()
             idUsuario = udao.eliminarUsuario(idUsuario)
             response = usuario_pb2.EliminarUsuarioResponse(idUsuario=idUsuario)
@@ -134,6 +130,35 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.TraerTodosLosUsuariosResponse()
+        
+    def TraerTodosLosUsuariosFiltrados(self, request, context):
+        try:
+            idTienda = request.idTienda
+            nombre = request.nombre
+            udao = UsuarioDAO()
+            usuarios = udao.traerTodosLosUsuariosFiltrados(idTienda, nombre)
+            usuario_list = usuario_pb2.UsuarioList()
+
+            if usuarios:
+                for usuario in usuarios:
+                    usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+                        idUsuario=usuario[0],
+                        usuario=usuario[1],
+                        password=usuario[2],
+                        nombre=usuario[3],
+                        apellido=usuario[4],
+                        habilitado=usuario[5],
+                        casaCentral=usuario[6],
+                        idTienda=usuario[7]
+                    )
+                    usuario_list.usuarios.append(usuario_dto)
+
+            response = usuario_pb2.TraerTodosLosUsuariosFiltradosResponse(usuarioList=usuario_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return usuario_pb2.TraerTodosLosUsuariosFiltradosResponse()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

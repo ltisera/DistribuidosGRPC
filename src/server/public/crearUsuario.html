@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Usuario</title>
     <style>
+
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -15,6 +16,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .form-container {
             background: #fff;
             padding: 2rem;
@@ -22,15 +24,18 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
         }
+
         .form-container h1 {
             margin-top: 0;
             margin-bottom: 1rem;
         }
+
         .form-container label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
         }
+
         .form-container input, 
         .form-container select {
             width: 100%;
@@ -39,6 +44,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .form-container button {
             width: 100%;
             padding: 0.75rem;
@@ -49,10 +55,49 @@
             font-size: 16px;
             cursor: pointer;
         }
+
         .form-container button:hover {
             background-color: #0056b3;
         }
+
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('createUserForm').addEventListener('submit', handleSubmit);
+        });
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = new URLSearchParams(formData).toString();
+            
+            try {
+                const response = await fetch('/crearUsuario', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: data
+                });
+
+                const result = await response.text();
+                
+                if (response.status === 400) {
+                    if (result.includes('El nombre de usuario ya existe')) {
+                        alert("Ese nombre de usuario ya existe.");
+                    } else if (result.includes('La tienda no existe')) {
+                        alert("Esa tienda no existe");
+                    }
+                } else {
+                    window.location.href = '/usuarios?mensaje=successAddUser';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un problema al crear el usuario.');
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="form-container">
