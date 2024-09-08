@@ -59,9 +59,26 @@
             background-color: #0056b3;
         }
 
+        #popup {
+            display: none;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #f10505;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        #popup.show {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
+    <div id="popup"></div>
     <div class="login-container">
         <h2>Iniciar Sesión</h2>
         <form id="loginForm" action="/login" method="post">
@@ -72,5 +89,39 @@
             <button type="submit">Iniciar Sesión</button>
         </form>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const params = new URLSearchParams(window.location.search);
+            const mensaje = params.get('mensaje');
+
+            if (mensaje) {
+                let messageText = '';
+                switch (mensaje) {
+                    case 'sessionFailed':
+                        messageText = 'Credenciales incorrectas!';
+                        break;
+                    default:
+                        messageText = '';
+                }
+
+                if (messageText) {
+                    console.log("ShowPopUp")
+                    showPopup(messageText);
+                }
+            }
+        });
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            if (popup) {
+                popup.textContent = message;
+                popup.classList.add('show');
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                }, 3000);
+            }
+        }
+    </script>
 </body>
 </html>
