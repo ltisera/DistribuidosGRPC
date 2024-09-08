@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ctienda.proto\x12\x08testgrpc\"e\n\rTiendaGrpcDTO\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x11\n\tdireccion\x18\x02 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x03 \x01(\t\x12\x11\n\tprovincia\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\"F\n\x14\x41gregarTiendaRequest\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"G\n\x15\x41gregarTiendaResponse\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"6\n\nTiendaList\x12(\n\x07tiendas\x18\x01 \x03(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"H\n\x16ModificarTiendaRequest\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"I\n\x17ModificarTiendaResponse\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"#\n\x15\x45liminarTiendaRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"$\n\x16\x45liminarTiendaResponse\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1d\n\x1bTraerTodasLasTiendasRequest\"H\n\x1cTraerTodasLasTiendasResponse\x12(\n\ntiendaList\x18\x01 \x01(\x0b\x32\x14.testgrpc.TiendaList\"6\n$TraerTodasLasTiendasPorEstadoRequest\x12\x0e\n\x06\x65stado\x18\x01 \x01(\x08\"Q\n%TraerTodasLasTiendasPorEstadoResponse\x12(\n\ntiendaList\x18\x01 \x01(\x0b\x32\x14.testgrpc.TiendaList\"-\n\x1bTraerTiendaPorCodigoRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\x03\"N\n\x1cTraerTiendaPorCodigoResponse\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO2\xe4\x04\n\x06Tienda\x12R\n\rAgregarTienda\x12\x1e.testgrpc.AgregarTiendaRequest\x1a\x1f.testgrpc.AgregarTiendaResponse\"\x00\x12X\n\x0fModificarTienda\x12 .testgrpc.ModificarTiendaRequest\x1a!.testgrpc.ModificarTiendaResponse\"\x00\x12U\n\x0e\x45liminarTienda\x12\x1f.testgrpc.EliminarTiendaRequest\x1a .testgrpc.EliminarTiendaResponse\"\x00\x12g\n\x14TraerTodasLasTiendas\x12%.testgrpc.TraerTodasLasTiendasRequest\x1a&.testgrpc.TraerTodasLasTiendasResponse\"\x00\x12\x82\x01\n\x1dTraerTodasLasTiendasPorEstado\x12..testgrpc.TraerTodasLasTiendasPorEstadoRequest\x1a/.testgrpc.TraerTodasLasTiendasPorEstadoResponse\"\x00\x12g\n\x14TraerTiendaPorCodigo\x12%.testgrpc.TraerTiendaPorCodigoRequest\x1a&.testgrpc.TraerTiendaPorCodigoResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0ctienda.proto\x12\x08testgrpc\"k\n\rTiendaGrpcDTO\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\x12\x11\n\tdireccion\x18\x02 \x01(\t\x12\x0e\n\x06\x63iudad\x18\x03 \x01(\t\x12\x11\n\tprovincia\x18\x04 \x01(\t\x12\x12\n\nhabilitado\x18\x05 \x01(\x08\"F\n\x14\x41gregarTiendaRequest\x12.\n\rtiendaGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\")\n\x15\x41gregarTiendaResponse\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\"6\n\nTiendaList\x12(\n\x07tiendas\x18\x01 \x03(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"(\n\x14ObtenerTiendaRequest\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\"N\n\x15ObtenerTiendaResponse\x12\x35\n\x14tiendaObtenerGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"O\n\x16ModificarTiendaRequest\x12\x35\n\x14tiendaObtenerGrpcDTO\x18\x01 \x01(\x0b\x32\x17.testgrpc.TiendaGrpcDTO\"+\n\x17ModificarTiendaResponse\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\")\n\x15\x45liminarTiendaRequest\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\"*\n\x16\x45liminarTiendaResponse\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\"\x1d\n\x1bTraerTodasLasTiendasRequest\"H\n\x1cTraerTodasLasTiendasResponse\x12(\n\ntiendaList\x18\x01 \x01(\x0b\x32\x14.testgrpc.TiendaList\"F\n$TraerTodasLasTiendasFiltradasRequest\x12\x0e\n\x06\x65stado\x18\x01 \x01(\x08\x12\x0e\n\x06\x63odigo\x18\x02 \x01(\x03\"Q\n%TraerTodasLasTiendasFiltradasResponse\x12(\n\ntiendaList\x18\x01 \x01(\x0b\x32\x14.testgrpc.TiendaList2\xcf\x04\n\x06Tienda\x12R\n\rAgregarTienda\x12\x1e.testgrpc.AgregarTiendaRequest\x1a\x1f.testgrpc.AgregarTiendaResponse\"\x00\x12R\n\rObtenerTienda\x12\x1e.testgrpc.ObtenerTiendaRequest\x1a\x1f.testgrpc.ObtenerTiendaResponse\"\x00\x12X\n\x0fModificarTienda\x12 .testgrpc.ModificarTiendaRequest\x1a!.testgrpc.ModificarTiendaResponse\"\x00\x12U\n\x0e\x45liminarTienda\x12\x1f.testgrpc.EliminarTiendaRequest\x1a .testgrpc.EliminarTiendaResponse\"\x00\x12g\n\x14TraerTodasLasTiendas\x12%.testgrpc.TraerTodasLasTiendasRequest\x1a&.testgrpc.TraerTodasLasTiendasResponse\"\x00\x12\x82\x01\n\x1dTraerTodasLasTiendasFiltradas\x12..testgrpc.TraerTodasLasTiendasFiltradasRequest\x1a/.testgrpc.TraerTodasLasTiendasFiltradasResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,33 +32,33 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'tienda_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_TIENDAGRPCDTO']._serialized_start=26
-  _globals['_TIENDAGRPCDTO']._serialized_end=127
-  _globals['_AGREGARTIENDAREQUEST']._serialized_start=129
-  _globals['_AGREGARTIENDAREQUEST']._serialized_end=199
-  _globals['_AGREGARTIENDARESPONSE']._serialized_start=201
-  _globals['_AGREGARTIENDARESPONSE']._serialized_end=272
-  _globals['_TIENDALIST']._serialized_start=274
-  _globals['_TIENDALIST']._serialized_end=328
-  _globals['_MODIFICARTIENDAREQUEST']._serialized_start=330
-  _globals['_MODIFICARTIENDAREQUEST']._serialized_end=402
-  _globals['_MODIFICARTIENDARESPONSE']._serialized_start=404
-  _globals['_MODIFICARTIENDARESPONSE']._serialized_end=477
-  _globals['_ELIMINARTIENDAREQUEST']._serialized_start=479
-  _globals['_ELIMINARTIENDAREQUEST']._serialized_end=514
-  _globals['_ELIMINARTIENDARESPONSE']._serialized_start=516
-  _globals['_ELIMINARTIENDARESPONSE']._serialized_end=552
-  _globals['_TRAERTODASLASTIENDASREQUEST']._serialized_start=554
-  _globals['_TRAERTODASLASTIENDASREQUEST']._serialized_end=583
-  _globals['_TRAERTODASLASTIENDASRESPONSE']._serialized_start=585
-  _globals['_TRAERTODASLASTIENDASRESPONSE']._serialized_end=657
-  _globals['_TRAERTODASLASTIENDASPORESTADOREQUEST']._serialized_start=659
-  _globals['_TRAERTODASLASTIENDASPORESTADOREQUEST']._serialized_end=713
-  _globals['_TRAERTODASLASTIENDASPORESTADORESPONSE']._serialized_start=715
-  _globals['_TRAERTODASLASTIENDASPORESTADORESPONSE']._serialized_end=796
-  _globals['_TRAERTIENDAPORCODIGOREQUEST']._serialized_start=798
-  _globals['_TRAERTIENDAPORCODIGOREQUEST']._serialized_end=843
-  _globals['_TRAERTIENDAPORCODIGORESPONSE']._serialized_start=845
-  _globals['_TRAERTIENDAPORCODIGORESPONSE']._serialized_end=923
-  _globals['_TIENDA']._serialized_start=926
-  _globals['_TIENDA']._serialized_end=1538
+  _globals['_TIENDAGRPCDTO']._serialized_end=133
+  _globals['_AGREGARTIENDAREQUEST']._serialized_start=135
+  _globals['_AGREGARTIENDAREQUEST']._serialized_end=205
+  _globals['_AGREGARTIENDARESPONSE']._serialized_start=207
+  _globals['_AGREGARTIENDARESPONSE']._serialized_end=248
+  _globals['_TIENDALIST']._serialized_start=250
+  _globals['_TIENDALIST']._serialized_end=304
+  _globals['_OBTENERTIENDAREQUEST']._serialized_start=306
+  _globals['_OBTENERTIENDAREQUEST']._serialized_end=346
+  _globals['_OBTENERTIENDARESPONSE']._serialized_start=348
+  _globals['_OBTENERTIENDARESPONSE']._serialized_end=426
+  _globals['_MODIFICARTIENDAREQUEST']._serialized_start=428
+  _globals['_MODIFICARTIENDAREQUEST']._serialized_end=507
+  _globals['_MODIFICARTIENDARESPONSE']._serialized_start=509
+  _globals['_MODIFICARTIENDARESPONSE']._serialized_end=552
+  _globals['_ELIMINARTIENDAREQUEST']._serialized_start=554
+  _globals['_ELIMINARTIENDAREQUEST']._serialized_end=595
+  _globals['_ELIMINARTIENDARESPONSE']._serialized_start=597
+  _globals['_ELIMINARTIENDARESPONSE']._serialized_end=639
+  _globals['_TRAERTODASLASTIENDASREQUEST']._serialized_start=641
+  _globals['_TRAERTODASLASTIENDASREQUEST']._serialized_end=670
+  _globals['_TRAERTODASLASTIENDASRESPONSE']._serialized_start=672
+  _globals['_TRAERTODASLASTIENDASRESPONSE']._serialized_end=744
+  _globals['_TRAERTODASLASTIENDASFILTRADASREQUEST']._serialized_start=746
+  _globals['_TRAERTODASLASTIENDASFILTRADASREQUEST']._serialized_end=816
+  _globals['_TRAERTODASLASTIENDASFILTRADASRESPONSE']._serialized_start=818
+  _globals['_TRAERTODASLASTIENDASFILTRADASRESPONSE']._serialized_end=899
+  _globals['_TIENDA']._serialized_start=902
+  _globals['_TIENDA']._serialized_end=1493
 # @@protoc_insertion_point(module_scope)

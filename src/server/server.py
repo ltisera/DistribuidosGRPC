@@ -2,6 +2,7 @@ import grpc
 from concurrent import futures
 import os, sys
 
+from server.dao.tiendaDAO import TiendaDAO
 from server.dao.usuarioDAO import UsuarioDAO
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -15,7 +16,10 @@ sys.path.append(os.path.join(CURRENT_DIR, 'dao'))
 
 from protos import usuario_pb2
 from protos import usuario_pb2_grpc
+from protos import tienda_pb2
+from protos import tienda_pb2_grpc
 
+# USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
     def IniciarSesion(self, request, context):
         usuario = request.usuario
@@ -25,6 +29,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
         return usuario_pb2.IniciarSesionResponse(exito=exito)
 
     def AgregarUsuario(self, request, context):
+        #agregado = "" 
         try:
             usuario = request.usuarioGrpcDTO.usuario
             password = request.usuarioGrpcDTO.password
@@ -35,12 +40,13 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             idTienda = request.usuarioGrpcDTO.idTienda
 
             udao = UsuarioDAO()
-            idUsuario = udao.agregarUsuario( usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
-            return usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario)
+            idUsuario = udao.agregarUsuario(usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
+            return usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario) # agregado = usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
-            return usuario_pb2.AgregarUsuarioResponse()
+            return usuario_pb2.AgregarUsuarioResponse() # agregado = usuario_pb2.AgregarUsuarioResponse()
+        #return agregado
         
 
     def ObtenerUsuario(self, request, context):
@@ -160,9 +166,133 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.TraerTodosLosUsuariosFiltradosResponse()
 
+# TIENDA
+class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
+    def AgregarTienda(self, request, context):
+        try:
+            idTienda = request.tiendaGrpcDTO.idTienda
+            direccion = request.tiendaGrpcDTO.direccion
+            ciudad = request.tiendaGrpcDTO.ciudad
+            provincia = request.tiendaGrpcDTO.provincia
+            habilitado = request.tiendaGrpcDTO.habilitado
+
+            tdao = TiendaDAO()
+            idTienda = tdao.agregarTienda(idTienda, direccion, ciudad, habilitado, habilitado)
+            return tienda_pb2.AgregarTiendaResponse(idTienda = idTienda)
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.AgregarTiendaResponse()
+        
+    def ObtenerTienda(self, request, context):
+        try:
+            tdao = TiendaDAO()
+            idTienda = request.idTienda
+            tienda = tdao.obtenerTienda(idTienda)
+
+
+            if tienda is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details(f'Tienda con id {idTienda} no encontrado.')
+                return tienda_pb2.ObtenerTiendaResponse()
+
+            tienda_dto = tienda_pb2.TiendaGrpcDTO(
+                    idTienda=tienda[0],
+                    direccion=tienda[1],
+                    ciudad=tienda[2],
+                    provincia=tienda[3],
+                    habilitado=tienda[4]
+                )
+
+            response = tienda_pb2.ObtenerTiendaResponse(tiendaGrpcDTO=tienda_dto)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.ObtenerTiendaResponse()
+
+    def ModificarTienda(self, request, context):
+        try:
+            idTienda = request.tiendaGrpcDTO.idTienda
+            direccion = request.tiendaGrpcDTO.direccion
+            ciudad = request.tiendaGrpcDTO.ciudad
+            provincia = request.tiendaGrpcDTO.provincia
+            habilitado = request.tiendaGrpcDTO.habilitado
+
+            tdao = TiendaDAO()
+            idTienda = tdao.modificarTienda(idTienda, direccion, ciudad, provincia, habilitado)
+            response = tienda_pb2.ModificarTiendaResponse(idTienda=idTienda)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.ModificarTiendaResponse()
+
+    def EliminarTienda(self, request, context):
+        try:
+            idTienda = request.idTienda
+
+            tdao = TiendaDAO()
+            idTienda = tdao.eliminarTienda(idTienda)
+            response = tienda_pb2.EliminarTiendaResponse(idTienda=idTienda)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.EliminarTiendaResponse()
+
+    def TraerTodasLasTiendas(self, request, context):
+        try:
+            tdao = TiendaDAO()
+            tiendas = tdao.traerTodasLasTiendas()
+            tienda_list = tienda_pb2.TiendaList()
+            
+            for tienda in tiendas:
+                tienda_dto = tienda_pb2.TiendaGrpcDTO(
+                    idTienda=tienda[0],
+                    direccion=tienda[1],
+                    ciudad=tienda[2],
+                    provincia=tienda[3],
+                    habilitado=tienda[4],
+                )
+                tienda_list.usuarios.append(tienda_dto)
+            response = tienda_pb2.TraerTodasLasTiendasResponse(tienda_list=tienda_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.TraerTodasLasTiendasResponse()
+        
+    def TraerTodasLasTiendasFiltradas(self, request, context):
+        try:
+            idTienda = request.idTienda
+            estado = request.estado
+            tdao = TiendaDAO()
+            tiendas = tdao.traerTodasLasTiendasFiltradas(idTienda, estado)
+            tienda_list = tienda_pb2.TiendaList()
+
+            if tiendas:
+                for tienda in tiendas:
+                    tienda_dto = tienda_pb2.TiendaGrpcDTO(
+                        idTienda=tienda[0],
+                        direccion=tienda[1],
+                        ciudad=tienda[2],
+                        provincia=tienda[3],
+                        habilitado=tienda[4],
+                    )
+                    tienda_list.usuarios.append(tienda_dto)
+
+            response = tienda_pb2.TraerTodasLasTiendasFiltradasResponse(tienda_list=tienda_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return tienda_pb2.TraerTodasLasTiendasFiltradasResponse()
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     usuario_pb2_grpc.add_UsuarioServicer_to_server(UsuarioServicer(), server)
+    tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC iniciado en el puerto 50051")
