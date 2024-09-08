@@ -5,6 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
@@ -67,6 +68,8 @@ app.get('/modificarUsuario', (req, res) => {
 app.post('/modificarUsuario', usuarioController.modificarUsuario);
 
 app.post('/eliminarUsuario', usuarioController.eliminarUsuario);
+
+app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
 
 const PORT = 3000;
 app.listen(PORT, () => {

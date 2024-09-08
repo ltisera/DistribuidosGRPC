@@ -9,8 +9,7 @@ service Usuario {
   rpc ModificarUsuario(ModificarUsuarioRequest) returns (ModificarUsuarioResponse) {}
   rpc EliminarUsuario(EliminarUsuarioRequest) returns (EliminarUsuarioResponse) {}
   rpc TraerTodosLosUsuarios(TraerTodosLosUsuariosRequest) returns (TraerTodosLosUsuariosResponse) {}
-  rpc TraerTodosLosUsuariosPorNombre(TraerTodosLosUsuariosPorNombreRequest) returns (TraerTodosLosUsuariosPorNombreResponse) {}
-  rpc TraerUsuarioPorTienda(TraerUsuarioPorTiendaRequest) returns (TraerUsuarioPorTiendaResponse) {} 
+  rpc TraerTodosLosUsuariosFiltrados(TraerTodosLosUsuariosFiltradosRequest) returns (TraerTodosLosUsuariosFiltradosResponse) {}
 }
 
 message UsuarioGrpcDTO {
@@ -48,7 +47,7 @@ message AgregarUsuarioRequest {
 }
 
 message AgregarUsuarioResponse {
-    int64 idUsuario = 1;
+  int64 idUsuario = 1;
 }
 
 message ObtenerUsuarioRequest {
@@ -56,7 +55,7 @@ message ObtenerUsuarioRequest {
 }
 
 message ObtenerUsuarioResponse {
-    UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
+  UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
 }
 
 message ModificarUsuarioRequest {
@@ -64,7 +63,7 @@ message ModificarUsuarioRequest {
 }
 
 message ModificarUsuarioResponse {
-    int64 idUsuario = 1;
+  int64 idUsuario = 1;
 }
 
 message EliminarUsuarioRequest {
@@ -72,7 +71,7 @@ message EliminarUsuarioRequest {
 }
 
 message EliminarUsuarioResponse {
-    int64 idUsuario = 1;
+  int64 idUsuario = 1;
 }
 
 message UsuarioList {
@@ -83,21 +82,14 @@ message TraerTodosLosUsuariosRequest {
 }
 
 message TraerTodosLosUsuariosResponse {
-    UsuarioList usuarioList = 1;
-}
-
-message TraerTodosLosUsuariosPorNombreRequest {
-  string nombre = 1;
-}
-
-message TraerTodosLosUsuariosPorNombreResponse {
   UsuarioList usuarioList = 1;
 }
 
-message TraerUsuarioPorTiendaRequest {
+message TraerTodosLosUsuariosFiltradosRequest {
   int64 idTienda = 1;
+  string nombre = 2;
 }
 
-message TraerUsuarioPorTiendaResponse {
-    UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
+message TraerTodosLosUsuariosFiltradosResponse {
+  UsuarioList usuarioList = 1;
 }

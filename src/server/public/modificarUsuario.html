@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
     <style>
+        
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -15,6 +16,7 @@
             align-items: center;
             height: 100vh;
         }
+
         .form-container {
             background: #fff;
             padding: 2rem;
@@ -22,15 +24,18 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
         }
+
         .form-container h1 {
             margin-top: 0;
             margin-bottom: 1rem;
         }
+
         .form-container label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: bold;
         }
+
         .form-container input, 
         .form-container select {
             width: 100%;
@@ -39,6 +44,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .form-container button {
             width: 100%;
             padding: 0.75rem;
@@ -49,15 +55,19 @@
             font-size: 16px;
             cursor: pointer;
         }
+
         .form-container button:hover {
             background-color: #0056b3;
         }
+
         .form-container .cancel-button {
             background-color: #6c757d;
         }
+
         .form-container .cancel-button:hover {
             background-color: #5a6268;
         }
+
     </style>
 </head>
 <body>
@@ -70,7 +80,7 @@
             <input type="text" id="usuario" name="usuario" required>
 
             <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password">
+            <input type="text" id="password" name="password" required>
 
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
@@ -109,6 +119,7 @@
                     .then(data => {
                         document.getElementById('userId').value = data.idUsuario;
                         document.getElementById('usuario').value = data.usuario;
+                        document.getElementById('password').value = data.password;
                         document.getElementById('nombre').value = data.nombre;
                         document.getElementById('apellido').value = data.apellido;
                         document.getElementById('habilitado').value = data.habilitado.toString();

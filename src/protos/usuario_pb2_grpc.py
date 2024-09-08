@@ -64,15 +64,20 @@ class UsuarioStub(object):
                 request_serializer=usuario__pb2.TraerTodosLosUsuariosRequest.SerializeToString,
                 response_deserializer=usuario__pb2.TraerTodosLosUsuariosResponse.FromString,
                 _registered_method=True)
+        self.TraerTodosLosUsuariosFiltrados = channel.unary_unary(
+                '/usuario.Usuario/TraerTodosLosUsuariosFiltrados',
+                request_serializer=usuario__pb2.TraerTodosLosUsuariosFiltradosRequest.SerializeToString,
+                response_deserializer=usuario__pb2.TraerTodosLosUsuariosFiltradosResponse.FromString,
+                _registered_method=True)
         self.TraerTodosLosUsuariosPorNombre = channel.unary_unary(
                 '/usuario.Usuario/TraerTodosLosUsuariosPorNombre',
                 request_serializer=usuario__pb2.TraerTodosLosUsuariosPorNombreRequest.SerializeToString,
                 response_deserializer=usuario__pb2.TraerTodosLosUsuariosPorNombreResponse.FromString,
                 _registered_method=True)
-        self.TraerUsuarioPorTienda = channel.unary_unary(
-                '/usuario.Usuario/TraerUsuarioPorTienda',
-                request_serializer=usuario__pb2.TraerUsuarioPorTiendaRequest.SerializeToString,
-                response_deserializer=usuario__pb2.TraerUsuarioPorTiendaResponse.FromString,
+        self.TraerTodosLosUsuariosPorTienda = channel.unary_unary(
+                '/usuario.Usuario/TraerTodosLosUsuariosPorTienda',
+                request_serializer=usuario__pb2.TraerTodosLosUsuariosPorTiendaRequest.SerializeToString,
+                response_deserializer=usuario__pb2.TraerTodosLosUsuariosPorTiendaResponse.FromString,
                 _registered_method=True)
 
 
@@ -115,13 +120,19 @@ class UsuarioServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def TraerTodosLosUsuariosFiltrados(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def TraerTodosLosUsuariosPorNombre(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def TraerUsuarioPorTienda(self, request, context):
+    def TraerTodosLosUsuariosPorTienda(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -160,15 +171,20 @@ def add_UsuarioServicer_to_server(servicer, server):
                     request_deserializer=usuario__pb2.TraerTodosLosUsuariosRequest.FromString,
                     response_serializer=usuario__pb2.TraerTodosLosUsuariosResponse.SerializeToString,
             ),
+            'TraerTodosLosUsuariosFiltrados': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerTodosLosUsuariosFiltrados,
+                    request_deserializer=usuario__pb2.TraerTodosLosUsuariosFiltradosRequest.FromString,
+                    response_serializer=usuario__pb2.TraerTodosLosUsuariosFiltradosResponse.SerializeToString,
+            ),
             'TraerTodosLosUsuariosPorNombre': grpc.unary_unary_rpc_method_handler(
                     servicer.TraerTodosLosUsuariosPorNombre,
                     request_deserializer=usuario__pb2.TraerTodosLosUsuariosPorNombreRequest.FromString,
                     response_serializer=usuario__pb2.TraerTodosLosUsuariosPorNombreResponse.SerializeToString,
             ),
-            'TraerUsuarioPorTienda': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerUsuarioPorTienda,
-                    request_deserializer=usuario__pb2.TraerUsuarioPorTiendaRequest.FromString,
-                    response_serializer=usuario__pb2.TraerUsuarioPorTiendaResponse.SerializeToString,
+            'TraerTodosLosUsuariosPorTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerTodosLosUsuariosPorTienda,
+                    request_deserializer=usuario__pb2.TraerTodosLosUsuariosPorTiendaRequest.FromString,
+                    response_serializer=usuario__pb2.TraerTodosLosUsuariosPorTiendaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -344,6 +360,33 @@ class Usuario(object):
             _registered_method=True)
 
     @staticmethod
+    def TraerTodosLosUsuariosFiltrados(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/usuario.Usuario/TraerTodosLosUsuariosFiltrados',
+            usuario__pb2.TraerTodosLosUsuariosFiltradosRequest.SerializeToString,
+            usuario__pb2.TraerTodosLosUsuariosFiltradosResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def TraerTodosLosUsuariosPorNombre(request,
             target,
             options=(),
@@ -371,7 +414,7 @@ class Usuario(object):
             _registered_method=True)
 
     @staticmethod
-    def TraerUsuarioPorTienda(request,
+    def TraerTodosLosUsuariosPorTienda(request,
             target,
             options=(),
             channel_credentials=None,
@@ -384,9 +427,9 @@ class Usuario(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/usuario.Usuario/TraerUsuarioPorTienda',
-            usuario__pb2.TraerUsuarioPorTiendaRequest.SerializeToString,
-            usuario__pb2.TraerUsuarioPorTiendaResponse.FromString,
+            '/usuario.Usuario/TraerTodosLosUsuariosPorTienda',
+            usuario__pb2.TraerTodosLosUsuariosPorTiendaRequest.SerializeToString,
+            usuario__pb2.TraerTodosLosUsuariosPorTiendaResponse.FromString,
             options,
             channel_credentials,
             insecure,

@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Inicio</title>
     <style>
-         html, body {
+        
+        html, body {
             height: 100%;
             margin: 0;
             padding: 0;
@@ -47,6 +48,7 @@
             padding: 1rem;
             text-align: center;
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -55,6 +57,7 @@
             margin: 1rem 0;
             padding: 0.5rem;
         }
+
         nav a {
             color: #383737;
             text-decoration: none;
@@ -62,58 +65,33 @@
             border-radius: 4px;
             transition: background-color 0.3s; 
         }
+
         nav a:hover {
             color: #ffffff;
             background-color: #575757;
         }
-
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: #383737;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            border-radius: 4px;
-        }
-
-        .dropdown-content a:hover {
-            color: #ffffff;
-            background-color: #575757;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
+        
         .container {
             width: 80%;
             margin: auto;
             padding: 2rem 0;
         }
+
         .welcome {
             text-align: center;
             margin: 2rem 0;
         }
+
         .welcome h1 {
             font-size: 2rem;
             color: #ffffff;
         }
+
         .welcome p {
             font-size: 1.2rem;
             color: #666;
         }
+
         footer {
             background-color: #333;
             color: #fff;
@@ -123,6 +101,7 @@
             width: 100%;
             bottom: 0;
         }
+
         .popup {
             display: none;
             position: fixed;
@@ -136,9 +115,11 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             z-index: 1000;
         }
+
         .popup.error {
             background-color: #f44336;
         }
+
         .popup.show {
             display: block;
         }
@@ -157,13 +138,7 @@
 
     <nav>
         <a href="/home">Inicio</a>
-        <div class="dropdown">
-            <a href="#">Usuarios</a>
-            <div class="dropdown-content">
-                <a href="/crearUsuario">Agregar usuario</a>
-                <a href="/usuarios">Listar usuarios</a>
-            </div>
-        </div>
+        <a href="/usuarios">Usuarios</a>
         <a href="/logout">Cerrar Sesión</a>
     </nav>
    
@@ -181,17 +156,6 @@
 
             if (usuario) {
                 document.getElementById('welcome-message').textContent = `Bienvenido, ${decodeURIComponent(usuario)}!`;
-            }
-
-            if (mensaje === 'successAddUser') {
-                const popup = document.getElementById('popup');
-                if (popup) {
-                    popup.textContent = 'Usuario agregado con éxito!';
-                    popup.classList.add('show');
-                    setTimeout(() => {
-                        popup.classList.remove('show');
-                    }, 3000);
-                }
             }
         });
     </script>

@@ -29,11 +29,29 @@ class UsuarioDAO(ConexionBD):
     def agregarUsuario(self, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda):
         try:
             self.crearConexion()
+
+            check_sql = "SELECT COUNT(*) FROM usuario WHERE usuario = %s"
+            self._micur.execute(check_sql, (usuario,))
+            countUsuario = self._micur.fetchone()[0]
+        
+            if countUsuario > 0:
+                print("El nombre de usuario ya existe.")
+                return 0
+            
+            check_sql = "SELECT COUNT(*) FROM tienda WHERE idTienda = %s"
+            self._micur.execute(check_sql, (idTienda,))
+            countTienda = self._micur.fetchone()[0]
+        
+            if countTienda == 0:
+                print("La tienda no existe.")
+                return -1
+
             sql = ("INSERT INTO usuario (usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) "
                    "VALUES (%s, %s, %s, %s, %s, %s, %s)")
             values = (usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
             self._micur.execute(sql, values)
             self._bd.commit()
+            print("Usuario agregado con éxito.")
             return self._micur.lastrowid 
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -53,7 +71,6 @@ class UsuarioDAO(ConexionBD):
             values = (idUsuario,)
             self._micur.execute(sql, values)
             resultado = self._micur.fetchone()
-            print(f"Resultado de la consulta: {resultado}") 
             return resultado
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -72,8 +89,6 @@ class UsuarioDAO(ConexionBD):
 
             habilitado = int(habilitado)
             casaCentral = int(casaCentral)
-
-            print("Usuario: ", usuario, " Password: ", password, " Nombre: ", nombre, " Apellido: ", apellido, " Habilitado: ", habilitado, " CasaCentral: ", casaCentral, "IdTienda: ", idTienda)
 
             sql = ("UPDATE usuario SET usuario = %s, password = %s, nombre = %s, apellido = %s, habilitado = %s, casaCentral = %s, Tienda_idTienda = %s WHERE idUsuario = %s")
             values = (usuario, password, nombre, apellido, habilitado, casaCentral, idTienda, idUsuario)
@@ -129,7 +144,35 @@ class UsuarioDAO(ConexionBD):
         finally:
             self.cerrarConexion()
         
-        return None 
-
+        return None
+    
+    def traerTodosLosUsuariosFiltrados(self, idTienda, nombre):
+        try:
+            self.crearConexion()
+            sql = "SELECT * FROM usuario WHERE 1=1"
+            values = []
+            
+            if idTienda != 0:
+                sql += " AND Tienda_idTienda = %s"
+                values.append(idTienda)
+            
+            if nombre.strip() != "":
+                sql += " AND usuario LIKE %s"
+                values.append(f"%{nombre}%")
+            self._micur.execute(sql, tuple(values))
+            resultados = self._micur.fetchall()
+            return resultados
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+        
+        return None
+    
+    
 if __name__ == '__main__':
     a = UsuarioDAO()
