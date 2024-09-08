@@ -87,6 +87,14 @@ class UsuarioDAO(ConexionBD):
         try:
             self.crearConexion()
 
+            check_sql = "SELECT COUNT(*) FROM usuario WHERE usuario = %s"
+            self._micur.execute(check_sql, (usuario,))
+            countUsuario = self._micur.fetchone()[0]
+        
+            if countUsuario > 0:
+                print("El nombre de usuario ya existe.")
+                return 0
+
             habilitado = int(habilitado)
             casaCentral = int(casaCentral)
 

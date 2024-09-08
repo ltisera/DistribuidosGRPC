@@ -106,13 +106,16 @@ function modificarUsuario(req, res) {
         casaCentral: casaCentral === 'true',
         idTienda: parseInt(idTienda, 10)
     };
-
     client.ModificarUsuario({ usuarioObtenerGrpcDTO: usuarioActualizar }, (error, response) => {
         if (error) {
-            console.error('Error al modificar usuario:', error);
-            res.status(500).send('Error al modificar usuario');
+          console.error('Error al modificar usuario:', error);
+          res.status(500).send('Error al modificar usuario');
         } else {
+          if (response.idUsuario  === '0') {
+            res.status(400).send("El nombre de usuario ya existe")
+          } else{
             res.redirect('/usuarios?mensaje=successModifyUser');
+          }
         }
     });
   } else {
