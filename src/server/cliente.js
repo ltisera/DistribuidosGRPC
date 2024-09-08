@@ -18,12 +18,15 @@ app.use(session({
   saveUninitialized: true,
 }));
 
+
+// LOGIN
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.post('/login', usuarioController.iniciarSesion);
 
+// HOME
 app.get('/home', (req, res) => {
   if (req.session.authenticated) {
     const usuario = encodeURIComponent(req.session.usuario);
@@ -33,6 +36,7 @@ app.get('/home', (req, res) => {
   }
 });
 
+// USUARIO
 app.get('/crearUsuario', (req, res) => {
   if (req.session.authenticated) {
     res.sendFile(path.join(__dirname, 'public', 'crearUsuario.html'));
@@ -70,6 +74,11 @@ app.post('/modificarUsuario', usuarioController.modificarUsuario);
 app.post('/eliminarUsuario', usuarioController.eliminarUsuario);
 
 app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
+
+// TIENDA
+
+
+// PRODUCTO
 
 const PORT = 3000;
 app.listen(PORT, () => {

@@ -4,15 +4,13 @@ package testgrpc;
 
 service Tienda {
   rpc AgregarTienda(AgregarTiendaRequest) returns (AgregarTiendaResponse) {}
-  rpc ModificarTienda(ModificarTiendaRequest) returns (ModificarTiendaResponse) {}
   rpc EliminarTienda(EliminarTiendaRequest) returns (EliminarTiendaResponse) {}
   rpc TraerTodasLasTiendas(TraerTodasLasTiendasRequest) returns (TraerTodasLasTiendasResponse) {}
-  rpc TraerTodasLasTiendasPorEstado(TraerTodasLasTiendasPorEstadoRequest) returns (TraerTodasLasTiendasPorEstadoResponse) {}
-  rpc TraerTiendaPorCodigo(TraerTiendaPorCodigoRequest) returns (TraerTiendaPorCodigoResponse) {}
+  rpc TraerTodasLasTiendasFiltradas(TraerTodasLasTiendasFiltradasRequest) returns (TraerTodasLasTiendasFiltradasResponse) {}
 }
 
 message TiendaGrpcDTO {
-  int64 id = 1;
+  int64 idTienda = 1;
   string direccion = 2;
   string ciudad = 3;
   string provincia = 4;
@@ -24,48 +22,33 @@ message AgregarTiendaRequest {
 }
 
 message AgregarTiendaResponse {
-    TiendaGrpcDTO tiendaGrpcDTO = 1;
+  int64 idTienda = 1;
 }
 
 message TiendaList {
   repeated TiendaGrpcDTO tiendas = 1;
 }
 
-message ModificarTiendaRequest {
-  TiendaGrpcDTO tiendaGrpcDTO = 1;
-}
-
-message ModificarTiendaResponse {
-    TiendaGrpcDTO tiendaGrpcDTO = 1;
-}
-
 message EliminarTiendaRequest {
-  int64 id = 1;
+  int64 idTienda = 1;
 }
 
 message EliminarTiendaResponse {
-    int64 id = 1;
+  int64 idTienda = 1;
 }
 
 message TraerTodasLasTiendasRequest {
 }
 
 message TraerTodasLasTiendasResponse {
-    TiendaList tiendaList = 1;
-}
-
-message TraerTodasLasTiendasPorEstadoRequest {
-  bool estado = 1;
-}
-
-message TraerTodasLasTiendasPorEstadoResponse {
   TiendaList tiendaList = 1;
 }
 
-message TraerTiendaPorCodigoRequest {
-  int64 codigo = 1;
+message TraerTodasLasTiendasFiltradasRequest {
+  bool estado = 1;
+  int64 codigo = 2;
 }
 
-message TraerTiendaPorCodigoResponse {
-    TiendaGrpcDTO tiendaGrpcDTO = 1;
+message TraerTodasLasTiendasFiltradasResponse {
+  TiendaList tiendaList = 1;
 }
