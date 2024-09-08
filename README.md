@@ -26,3 +26,6 @@ py cliente.py
     pyMSQL
     -pyFlask
     -
+
+
+TO-DO: https://docs.google.com/spreadsheets/d/1HK1iN5ulHTdCxRk2pE4tTWD3tOHZ0SKXRiPi5CQ2_9U/edit?usp=sharing
