@@ -69,11 +69,39 @@ class UsuarioDAO(ConexionBD):
     def modificarUsuario(self, idUsuario, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda):
         try:
             self.crearConexion()
-            sql = ("UPDATE usuario SET usuario = %s, password = %s, nombre = %s, apellido = %s, habilitado = %s, casaCentral = %s, idTienda = %s WHERE idUsuario = %s")
+
+            habilitado = int(habilitado)
+            casaCentral = int(casaCentral)
+
+            print("Usuario: ", usuario, " Password: ", password, " Nombre: ", nombre, " Apellido: ", apellido, " Habilitado: ", habilitado, " CasaCentral: ", casaCentral, "IdTienda: ", idTienda)
+
+            sql = ("UPDATE usuario SET usuario = %s, password = %s, nombre = %s, apellido = %s, habilitado = %s, casaCentral = %s, Tienda_idTienda = %s WHERE idUsuario = %s")
             values = (usuario, password, nombre, apellido, habilitado, casaCentral, idTienda, idUsuario)
+
             self._micur.execute(sql, values)
-            self._micur.connection.commit()
+            self._bd.commit()
             print("Usuario actualizado con éxito.")
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+        
+        return None
+    
+    def eliminarUsuario(self, idUsuario):
+        try:
+            self.crearConexion()
+
+            sql = ("UPDATE usuario SET habilitado = %s WHERE idUsuario = %s")
+            values = (0, idUsuario)
+
+            self._micur.execute(sql, values)
+            self._bd.commit()
+            print("Usuario eliminado con éxito.")
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:

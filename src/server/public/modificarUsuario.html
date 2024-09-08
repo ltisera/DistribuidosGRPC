@@ -101,13 +101,13 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const usuario = params.get('usuario');
+            const idUsuario = params.get('idUsuario');
 
             if (usuario) {
-                fetch(`/api/usuario/${usuario}`)
+                fetch(`/usuario/${idUsuario}`)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('userId').value = data.id;
+                        document.getElementById('userId').value = data.idUsuario;
                         document.getElementById('usuario').value = data.usuario;
                         document.getElementById('nombre').value = data.nombre;
                         document.getElementById('apellido').value = data.apellido;
