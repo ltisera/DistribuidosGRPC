@@ -4,6 +4,8 @@ package testgrpc;
 
 service Tienda {
   rpc AgregarTienda(AgregarTiendaRequest) returns (AgregarTiendaResponse) {}
+  rpc ObtenerTienda(ObtenerTiendaRequest) returns (ObtenerTiendaResponse) {}
+  rpc ModificarTienda(ModificarTiendaRequest) returns (ModificarTiendaResponse) {}
   rpc EliminarTienda(EliminarTiendaRequest) returns (EliminarTiendaResponse) {}
   rpc TraerTodasLasTiendas(TraerTodasLasTiendasRequest) returns (TraerTodasLasTiendasResponse) {}
   rpc TraerTodasLasTiendasFiltradas(TraerTodasLasTiendasFiltradasRequest) returns (TraerTodasLasTiendasFiltradasResponse) {}
@@ -27,6 +29,22 @@ message AgregarTiendaResponse {
 
 message TiendaList {
   repeated TiendaGrpcDTO tiendas = 1;
+}
+
+message ObtenerTiendaRequest {
+  int64 idTienda = 1;
+}
+
+message ObtenerTiendaResponse {
+  TiendaGrpcDTO tiendaObtenerGrpcDTO = 1;
+}
+
+message ModificarTiendaRequest {
+  TiendaGrpcDTO tiendaObtenerGrpcDTO = 1;
+}
+
+message ModificarTiendaResponse {
+  int64 idTienda = 1;
 }
 
 message EliminarTiendaRequest {

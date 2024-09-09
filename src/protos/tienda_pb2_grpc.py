@@ -39,6 +39,11 @@ class TiendaStub(object):
                 request_serializer=tienda__pb2.AgregarTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.AgregarTiendaResponse.FromString,
                 _registered_method=True)
+        self.ObtenerTienda = channel.unary_unary(
+                '/testgrpc.Tienda/ObtenerTienda',
+                request_serializer=tienda__pb2.ObtenerTiendaRequest.SerializeToString,
+                response_deserializer=tienda__pb2.ObtenerTiendaResponse.FromString,
+                _registered_method=True)
         self.ModificarTienda = channel.unary_unary(
                 '/testgrpc.Tienda/ModificarTienda',
                 request_serializer=tienda__pb2.ModificarTiendaRequest.SerializeToString,
@@ -54,15 +59,10 @@ class TiendaStub(object):
                 request_serializer=tienda__pb2.TraerTodasLasTiendasRequest.SerializeToString,
                 response_deserializer=tienda__pb2.TraerTodasLasTiendasResponse.FromString,
                 _registered_method=True)
-        self.TraerTodasLasTiendasPorEstado = channel.unary_unary(
-                '/testgrpc.Tienda/TraerTodasLasTiendasPorEstado',
-                request_serializer=tienda__pb2.TraerTodasLasTiendasPorEstadoRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TraerTodasLasTiendasPorEstadoResponse.FromString,
-                _registered_method=True)
-        self.TraerTiendaPorCodigo = channel.unary_unary(
-                '/testgrpc.Tienda/TraerTiendaPorCodigo',
-                request_serializer=tienda__pb2.TraerTiendaPorCodigoRequest.SerializeToString,
-                response_deserializer=tienda__pb2.TraerTiendaPorCodigoResponse.FromString,
+        self.TraerTodasLasTiendasFiltradas = channel.unary_unary(
+                '/testgrpc.Tienda/TraerTodasLasTiendasFiltradas',
+                request_serializer=tienda__pb2.TraerTodasLasTiendasFiltradasRequest.SerializeToString,
+                response_deserializer=tienda__pb2.TraerTodasLasTiendasFiltradasResponse.FromString,
                 _registered_method=True)
 
 
@@ -70,6 +70,12 @@ class TiendaServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AgregarTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ObtenerTienda(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -93,13 +99,7 @@ class TiendaServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def TraerTodasLasTiendasPorEstado(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def TraerTiendaPorCodigo(self, request, context):
+    def TraerTodasLasTiendasFiltradas(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -112,6 +112,11 @@ def add_TiendaServicer_to_server(servicer, server):
                     servicer.AgregarTienda,
                     request_deserializer=tienda__pb2.AgregarTiendaRequest.FromString,
                     response_serializer=tienda__pb2.AgregarTiendaResponse.SerializeToString,
+            ),
+            'ObtenerTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.ObtenerTienda,
+                    request_deserializer=tienda__pb2.ObtenerTiendaRequest.FromString,
+                    response_serializer=tienda__pb2.ObtenerTiendaResponse.SerializeToString,
             ),
             'ModificarTienda': grpc.unary_unary_rpc_method_handler(
                     servicer.ModificarTienda,
@@ -128,15 +133,10 @@ def add_TiendaServicer_to_server(servicer, server):
                     request_deserializer=tienda__pb2.TraerTodasLasTiendasRequest.FromString,
                     response_serializer=tienda__pb2.TraerTodasLasTiendasResponse.SerializeToString,
             ),
-            'TraerTodasLasTiendasPorEstado': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerTodasLasTiendasPorEstado,
-                    request_deserializer=tienda__pb2.TraerTodasLasTiendasPorEstadoRequest.FromString,
-                    response_serializer=tienda__pb2.TraerTodasLasTiendasPorEstadoResponse.SerializeToString,
-            ),
-            'TraerTiendaPorCodigo': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerTiendaPorCodigo,
-                    request_deserializer=tienda__pb2.TraerTiendaPorCodigoRequest.FromString,
-                    response_serializer=tienda__pb2.TraerTiendaPorCodigoResponse.SerializeToString,
+            'TraerTodasLasTiendasFiltradas': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerTodasLasTiendasFiltradas,
+                    request_deserializer=tienda__pb2.TraerTodasLasTiendasFiltradasRequest.FromString,
+                    response_serializer=tienda__pb2.TraerTodasLasTiendasFiltradasResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -166,6 +166,33 @@ class Tienda(object):
             '/testgrpc.Tienda/AgregarTienda',
             tienda__pb2.AgregarTiendaRequest.SerializeToString,
             tienda__pb2.AgregarTiendaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ObtenerTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/testgrpc.Tienda/ObtenerTienda',
+            tienda__pb2.ObtenerTiendaRequest.SerializeToString,
+            tienda__pb2.ObtenerTiendaResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -258,7 +285,7 @@ class Tienda(object):
             _registered_method=True)
 
     @staticmethod
-    def TraerTodasLasTiendasPorEstado(request,
+    def TraerTodasLasTiendasFiltradas(request,
             target,
             options=(),
             channel_credentials=None,
@@ -271,36 +298,9 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/TraerTodasLasTiendasPorEstado',
-            tienda__pb2.TraerTodasLasTiendasPorEstadoRequest.SerializeToString,
-            tienda__pb2.TraerTodasLasTiendasPorEstadoResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TraerTiendaPorCodigo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/testgrpc.Tienda/TraerTiendaPorCodigo',
-            tienda__pb2.TraerTiendaPorCodigoRequest.SerializeToString,
-            tienda__pb2.TraerTiendaPorCodigoResponse.FromString,
+            '/testgrpc.Tienda/TraerTodasLasTiendasFiltradas',
+            tienda__pb2.TraerTodasLasTiendasFiltradasRequest.SerializeToString,
+            tienda__pb2.TraerTodasLasTiendasFiltradasResponse.FromString,
             options,
             channel_credentials,
             insecure,
