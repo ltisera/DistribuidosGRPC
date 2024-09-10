@@ -1,6 +1,6 @@
 import sys
 
-from server.settings.configs import getConfigDB
+from configs import getConfigDB
 
 import mysql.connector
 from mysql.connector import pooling

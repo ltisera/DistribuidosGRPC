@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 
-from server.settings.conexionDB import ConexionBD
+from settings.conexionDB import ConexionBD
 
 class TiendaDAO(ConexionBD):
     def __init__(self):

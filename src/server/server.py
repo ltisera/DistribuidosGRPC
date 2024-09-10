@@ -2,12 +2,12 @@ import grpc
 from concurrent import futures
 import os, sys
 
-from server.dao.tiendaDAO import TiendaDAO
-from server.dao.usuarioDAO import UsuarioDAO
+
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
 sys.path.append(CURRENT_DIR + '\\DAO')
+sys.path.append(CURRENT_DIR + '\\settings')
 
 PARENT_DIR = os.path.dirname(CURRENT_DIR)
 PROTO_DIR = os.path.join(PARENT_DIR, 'protos')
@@ -18,6 +18,10 @@ from protos import usuario_pb2
 from protos import usuario_pb2_grpc
 from protos import tienda_pb2
 from protos import tienda_pb2_grpc
+
+#from DAO.tiendaDAO import TiendaDAO
+from DAO.usuarioDAO import UsuarioDAO
+
 
 # USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
@@ -165,7 +169,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.TraerTodosLosUsuariosFiltradosResponse()
-
+'''
 # TIENDA
 class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
     def AgregarTienda(self, request, context):
@@ -202,7 +206,7 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
                     ciudad=tienda[2],
                     provincia=tienda[3],
                     habilitado=tienda[4]
-                )
+                ) 
 
             response = tienda_pb2.ObtenerTiendaResponse(tiendaGrpcDTO=tienda_dto)
             return response
@@ -288,11 +292,11 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return tienda_pb2.TraerTodasLasTiendasFiltradasResponse()
-
+'''
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     usuario_pb2_grpc.add_UsuarioServicer_to_server(UsuarioServicer(), server)
-    tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
+    #tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC iniciado en el puerto 50051")
