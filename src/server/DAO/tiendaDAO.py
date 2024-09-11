@@ -140,7 +140,6 @@ class TiendaDAO(ConexionBD):
                 sql += " AND habilitado = %s"
                 values.append(habilitado)
 
-            print("sql " + sql, tuple(values))
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
             print(resultados) 

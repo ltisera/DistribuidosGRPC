@@ -277,10 +277,6 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
         try:
             idTienda = request.idTienda
             estado = request.estado
-            print("request")
-            print(request.estado)
-            print("estado en servidor")
-            print(estado)
             tdao = TiendaDAO()
             tiendas = tdao.traerTodasLasTiendasFiltradas(idTienda, estado)
             tienda_list = tienda_pb2.TiendaList()

@@ -20,8 +20,8 @@ const client = new tiendaProto.Tienda('localhost:50051', grpc.credentials.create
 // CREAR TIENDA
 function crearTienda(req, res) {
   if (req.session.authenticated) {
-    const { idTienda, direccion, ciudad, provincia} = req.body;
-    const habilitadoBool = true;
+    const { idTienda, direccion, ciudad, provincia, habilitado} = req.body;
+    const habilitadoBool = (habilitado == "true");
 
     agregarTienda(idTienda, direccion, ciudad, provincia, habilitadoBool)
     .then(() => {
@@ -141,14 +141,12 @@ function traerTiendasFiltradas(req, res) {
     if(!idTienda){
       idTienda = -1
     }
-    console.log("algooooo traerTiendasFiltradas + estado = "+ estado)
     client.TraerTodasLasTiendasFiltradas({idTienda, estado}, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodasLasTiendasFiltradas: ' + error.message);
         return res.status(400).send('Error al traer tiendas');
       }
       try {
-        console.log("tryyyyy traerTiendasFiltradas + estado = "+ estado)
         if (response && response.tiendaList && response.tiendaList.tiendas) {
           const tiendas = response.tiendaList.tiendas.map(tienda => ({
             idTienda: tienda.idTienda,
