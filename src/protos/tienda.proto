@@ -63,8 +63,8 @@ message TraerTodasLasTiendasResponse {
 }
 
 message TraerTodasLasTiendasFiltradasRequest {
-  bool estado = 1;
-  int64 codigo = 2;
+  int64 idTienda = 1;
+  int64 estado = 2;
 }
 
 message TraerTodasLasTiendasFiltradasResponse {

@@ -52,7 +52,7 @@ function deleteTienda(idTienda) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId: idTienda })
+        body: JSON.stringify({ tiendaId: idTienda })
     })
     .then(response => {
         if (response.ok) {
@@ -67,11 +67,13 @@ function deleteTienda(idTienda) {
 }
 
 function fetchTiendas() {
-    const codigo = encodeURIComponent(document.querySelector('#codigo-filter').value);
+    const idTienda = encodeURIComponent(document.querySelector('#idTienda-filter').value);
     const habilitado = encodeURIComponent(document.querySelector('#habilitado-filter').value);
-    const urlFiltro = ""
-    if(codigo || habilitado){
-        urlFiltro = `/api/tiendas/filtrados?codigo=${codigo}&estado=${habilitado}`
+    var urlFiltro = ""
+    console.log("fetchTiendas 1 + habilitado = " + habilitado)
+    if(idTienda || habilitado){
+        console.log("fetchTiendas 2 + habilitado = " + habilitado)
+        urlFiltro = `/api/tiendas/filtradas?idTienda=${idTienda}&estado=${habilitado}`
     } else {
         urlFiltro = '/api/tiendas'
     } 
@@ -81,19 +83,19 @@ function fetchTiendas() {
         const tableBody = document.querySelector('#tiendas-table tbody');
         tableBody.innerHTML = '';
 
-        tiendas.forEach(user => {
+        tiendas.forEach(tienda => {
+            console.log(tienda)
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${user.idTienda}</td>
-                <td>${user.direccion}</td>
-                <td>${user.ciudad}</td>
-                <td>${user.provincia}</td>
-                <td>${user.habilitado ? 'Sí' : 'No'}</td>
-                <td>${user.tienda}</td>
+                <td>${tienda.idTienda}</td>
+                <td>${tienda.direccion}</td>
+                <td>${tienda.ciudad}</td>
+                <td>${tienda.provincia}</td>
+                <td>${tienda.habilitado ? 'Sí' : 'No'}</td>
                 <td>
-                    <button class="btn-modify" onclick="modifyTienda('${user.idTienda}')">Modificar</button>
-                    <button class="btn-delete" onclick="deleteTienda('${user.idTienda}')">Eliminar</button>
+                    <button class="btn-modify" onclick="modifyTienda('${tienda.idTienda}')">Modificar</button>
+                    <button class="btn-delete" onclick="deleteTienda('${tienda.idTienda}')">Eliminar</button>
                 </td>
             `;
 

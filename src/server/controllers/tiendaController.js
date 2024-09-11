@@ -108,19 +108,20 @@ function traerTiendas(req, res) {
     client.TraerTodasLasTiendas({}, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodasLasTiendas: ' + error.message);
-        return res.status(400).send('Error al traer usuarios');
+        return res.status(400).send('Error al traer tiendas');
       }
       try {
-        if (response && response.usuarioList && response.usuarioList.usuarios) {
-          const usuarios = response.usuarioList.usuarios.map(usuario => ({
-            idUsuario: usuario.idUsuario,
-            usuario: usuario.usuario,
-            tienda: usuario.idTienda,
-            habilitado: usuario.habilitado
+        if (response && response.tiendaList && response.tiendaList.tiendas) {
+          const tiendas = response.tiendaList.tiendas.map(tienda => ({
+            idTienda: tienda.idTienda,
+            direccion: tienda.direccion,
+            ciudad: tienda.ciudad,
+            provincia: tienda.provincia,
+            habilitado: tienda.habilitado
           }));
-          res.json(usuarios);
+          res.json(tiendas);
         } else {
-          console.error('Respuesta del servidor no contiene UsuarioList.');
+          console.error('Respuesta del servidor no contiene TiendaList.');
           res.status(400).send('Error en la respuesta del servidor');
         }
       } catch (e) {
@@ -136,19 +137,18 @@ function traerTiendas(req, res) {
 // TRAER TIENDAS FILTRADOS
 function traerTiendasFiltradas(req, res) {
   if (req.session.authenticated) {
-    let {estado, idTienda} = req.query
+    let {idTienda, estado} = req.query
     if(!idTienda){
-      idTienda = 0
+      idTienda = -1
     }
-    if(!estado){
-      estado = " "
-    }
+    console.log("algooooo traerTiendasFiltradas + estado = "+ estado)
     client.TraerTodasLasTiendasFiltradas({idTienda, estado}, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodasLasTiendasFiltradas: ' + error.message);
         return res.status(400).send('Error al traer tiendas');
       }
       try {
+        console.log("tryyyyy traerTiendasFiltradas + estado = "+ estado)
         if (response && response.tiendaList && response.tiendaList.tiendas) {
           const tiendas = response.tiendaList.tiendas.map(tienda => ({
             idTienda: tienda.idTienda,
@@ -180,7 +180,7 @@ function agregarTienda(idTienda, direccion, ciudad, provincia, habilitado) {
         direccion: direccion,
         ciudad: ciudad,
         provincia: provincia,
-        habilitado: habilitado,
+        habilitado: habilitado
     };
 
     const request = { tiendaGrpcDTO: nuevaTienda };

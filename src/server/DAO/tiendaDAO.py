@@ -132,15 +132,18 @@ class TiendaDAO(ConexionBD):
             sql = "SELECT * FROM tienda WHERE 1=1"
             values = []
             
+            if idTienda != -1:
+                sql += " AND idTienda = %s"
+                values.append(idTienda)
+
             if habilitado != -1:
                 sql += " AND habilitado = %s"
                 values.append(habilitado)
-            
-            if idTienda.strip() != "":
-                sql += " AND idTienda LIKE %s"
-                values.append(f"%{idTienda}%")
+
+            print("sql " + sql, tuple(values))
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
+            print(resultados) 
             return resultados
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")

@@ -22,17 +22,18 @@
 
     <div class="container">
         <form id="filter-form">
-            <label for="codigo-filter">Filtrar por Codigo:</label>
-            <input type="text" id="codigo-filter" name="codigo" placeholder="Escribe el codigo">
+            <label for="idTienda-filter">Filtrar por idTienda:</label>
+            <input type="text" id="idTienda-filter" name="idTienda" placeholder="Escribe el idTienda">
             
             <label for="habilitado-filter">Filtrar por habilitado:</label>
-            <select id="habilitado-filter" name="habilitado-filter" required>
-                <option value="true">Sí</option>
-                <option value="false">No</option>
+            <select id="habilitado-filter" name="habilitado-filter">
+                <option value="-1">Seleccionar</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
             </select>  
             <button type="submit">Filtrar</button>
         </form>
-        <table id="users-table">
+        <table id="tiendas-table">
             <thead>
                 <tr>
                     <th>ID</th>

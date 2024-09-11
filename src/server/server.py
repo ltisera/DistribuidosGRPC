@@ -250,7 +250,6 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             tdao = TiendaDAO()
             tiendas = tdao.traerTodasLasTiendas()
             tienda_list = tienda_pb2.TiendaList()
-            
             for tienda in tiendas:
                 tienda_dto = tienda_pb2.TiendaGrpcDTO(
                     idTienda=tienda[0],
@@ -259,8 +258,8 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
                     provincia=tienda[3],
                     habilitado=tienda[4],
                 )
-                tienda_list.usuarios.append(tienda_dto)
-            response = tienda_pb2.TraerTodasLasTiendasResponse(tienda_list=tienda_list)
+                tienda_list.tiendas.append(tienda_dto)
+            response = tienda_pb2.TraerTodasLasTiendasResponse(tiendaList=tienda_list)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -271,10 +270,14 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
         try:
             idTienda = request.idTienda
             estado = request.estado
+            print("request")
+            print(request.estado)
+            print("estado en servidor")
+            print(estado)
             tdao = TiendaDAO()
             tiendas = tdao.traerTodasLasTiendasFiltradas(idTienda, estado)
             tienda_list = tienda_pb2.TiendaList()
-
+            print(tiendas)
             if tiendas:
                 for tienda in tiendas:
                     tienda_dto = tienda_pb2.TiendaGrpcDTO(
@@ -284,9 +287,9 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
                         provincia=tienda[3],
                         habilitado=tienda[4],
                     )
-                    tienda_list.usuarios.append(tienda_dto)
+                    tienda_list.tiendas.append(tienda_dto)
 
-            response = tienda_pb2.TraerTodasLasTiendasFiltradasResponse(tienda_list=tienda_list)
+            response = tienda_pb2.TraerTodasLasTiendasFiltradasResponse(tiendaList=tienda_list)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')

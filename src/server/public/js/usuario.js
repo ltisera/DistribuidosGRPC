@@ -69,7 +69,7 @@ function deleteUser(idUsuario) {
 function fetchUsuarios() {
     const nombre = encodeURIComponent(document.querySelector('#nombre-filter').value);
     const idTienda = encodeURIComponent(document.querySelector('#tienda-filter').value);
-    const urlFiltro = ""
+    var urlFiltro = ""
     if(nombre || idTienda){
         urlFiltro =`/api/usuarios/filtrados?nombre=${nombre}&idTienda=${idTienda}`
     } else {
