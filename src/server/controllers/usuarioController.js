@@ -24,9 +24,14 @@ function iniciarSesion(req, res) {
     if (error) {
       console.error(error);
       res.send('Error en la solicitud');
-    } else if (response.exito) {
+    } else if (response.idUsuario >= 0) {
       req.session.authenticated = true;
       req.session.usuario = usuario;
+      req.session.idUsuario = response.idUsuario;
+      req.session.tipoUsuario = "general";
+      if (response.casaCentral){
+        req.session.tipoUsuario = "casaCentral";
+      }
       res.redirect('/home');
     } else {
         res.redirect('/?mensaje=sessionFailed');

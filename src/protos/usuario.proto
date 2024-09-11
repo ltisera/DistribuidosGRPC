@@ -39,7 +39,8 @@ message IniciarSesionRequest {
 }
 
 message IniciarSesionResponse {
-  bool exito = 1;
+  int64 idUsuario = 1;
+  bool casaCentral = 2;
 }
 
 message AgregarUsuarioRequest {

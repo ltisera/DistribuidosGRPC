@@ -16,7 +16,7 @@ const tiendaController = require('./controllers/tiendaController');
 app.use(session({
   secret: 'tp-grpc',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: true
 }));
 
 

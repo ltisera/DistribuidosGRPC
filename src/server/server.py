@@ -29,8 +29,15 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
         usuario = request.usuario
         password = request.password
         udao = UsuarioDAO()
-        exito = udao.iniciarSesion(usuario, password)
-        return usuario_pb2.IniciarSesionResponse(exito=exito)
+        usuario = udao.iniciarSesion(usuario, password)
+        idUsuario = -1
+        casaCentral = ""
+
+        if usuario is not None:
+            idUsuario = usuario[0]
+            casaCentral = usuario[6]
+
+        return usuario_pb2.IniciarSesionResponse(idUsuario=idUsuario, casaCentral=casaCentral)
 
     def AgregarUsuario(self, request, context):
         #agregado = "" 

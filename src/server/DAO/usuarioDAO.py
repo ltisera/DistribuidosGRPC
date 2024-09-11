@@ -14,9 +14,9 @@ class UsuarioDAO(ConexionBD):
             self.crearConexion()
             sql = ("SELECT * FROM usuario u WHERE u.usuario = %s AND u.password = %s")
             self._micur.execute(sql, (usuario, password))
-            resultados = self._micur.fetchall()
-            print("Resultados", str(resultados))
-            return len(resultados) > 0
+            resultado = self._micur.fetchone()
+            print("Resultado", str(resultado))
+            return resultado
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
