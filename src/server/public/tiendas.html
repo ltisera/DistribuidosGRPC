@@ -14,7 +14,7 @@
     <nav>
         <a href="/home">Inicio</a>
         <a href="/usuarios">Usuarios</a>
-        <a href="/crearTienda">Agregar Tienda</a>
+        <a href="/tienda">Tienda</a>
         <a href="/logout">Cerrar Sesión</a>
     </nav>
 
@@ -35,12 +35,28 @@
         </form>
         <table id="tiendas-table">
             <thead>
-                <tr>
+                <tr></tr>
                     <th>ID</th>
                     <th>Direccion</th>
                     <th>Ciudad</th>
                     <th>Provincia</th>
                     <th>Habilitado</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <form id="createTiendaForm" action="/crearTienda" method="post">
+                        <td>Nueva tienda:</td>
+                        <td><input type="text" id="direccion" name="direccion" placeholder="direccion" required></td>
+                        <td><input type="text" id="ciudad" name="ciudad" placeholder="ciudad" required></td>
+                        <td><input type="text" id="provincia" name="provincia" placeholder="provincia" required></td>
+                        <td><select id="habilitado" name="habilitado" required>
+                            <option value="true">Sí</option>
+                            <option value="false">No</option>
+                        </select> </td>
+                        <td>
+                            <button class="btn-modify" type="submit">Agregar</button>
+                        </td>
+                    </form>
                 </tr>
             </thead>
             <tbody>

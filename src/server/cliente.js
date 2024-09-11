@@ -78,14 +78,6 @@ app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
 
 // TIENDA
 
-app.get('/crearTienda', (req, res) => {
-  if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearTienda.html'));
-  } else {
-    res.redirect('/');
-  }
-});
-
 app.post('/crearTienda', tiendaController.crearTienda);
 
 app.get('/tiendas', (req, res) => {

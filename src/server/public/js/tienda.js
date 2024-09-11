@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchTiendas();
+    document.getElementById('createTiendaForm').addEventListener('submit', handleSubmit);
     document.querySelector('#filter-form').addEventListener('submit', (event) => {
         event.preventDefault();
         fetchTiendas();
@@ -82,7 +83,7 @@ function fetchTiendas() {
     .then(tiendas => {
         const tableBody = document.querySelector('#tiendas-table tbody');
         tableBody.innerHTML = '';
-
+        
         tiendas.forEach(tienda => {
             console.log(tienda)
             const row = document.createElement('tr');
@@ -105,4 +106,33 @@ function fetchTiendas() {
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);
     });
+}
+
+
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = new URLSearchParams(formData).toString();
+    
+    try {
+        const response = await fetch('/crearTienda', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+
+        const result = await response.text();
+        
+        if (response.status === 400) {
+            alert("Error " + result);
+        } else {
+            window.location.href = '/tiendas?mensaje=successAddTienda';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un problema al crear la tienda.');
+    }
 }
