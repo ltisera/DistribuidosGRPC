@@ -4,71 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Usuario</title>
-    <style>
-        
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .form-container {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-
-        .form-container h1 {
-            margin-top: 0;
-            margin-bottom: 1rem;
-        }
-
-        .form-container label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        .form-container input, 
-        .form-container select {
-            width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .form-container button {
-            width: 100%;
-            padding: 0.75rem;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .form-container button:hover {
-            background-color: #0056b3;
-        }
-
-        .form-container .cancel-button {
-            background-color: #6c757d;
-        }
-
-        .form-container .cancel-button:hover {
-            background-color: #5a6268;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/css/modificarUsuario.css">
+    
 </head>
 <body>
     <div class="form-container">
@@ -108,59 +45,6 @@
         </form>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const idUsuario = params.get('idUsuario');
-
-            if (usuario) {
-                fetch(`/usuario/${idUsuario}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('userId').value = data.idUsuario;
-                        document.getElementById('usuario').value = data.usuario;
-                        document.getElementById('password').value = data.password;
-                        document.getElementById('nombre').value = data.nombre;
-                        document.getElementById('apellido').value = data.apellido;
-                        document.getElementById('habilitado').value = data.habilitado.toString();
-                        document.getElementById('casaCentral').value = data.casaCentral.toString();
-                        document.getElementById('idTienda').value = data.idTienda;
-                    })
-                    .catch(error => {
-                        console.error('Error al cargar los datos del usuario:', error);
-                    });
-            }
-
-            document.getElementById('editUserForm').addEventListener('submit', handleSubmit);
-        });
-
-        async function handleSubmit(event) {
-            event.preventDefault();
-
-            const formData = new FormData(event.target);
-            const data = new URLSearchParams(formData).toString();
-            
-            try {
-                const response = await fetch('/modificarUsuario', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: data
-                });
-                
-                if (response.status === 400) {
-                    const errorText = await response.text();
-                    alert(errorText);
-                } else {
-                    window.location.href = '/usuarios?mensaje=successModifyUser';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Hubo un problema al modificar el usuario.');
-            }
-        }
-
-    </script>
+    <script src="/js/modificarUsuario.js"></script>
 </body>
 </html>
