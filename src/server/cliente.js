@@ -11,6 +11,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 const usuarioController = require('./controllers/usuarioController');
+const tiendaController = require('./controllers/tiendaController');
 
 app.use(session({
   secret: 'tp-grpc',
@@ -77,6 +78,41 @@ app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
 
 // TIENDA
 
+app.get('/crearTienda', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearTienda.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.post('/crearTienda', tiendaController.crearTienda);
+
+app.get('/tiendas', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'tiendas.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/api/tiendas', tiendaController.traerTiendas);
+
+app.get('/tienda/:idTienda', tiendaController.mostrarTienda);
+
+app.get('/modificarTienda', (req, res) => {
+  if (req.session.authenticated) {
+      res.sendFile(path.join(__dirname, 'public', 'modificarTienda.html'));
+  } else {
+      res.redirect('/');
+  }
+});
+
+app.post('/modificarTienda', tiendaController.modificarTienda);
+
+app.post('/eliminarTienda', tiendaController.eliminarTienda);
+
+app.get('/api/tiendas/filtradas', tiendaController.traerTiendasFiltradas);
 
 // PRODUCTO
 

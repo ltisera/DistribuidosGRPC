@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Tiendas</title>
+    <link rel="stylesheet" href="/css/usuario.css">
+</head>
+<body>
+    <header>
+        <h1>Lista de Tiendas</h1>
+    </header>
+
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/crearTienda">Agregar Tienda</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+
+    <div id="popup"></div>
+
+    <div class="container">
+        <form id="filter-form">
+            <label for="codigo-filter">Filtrar por Codigo:</label>
+            <input type="text" id="codigo-filter" name="codigo" placeholder="Escribe el codigo">
+            
+            <label for="habilitado-filter">Filtrar por habilitado:</label>
+            <select id="habilitado-filter" name="habilitado-filter" required>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>  
+            <button type="submit">Filtrar</button>
+        </form>
+        <table id="users-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Direccion</th>
+                    <th>Ciudad</th>
+                    <th>Provincia</th>
+                    <th>Habilitado</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/tienda.js"></script>
+</body>
+</html>

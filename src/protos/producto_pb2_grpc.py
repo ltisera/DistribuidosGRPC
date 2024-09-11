@@ -35,42 +35,42 @@ class ProductoStub(object):
             channel: A grpc.Channel.
         """
         self.AgregarProducto = channel.unary_unary(
-                '/testgrpc.Producto/AgregarProducto',
+                '/producto.Producto/AgregarProducto',
                 request_serializer=producto__pb2.AgregarProductoRequest.SerializeToString,
                 response_deserializer=producto__pb2.AgregarProductoResponse.FromString,
                 _registered_method=True)
         self.ModificarProducto = channel.unary_unary(
-                '/testgrpc.Producto/ModificarProducto',
+                '/producto.Producto/ModificarProducto',
                 request_serializer=producto__pb2.ModificarProductoRequest.SerializeToString,
                 response_deserializer=producto__pb2.ModificarProductoResponse.FromString,
                 _registered_method=True)
         self.EliminarProducto = channel.unary_unary(
-                '/testgrpc.Producto/EliminarProducto',
+                '/producto.Producto/EliminarProducto',
                 request_serializer=producto__pb2.EliminarProductoRequest.SerializeToString,
                 response_deserializer=producto__pb2.ModificarProductoResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosProductos = channel.unary_unary(
-                '/testgrpc.Producto/TraerTodosLosProductos',
+                '/producto.Producto/TraerTodosLosProductos',
                 request_serializer=producto__pb2.TraerTodosLosProductosRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosProductosPorNombre = channel.unary_unary(
-                '/testgrpc.Producto/TraerTodosLosProductosPorNombre',
+                '/producto.Producto/TraerTodosLosProductosPorNombre',
                 request_serializer=producto__pb2.TraerTodosLosProductosPorNombreRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosPorNombreResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosProductosPorTalle = channel.unary_unary(
-                '/testgrpc.Producto/TraerTodosLosProductosPorTalle',
+                '/producto.Producto/TraerTodosLosProductosPorTalle',
                 request_serializer=producto__pb2.TraerTodosLosProductosPorTalleRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosPorTalleResponse.FromString,
                 _registered_method=True)
         self.TraerTodosLosProductosPorColor = channel.unary_unary(
-                '/testgrpc.Producto/TraerTodosLosProductosPorColor',
+                '/producto.Producto/TraerTodosLosProductosPorColor',
                 request_serializer=producto__pb2.TraerTodosLosProductosPorColorRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosPorColorResponse.FromString,
                 _registered_method=True)
         self.TraerProductoPorCodigo = channel.unary_unary(
-                '/testgrpc.Producto/TraerProductoPorCodigo',
+                '/producto.Producto/TraerProductoPorCodigo',
                 request_serializer=producto__pb2.TraerProductoPorCodigoRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerProductoPorCodigoResponse.FromString,
                 _registered_method=True)
@@ -172,9 +172,9 @@ def add_ProductoServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'testgrpc.Producto', rpc_method_handlers)
+            'producto.Producto', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('testgrpc.Producto', rpc_method_handlers)
+    server.add_registered_method_handlers('producto.Producto', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -195,7 +195,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/AgregarProducto',
+            '/producto.Producto/AgregarProducto',
             producto__pb2.AgregarProductoRequest.SerializeToString,
             producto__pb2.AgregarProductoResponse.FromString,
             options,
@@ -222,7 +222,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/ModificarProducto',
+            '/producto.Producto/ModificarProducto',
             producto__pb2.ModificarProductoRequest.SerializeToString,
             producto__pb2.ModificarProductoResponse.FromString,
             options,
@@ -249,7 +249,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/EliminarProducto',
+            '/producto.Producto/EliminarProducto',
             producto__pb2.EliminarProductoRequest.SerializeToString,
             producto__pb2.ModificarProductoResponse.FromString,
             options,
@@ -276,7 +276,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/TraerTodosLosProductos',
+            '/producto.Producto/TraerTodosLosProductos',
             producto__pb2.TraerTodosLosProductosRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosResponse.FromString,
             options,
@@ -303,7 +303,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/TraerTodosLosProductosPorNombre',
+            '/producto.Producto/TraerTodosLosProductosPorNombre',
             producto__pb2.TraerTodosLosProductosPorNombreRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosPorNombreResponse.FromString,
             options,
@@ -330,7 +330,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/TraerTodosLosProductosPorTalle',
+            '/producto.Producto/TraerTodosLosProductosPorTalle',
             producto__pb2.TraerTodosLosProductosPorTalleRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosPorTalleResponse.FromString,
             options,
@@ -357,7 +357,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/TraerTodosLosProductosPorColor',
+            '/producto.Producto/TraerTodosLosProductosPorColor',
             producto__pb2.TraerTodosLosProductosPorColorRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosPorColorResponse.FromString,
             options,
@@ -384,7 +384,7 @@ class Producto(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Producto/TraerProductoPorCodigo',
+            '/producto.Producto/TraerProductoPorCodigo',
             producto__pb2.TraerProductoPorCodigoRequest.SerializeToString,
             producto__pb2.TraerProductoPorCodigoResponse.FromString,
             options,

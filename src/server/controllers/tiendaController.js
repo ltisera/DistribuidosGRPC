@@ -136,14 +136,14 @@ function traerTiendas(req, res) {
 // TRAER TIENDAS FILTRADOS
 function traerTiendasFiltradas(req, res) {
   if (req.session.authenticated) {
-    let {estado, codigo} = req.query
-    if(!codigo){
-      codigo = 0
+    let {estado, idTienda} = req.query
+    if(!idTienda){
+      idTienda = 0
     }
     if(!estado){
       estado = " "
     }
-    client.TraerTodosLosUsuariosFiltrados({codigo, nombestadore}, (error, response) => {
+    client.TraerTodasLasTiendasFiltradas({idTienda, estado}, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodasLasTiendasFiltradas: ' + error.message);
         return res.status(400).send('Error al traer tiendas');

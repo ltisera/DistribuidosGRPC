@@ -19,7 +19,7 @@ from protos import usuario_pb2_grpc
 from protos import tienda_pb2
 from protos import tienda_pb2_grpc
 
-#from DAO.tiendaDAO import TiendaDAO
+from DAO.tiendaDAO import TiendaDAO
 from DAO.usuarioDAO import UsuarioDAO
 
 
@@ -169,7 +169,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return usuario_pb2.TraerTodosLosUsuariosFiltradosResponse()
-'''
+
 # TIENDA
 class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
     def AgregarTienda(self, request, context):
@@ -181,7 +181,7 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             habilitado = request.tiendaGrpcDTO.habilitado
 
             tdao = TiendaDAO()
-            idTienda = tdao.agregarTienda(idTienda, direccion, ciudad, habilitado, habilitado)
+            idTienda = tdao.agregarTienda(idTienda, direccion, ciudad, provincia, habilitado)
             return tienda_pb2.AgregarTiendaResponse(idTienda = idTienda)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -292,11 +292,11 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return tienda_pb2.TraerTodasLasTiendasFiltradasResponse()
-'''
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     usuario_pb2_grpc.add_UsuarioServicer_to_server(UsuarioServicer(), server)
-    #tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
+    tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC iniciado en el puerto 50051")

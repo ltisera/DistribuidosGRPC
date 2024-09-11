@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetchUsuarios();
+    fetchTiendas();
     document.querySelector('#filter-form').addEventListener('submit', (event) => {
         event.preventDefault();
-        fetchUsuarios();
+        fetchTiendas();
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mensaje) {
         let messageText = '';
         switch (mensaje) {
-            case 'successAddUser':
-                messageText = 'Usuario agregado con éxito!';
+            case 'successAddTienda':
+                messageText = 'Tienda agregada con éxito!';
                 break;
-            case 'successModifyUser':
-                messageText = 'Usuario actualizado con éxito!';
+            case 'successModifyTienda':
+                messageText = 'Tienda actualizada con éxito!';
                 break;
-            case 'successDeleteUser':
-                messageText = 'Usuario eliminado con éxito!';
+            case 'successDeleteTienda':
+                messageText = 'Tienda eliminada con éxito!';
                 break;
             default:
                 messageText = '';
@@ -42,23 +42,23 @@ function showPopup(message) {
     }
 }
 
-function modifyUser(idUsuario) {
-    window.location.href = `/modificarUsuario?idUsuario=${idUsuario}`;
+function modifyTienda(idTienda) {
+    window.location.href = `/modificarTienda?idTienda=${idTienda}`;
 }
 
-function deleteUser(idUsuario) {
-    fetch('/eliminarUsuario', {
+function deleteTienda(idTienda) {
+    fetch('/eliminarTienda', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId: idUsuario })
+        body: JSON.stringify({ userId: idTienda })
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = '/usuarios?mensaje=successDeleteUser';
+            window.location.href = '/tiendas?mensaje=successDeleteTienda';
         } else {
-            console.error('Error al eliminar usuario');
+            console.error('Error al eliminar tienda');
         }
     })
     .catch(error => {
@@ -66,32 +66,34 @@ function deleteUser(idUsuario) {
     });
 }
 
-function fetchUsuarios() {
-    const nombre = encodeURIComponent(document.querySelector('#nombre-filter').value);
-    const idTienda = encodeURIComponent(document.querySelector('#tienda-filter').value);
+function fetchTiendas() {
+    const codigo = encodeURIComponent(document.querySelector('#codigo-filter').value);
+    const habilitado = encodeURIComponent(document.querySelector('#habilitado-filter').value);
     const urlFiltro = ""
-    if(nombre || idTienda){
-        urlFiltro =`/api/usuarios/filtrados?nombre=${nombre}&idTienda=${idTienda}`
+    if(codigo || habilitado){
+        urlFiltro = `/api/tiendas/filtrados?codigo=${codigo}&estado=${habilitado}`
     } else {
-        urlFiltro ='/api/usuarios'
-    }
+        urlFiltro = '/api/tiendas'
+    } 
     fetch(urlFiltro)
     .then(response => response.json())
-    .then(users => {
-        const tableBody = document.querySelector('#users-table tbody');
+    .then(tiendas => {
+        const tableBody = document.querySelector('#tiendas-table tbody');
         tableBody.innerHTML = '';
 
-        users.forEach(user => {
+        tiendas.forEach(user => {
             const row = document.createElement('tr');
 
             row.innerHTML = `
-                <td>${user.idUsuario}</td>
-                <td>${user.usuario}</td>
+                <td>${user.idTienda}</td>
+                <td>${user.direccion}</td>
+                <td>${user.ciudad}</td>
+                <td>${user.provincia}</td>
                 <td>${user.habilitado ? 'Sí' : 'No'}</td>
                 <td>${user.tienda}</td>
                 <td>
-                    <button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button>
-                    <button class="btn-delete" onclick="deleteUser('${user.idUsuario}')">Eliminar</button>
+                    <button class="btn-modify" onclick="modifyTienda('${user.idTienda}')">Modificar</button>
+                    <button class="btn-delete" onclick="deleteTienda('${user.idTienda}')">Eliminar</button>
                 </td>
             `;
 
@@ -99,6 +101,6 @@ function fetchUsuarios() {
         });
     })
     .catch(error => {
-        console.error('Error al cargar la lista de usuarios:', error);
+        console.error('Error al cargar la lista de tiendas:', error);
     });
 }

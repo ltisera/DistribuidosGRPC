@@ -35,32 +35,32 @@ class TiendaStub(object):
             channel: A grpc.Channel.
         """
         self.AgregarTienda = channel.unary_unary(
-                '/testgrpc.Tienda/AgregarTienda',
+                '/tienda.Tienda/AgregarTienda',
                 request_serializer=tienda__pb2.AgregarTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.AgregarTiendaResponse.FromString,
                 _registered_method=True)
         self.ObtenerTienda = channel.unary_unary(
-                '/testgrpc.Tienda/ObtenerTienda',
+                '/tienda.Tienda/ObtenerTienda',
                 request_serializer=tienda__pb2.ObtenerTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.ObtenerTiendaResponse.FromString,
                 _registered_method=True)
         self.ModificarTienda = channel.unary_unary(
-                '/testgrpc.Tienda/ModificarTienda',
+                '/tienda.Tienda/ModificarTienda',
                 request_serializer=tienda__pb2.ModificarTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.ModificarTiendaResponse.FromString,
                 _registered_method=True)
         self.EliminarTienda = channel.unary_unary(
-                '/testgrpc.Tienda/EliminarTienda',
+                '/tienda.Tienda/EliminarTienda',
                 request_serializer=tienda__pb2.EliminarTiendaRequest.SerializeToString,
                 response_deserializer=tienda__pb2.EliminarTiendaResponse.FromString,
                 _registered_method=True)
         self.TraerTodasLasTiendas = channel.unary_unary(
-                '/testgrpc.Tienda/TraerTodasLasTiendas',
+                '/tienda.Tienda/TraerTodasLasTiendas',
                 request_serializer=tienda__pb2.TraerTodasLasTiendasRequest.SerializeToString,
                 response_deserializer=tienda__pb2.TraerTodasLasTiendasResponse.FromString,
                 _registered_method=True)
         self.TraerTodasLasTiendasFiltradas = channel.unary_unary(
-                '/testgrpc.Tienda/TraerTodasLasTiendasFiltradas',
+                '/tienda.Tienda/TraerTodasLasTiendasFiltradas',
                 request_serializer=tienda__pb2.TraerTodasLasTiendasFiltradasRequest.SerializeToString,
                 response_deserializer=tienda__pb2.TraerTodasLasTiendasFiltradasResponse.FromString,
                 _registered_method=True)
@@ -140,9 +140,9 @@ def add_TiendaServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'testgrpc.Tienda', rpc_method_handlers)
+            'tienda.Tienda', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('testgrpc.Tienda', rpc_method_handlers)
+    server.add_registered_method_handlers('tienda.Tienda', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
@@ -163,7 +163,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/AgregarTienda',
+            '/tienda.Tienda/AgregarTienda',
             tienda__pb2.AgregarTiendaRequest.SerializeToString,
             tienda__pb2.AgregarTiendaResponse.FromString,
             options,
@@ -190,7 +190,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/ObtenerTienda',
+            '/tienda.Tienda/ObtenerTienda',
             tienda__pb2.ObtenerTiendaRequest.SerializeToString,
             tienda__pb2.ObtenerTiendaResponse.FromString,
             options,
@@ -217,7 +217,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/ModificarTienda',
+            '/tienda.Tienda/ModificarTienda',
             tienda__pb2.ModificarTiendaRequest.SerializeToString,
             tienda__pb2.ModificarTiendaResponse.FromString,
             options,
@@ -244,7 +244,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/EliminarTienda',
+            '/tienda.Tienda/EliminarTienda',
             tienda__pb2.EliminarTiendaRequest.SerializeToString,
             tienda__pb2.EliminarTiendaResponse.FromString,
             options,
@@ -271,7 +271,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/TraerTodasLasTiendas',
+            '/tienda.Tienda/TraerTodasLasTiendas',
             tienda__pb2.TraerTodasLasTiendasRequest.SerializeToString,
             tienda__pb2.TraerTodasLasTiendasResponse.FromString,
             options,
@@ -298,7 +298,7 @@ class Tienda(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/testgrpc.Tienda/TraerTodasLasTiendasFiltradas',
+            '/tienda.Tienda/TraerTodasLasTiendasFiltradas',
             tienda__pb2.TraerTodasLasTiendasFiltradasRequest.SerializeToString,
             tienda__pb2.TraerTodasLasTiendasFiltradasResponse.FromString,
             options,
