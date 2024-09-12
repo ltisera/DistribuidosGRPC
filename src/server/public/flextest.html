@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Layout</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0px;
+    }
+    .navega{
+        display: flex;
+        flex-direction: row;
+        background-color: rgb(136, 103, 59);
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    .container {
+      display: flex;
+      /*flex-wrap: wrap;*/
+      flex-direction: row;
+      justify-content: space-around;
+      height: 200px;
+      margin-left: 10px;
+      margin-right: 20px;
+    }
+
+    .box {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px;
+      margin: 0px;
+      /*flex: 1 1 200px; /* Ocupa al menos 200px y se adapta */
+      text-align: center;
+    }
+
+    .c1{
+        background-color: #4caf50;
+        flex-grow: 2;
+    }
+    .c2{
+        background-color: #af4c4c;
+        flex-grow: 10;
+    }
+    .c3{
+        background-color: #4c4eaf;
+        flex-grow: 1;
+    }
+
+    @media (max-width: 768px) {
+      .box {
+        flex: 1 1 100%; /* Para pantallas más pequeñas, las cajas ocupan el 100% del ancho */
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="navega">
+        aca va el VAN
+    </div>
+    <div class="container">
+        <div class="box c1 colCaja1">Caja 1</div>
+        <div class="box c2 colCaja2">Caja 2</div>
+        <div class="box c3 colCaja1"> 
+            <button>Modifi</button>
+            <button>Otro</button>
+            <button>Modifi</button>
+            <button>Otro</button>
+            <button>Modifi</button>
+            <button>Otro</button>
+            <button>Modifi</button>
+            <button>Otro</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="box c2 ">Caja 4</div>
+        <div class="box c1">Caja 5</div>
+        <div class="box c3">Caja 6</div>
+      </div>
+        
+</body>
+</html>

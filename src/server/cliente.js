@@ -27,6 +27,11 @@ app.get('/', (req, res) => {
 
 app.post('/login', usuarioController.iniciarSesion);
 
+//
+app.get('/tst', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'flextest.html'));
+});
+
 // HOME
 app.get('/home', (req, res) => {
   if (req.session.authenticated) {
