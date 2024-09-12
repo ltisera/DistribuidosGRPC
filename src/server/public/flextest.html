@@ -10,6 +10,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0px;
+            background-color: #f0f0f0;
         }
 
         .navega {
@@ -32,12 +33,12 @@
             margin-right: 20px;
             max-width: 1600px;    
             flex-flow: row wrap;
+            margin: auto;
         }
 
         .box {
-            background-color: #4caf50;
-            color: white;
-            padding: 10px;
+            color: rgb(0, 0, 0);
+            padding: 1px;
             margin: 0px;
             align-content: center;
             justify-content: center;
@@ -45,25 +46,29 @@
         }
 
         .cajaFoto {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
+            background-color: rgb(0, 0, 0);
+            align-content: center;
+            justify-content: center;
+            margin: auto;
+        }
+        .cajaFoto:hover {
+            width: 150px;
+            height: 150px;
             background-color: rgb(99, 91, 81);
         }
 
         .c1 {
-            background-color: #4caf50;
             flex-grow: 1;
             display: flex;
-            
         }
 
         .c2 {
-            background-color: #af4c4c;
             flex-grow: 20;
         }
 
         .c3 {
-            background-color: #4c4eaf;
             flex-grow: 1;
         }
 
@@ -80,6 +85,12 @@
         .btn-modify:hover {
             background-color: #0056b3;
         }
+        .col1{
+            /*background-color: #f4f4f4;*/
+        }
+        .col2{
+            background-color: #ffffff;
+        }
 
         @media (max-width: 768px) {
             .box {
@@ -95,25 +106,237 @@
     <div class="navega">
         aca va el VAN
     </div>
-    <div class="cgeneral">
-
-        <div class="container">
-            <div class="box c1 colCaja1">
-                <div class="box cajaFoto"></div>
-            </div>
-            
-            <div class="box c2 colCaja2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
-            <div class="box c3 colCaja1">
-                <button class="btn-modify">Modifi</button>
-                
-            </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
         </div>
-        <div class="container">
-            <div class="box c2 ">Caja 4</div>
-            <div class="box c1">Caja 5</div>
-            <div class="box c3">Caja 6</div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
         </div>
     </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col1">
+        <div class="box c1">
+            <img class="box cajaFoto" src="https://http2.mlstatic.com/D_NQ_NP_761465-MLA78150346962_082024-O.webp"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    <div class="container col2">
+        <div class="box c1">
+            
+            <img class="box cajaFoto" src="https://kaktus.com.ar/webfiles/kaktus/productos/81/7_1000x1000.jpg"></img>
+        </div>
+
+        <div class="box c2">Producto Caja 2, codigo LARECON"321, Talle: CL, Color MARRON</div>
+        <div class="box c3">
+            <button class="btn-modify">Modifi</button>
+
+        </div>
+    </div>
+    
 
 </body>
 
