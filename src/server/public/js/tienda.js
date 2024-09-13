@@ -82,6 +82,7 @@ function fetchTiendas() {
     .then(response => response.json())
     .then(tiendas => {
         const divHtml = document.querySelector('#rellenarTiendas');
+        divHtml.innerHTML = "";
         tiendas.forEach((tienda, index) => {
             var nuevaDiv = `
             <div class="container col${1 + (index % 2)}">
