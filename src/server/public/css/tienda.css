@@ -136,33 +136,31 @@ body {
 
 .c1 {
     background-color: #af4caa;
-    width: 100px;
-    flex-grow: 1;
+    width: 40px;
+    
 }
 
 .c2 {
     background-color: #940505;
     
-    width: 100px;
-    flex-grow: 3;
+    width: auto;
+    
 }
 
 .c3 {
-    width: 100px;
-    flex-grow: 2;
+    width: auto;
     background-color: #070594;
 }
 
 .c4 {
     background-color: #4caf50;
-    width: 100px;
-    flex-grow: 2;
+    width: auto;
 }
 
 .c5 {
     background-color: #070594;
-    width: 100px;
-    flex-grow: 1;
+    width: 40px;
+    
 }
 
 .c6 {
