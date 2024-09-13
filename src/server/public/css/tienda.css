@@ -97,11 +97,8 @@ body {
 .cgeneral{
     display: flex;
     
-    background-color: rgb(128, 0, 128);
-    
 }
 .container {
-    background-color: blueviolet;
     display: flex;
     justify-content: space-around;
     margin-left: 10px;
@@ -112,7 +109,6 @@ body {
 }
 
 .box {
-    color: rgb(0, 0, 0);
     padding: 1px;
     margin: 0px;
     align-content: center;
@@ -133,48 +129,53 @@ body {
     height: 150px;
     background-color: rgb(99, 91, 81);
 }
-
-.c1 {
-    background-color: #af4caa;
+.c1{
     width: 40px;
-    
+    text-align: center;
+}
+
+.bordeB{
+    border-bottom: solid 1px #383737;
+}
+
+.bordeR{
+    border-right: 1px solid #383737;
 }
 
 .c2 {
-    background-color: #940505;
-    
-    width: auto;
-    
+    padding-left: 10px;
+    width: 100px;
+    flex-grow: 1;
 }
 
 .c3 {
-    width: auto;
-    background-color: #070594;
+    width: 100px;
+    flex-grow: 2;
 }
 
 .c4 {
-    background-color: #4caf50;
-    width: auto;
+    width: 100px;
+    flex-grow: 2;
 }
 
 .c5 {
-    background-color: #070594;
-    width: 40px;
-    
+    width: 90px;
+    text-align: center;
 }
 
 .c6 {
-    width: 100px;
-    flex-grow: 4;
-}
-.c7 {
-    background-color: #db0505;
-    width: 100px;
+    width: 50px;
     flex-grow: 1;
-    
+    background-color: #383737;
+    text-align: center;
 }
 
-
+.colPrimera{
+    background-color:#383737;
+    color: #ffffff;
+    padding: 5px;
+    margin-top: 10px;
+}
 .col1{
     background-color: #f4f4f4;
 }

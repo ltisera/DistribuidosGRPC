@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetchTiendas();
-    document.getElementById('createTiendaForm').addEventListener('submit', handleSubmit);
+    /*document.getElementById('createTiendaForm').addEventListener('submit', handleSubmit);*/
     document.querySelector('#filter-form').addEventListener('submit', (event) => {
         event.preventDefault();
         fetchTiendas();
@@ -81,32 +81,44 @@ function fetchTiendas() {
     fetch(urlFiltro)
     .then(response => response.json())
     .then(tiendas => {
-        const tableBody = document.querySelector('#tiendas-table tbody');
-        tableBody.innerHTML = '';
-        
-        tiendas.forEach(tienda => {
-            console.log(tienda)
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${tienda.idTienda}</td>
-                <td>${tienda.direccion}</td>
-                <td>${tienda.ciudad}</td>
-                <td>${tienda.provincia}</td>
-                <td>${tienda.habilitado ? 'Sí' : 'No'}</td>
-                <td>
+        const divHtml = document.querySelector('#rellenarTiendas');
+        tiendas.forEach((tienda, index) => {
+            var nuevaDiv = `
+            <div class="container col${1 + (index % 2)}">
+                <div class="box c1 bordeR">${tienda.idTienda}</div>
+                <div class="box c2">${tienda.direccion}</div>
+                <div class="box c3">${tienda.ciudad}</div>
+                <div class="box c4 bordeR">${tienda.provincia}</div>
+                <div class="box c5 ">${tienda.habilitado ? 'Sí' : 'No'}</div>       
+                <div class="box c6">
                     <button class="btn-modify" onclick="modifyTienda('${tienda.idTienda}')">Modificar</button>
                     <button class="btn-delete" onclick="deleteTienda('${tienda.idTienda}')">Eliminar</button>
-                </td>
+                </div>
+            </div>
             `;
-
-            tableBody.appendChild(row);
+            if(index === tiendas.length - 1){
+                nuevaDiv = `
+                <div class="container col${1 + (index % 2)}">
+                    <div class="box c1 bordeB bordeR">${tienda.idTienda}</div>
+                    <div class="box c2 bordeB">${tienda.direccion}</div>
+                    <div class="box c3 bordeB">${tienda.ciudad}</div>
+                    <div class="box c4 bordeB bordeR">${tienda.provincia}</div>
+                    <div class="box c5 bordeB">${tienda.habilitado ? 'Sí' : 'No'}</div>       
+                    <div class="box c6 bordeB">
+                        <button class="btn-modify" onclick="modifyTienda('${tienda.idTienda}')">Modificar</button>
+                        <button class="btn-delete" onclick="deleteTienda('${tienda.idTienda}')">Eliminar</button>
+                    </div>
+                </div>
+                `;
+            }
+            divHtml.innerHTML += nuevaDiv;
         });
     })
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);
     });
 }
+
 
 
 async function handleSubmit(event) {
