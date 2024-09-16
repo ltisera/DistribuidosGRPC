@@ -1,0 +1,148 @@
+document.addEventListener('DOMContentLoaded', () => {
+    fetchProductos();
+    document.querySelector('#filter-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        fetchProductos();
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const mensaje = params.get('mensaje');
+
+    if (mensaje) {
+        let messageText = '';
+        switch (mensaje) {
+            case 'successAddProducto':
+                messageText = 'Producto agregado con éxito!';
+                break;
+            case 'successModifyProducto':
+                messageText = 'Producto actualizado con éxito!';
+                break;
+            case 'successDeleteProducto':
+                messageText = 'Producto eliminado con éxito!';
+                break;
+            default:
+                messageText = '';
+        }
+
+        if (messageText) {
+            console.log("ShowPopUp")
+            showPopup(messageText);
+        }
+    }
+});
+
+function showPopup(message) {
+    const popup = document.getElementById('popup');
+    if (popup) {
+        popup.textContent = message;
+        popup.classList.add('show');
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 3000);
+    }
+}
+
+function modifyProducto(idProducto) {
+    window.location.href = `/modificarProducto?idProducto=${idProducto}`;
+}
+
+function deleteProducto(idProducto) {
+    fetch('/eliminarProducto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productoId: idProducto })
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = '/productos?mensaje=successDeleteProducto';
+        } else {
+            console.error('Error al eliminar producto');
+        }
+    })
+    .catch(error => {
+        console.error('Error al enviar solicitud de eliminación:', error);
+    });
+}
+
+function fetchProductos() {
+    const idProducto = encodeURIComponent(document.querySelector('#idProducto-filter').value);
+    const color = encodeURIComponent(document.querySelector('#color-filter').value);
+    var urlFiltro = ""
+    console.log("fetchProductos 1 + color = " + color)
+    if(idProducto || color){
+        console.log("fetchProductos 2 + color = " + color)
+        urlFiltro = `/api/productos/filtrados?idProducto=${idProducto}&color=${color}`
+    } else {
+        urlFiltro = '/api/productos'
+    } 
+    fetch(urlFiltro)
+    .then(response => response.json())
+    .then(productos => {
+        const divHtml = document.querySelector('#rellenarProductos');
+        divHtml.innerHTML = "";
+        productos.forEach((producto, index) => {
+            var nuevaDiv = `
+            <div class="container col${1 + (index % 2)}">
+                <div class="box c1 bordeR">${producto.idProducto}</div>
+                <div class="box c2">${producto.nombre}</div>
+                <div class="box c3">${producto.foto}</div>
+                <div class="box c4 bordeR">${producto.color}</div>
+                <div class="box c5">${producto.codigo}</div>       
+                <div class="box c6">
+                    <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}')">Modificar</button>
+                    <button class="btn-delete" onclick="deleteProducto('${producto.idProducto}')">Eliminar</button>
+                </div>
+            </div>
+            `;
+            if(index === productos.length - 1){
+                nuevaDiv = `
+                <div class="container col${1 + (index % 2)}">
+                    <div class="box c1 bordeB bordeR">${producto.idProducto}</div>
+                    <div class="box c2 bordeB">${producto.nombre}</div>
+                    <div class="box c3 bordeB">${producto.foto}</div>
+                    <div class="box c4 bordeB bordeR">${producto.color}</div>
+                    <div class="box c5 bordeB">${producto.codigo}</div>       
+                    <div class="box c6 bordeB">
+                        <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}')">Modificar</button>
+                        <button class="btn-delete" onclick="deleteProducto('${producto.idProducto}')">Eliminar</button>
+                    </div>
+                </div>
+                `;
+            }
+            divHtml.innerHTML += nuevaDiv;
+        });
+    })
+    .catch(error => {
+        console.error('Error al cargar la lista de productos:', error);
+    });
+}
+
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = new URLSearchParams(formData).toString();
+    
+    try {
+        const response = await fetch('/crearProducto', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data
+        });
+
+        const result = await response.text();
+        
+        if (response.status === 400) {
+            alert("Error " + result);
+        } else {
+            window.location.href = '/productos?mensaje=successAddProducto';
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un problema al crear el producto.');
+    }
+}

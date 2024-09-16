@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eproducto.proto\x12\x08producto\";\n\x0fProductoGrpcDTO\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\x0c\n\x04\x66oto\x18\x03 \x01(\t\"L\n\x16\x41gregarProductoRequest\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"M\n\x17\x41gregarProductoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"<\n\x0cProductoList\x12,\n\tproductos\x18\x01 \x03(\x0b\x32\x19.producto.ProductoGrpcDTO\"N\n\x18ModificarProductoRequest\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"O\n\x19ModificarProductoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"%\n\x17\x45liminarProductoRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"&\n\x18\x45liminarProductoResponse\x12\n\n\x02id\x18\x01 \x01(\x03\"\x1f\n\x1dTraerTodosLosProductosRequest\"N\n\x1eTraerTodosLosProductosResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"8\n&TraerTodosLosProductosPorNombreRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"W\n\'TraerTodosLosProductosPorNombreResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"6\n%TraerTodosLosProductosPorTalleRequest\x12\r\n\x05talle\x18\x01 \x01(\t\"V\n&TraerTodosLosProductosPorTalleResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"6\n%TraerTodosLosProductosPorColorRequest\x12\r\n\x05\x63olor\x18\x01 \x01(\t\"V\n&TraerTodosLosProductosPorColorResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"/\n\x1dTraerProductoPorCodigoRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\x03\"T\n\x1eTraerProductoPorCodigoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO2\x9b\x07\n\x08Producto\x12X\n\x0f\x41gregarProducto\x12 .producto.AgregarProductoRequest\x1a!.producto.AgregarProductoResponse\"\x00\x12^\n\x11ModificarProducto\x12\".producto.ModificarProductoRequest\x1a#.producto.ModificarProductoResponse\"\x00\x12\\\n\x10\x45liminarProducto\x12!.producto.EliminarProductoRequest\x1a#.producto.ModificarProductoResponse\"\x00\x12m\n\x16TraerTodosLosProductos\x12\'.producto.TraerTodosLosProductosRequest\x1a(.producto.TraerTodosLosProductosResponse\"\x00\x12\x88\x01\n\x1fTraerTodosLosProductosPorNombre\x12\x30.producto.TraerTodosLosProductosPorNombreRequest\x1a\x31.producto.TraerTodosLosProductosPorNombreResponse\"\x00\x12\x85\x01\n\x1eTraerTodosLosProductosPorTalle\x12/.producto.TraerTodosLosProductosPorTalleRequest\x1a\x30.producto.TraerTodosLosProductosPorTalleResponse\"\x00\x12\x85\x01\n\x1eTraerTodosLosProductosPorColor\x12/.producto.TraerTodosLosProductosPorColorRequest\x1a\x30.producto.TraerTodosLosProductosPorColorResponse\"\x00\x12m\n\x16TraerProductoPorCodigo\x12\'.producto.TraerProductoPorCodigoRequest\x1a(.producto.TraerProductoPorCodigoResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eproducto.proto\x12\x08producto\"b\n\x0fProductoGrpcDTO\x12\x12\n\nidProducto\x18\x01 \x01(\x03\x12\x0e\n\x06nombre\x18\x02 \x01(\t\x12\x0c\n\x04\x66oto\x18\x03 \x01(\t\x12\r\n\x05\x63olor\x18\x04 \x01(\t\x12\x0e\n\x06\x63odigo\x18\x05 \x01(\t\"L\n\x16\x41gregarProductoRequest\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"M\n\x17\x41gregarProductoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"<\n\x0cProductoList\x12,\n\tproductos\x18\x01 \x03(\x0b\x32\x19.producto.ProductoGrpcDTO\"N\n\x18ModificarProductoRequest\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"O\n\x19ModificarProductoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO\"-\n\x17\x45liminarProductoRequest\x12\x12\n\nidProducto\x18\x01 \x01(\x03\".\n\x18\x45liminarProductoResponse\x12\x12\n\nidProducto\x18\x01 \x01(\x03\"\x1f\n\x1dTraerTodosLosProductosRequest\"N\n\x1eTraerTodosLosProductosResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"8\n&TraerTodosLosProductosPorNombreRequest\x12\x0e\n\x06nombre\x18\x01 \x01(\t\"W\n\'TraerTodosLosProductosPorNombreResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"6\n%TraerTodosLosProductosPorTalleRequest\x12\r\n\x05talle\x18\x01 \x01(\t\"V\n&TraerTodosLosProductosPorTalleResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"6\n%TraerTodosLosProductosPorColorRequest\x12\r\n\x05\x63olor\x18\x01 \x01(\t\"V\n&TraerTodosLosProductosPorColorResponse\x12,\n\x0cproductoList\x18\x01 \x01(\x0b\x32\x16.producto.ProductoList\"/\n\x1dTraerProductoPorCodigoRequest\x12\x0e\n\x06\x63odigo\x18\x01 \x01(\t\"T\n\x1eTraerProductoPorCodigoResponse\x12\x32\n\x0fproductoGrpcDTO\x18\x01 \x01(\x0b\x32\x19.producto.ProductoGrpcDTO2\x9b\x07\n\x08Producto\x12X\n\x0f\x41gregarProducto\x12 .producto.AgregarProductoRequest\x1a!.producto.AgregarProductoResponse\"\x00\x12^\n\x11ModificarProducto\x12\".producto.ModificarProductoRequest\x1a#.producto.ModificarProductoResponse\"\x00\x12\\\n\x10\x45liminarProducto\x12!.producto.EliminarProductoRequest\x1a#.producto.ModificarProductoResponse\"\x00\x12m\n\x16TraerTodosLosProductos\x12\'.producto.TraerTodosLosProductosRequest\x1a(.producto.TraerTodosLosProductosResponse\"\x00\x12\x88\x01\n\x1fTraerTodosLosProductosPorNombre\x12\x30.producto.TraerTodosLosProductosPorNombreRequest\x1a\x31.producto.TraerTodosLosProductosPorNombreResponse\"\x00\x12\x85\x01\n\x1eTraerTodosLosProductosPorTalle\x12/.producto.TraerTodosLosProductosPorTalleRequest\x1a\x30.producto.TraerTodosLosProductosPorTalleResponse\"\x00\x12\x85\x01\n\x1eTraerTodosLosProductosPorColor\x12/.producto.TraerTodosLosProductosPorColorRequest\x1a\x30.producto.TraerTodosLosProductosPorColorResponse\"\x00\x12m\n\x16TraerProductoPorCodigo\x12\'.producto.TraerProductoPorCodigoRequest\x1a(.producto.TraerProductoPorCodigoResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,41 +32,41 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'producto_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_PRODUCTOGRPCDTO']._serialized_start=28
-  _globals['_PRODUCTOGRPCDTO']._serialized_end=87
-  _globals['_AGREGARPRODUCTOREQUEST']._serialized_start=89
-  _globals['_AGREGARPRODUCTOREQUEST']._serialized_end=165
-  _globals['_AGREGARPRODUCTORESPONSE']._serialized_start=167
-  _globals['_AGREGARPRODUCTORESPONSE']._serialized_end=244
-  _globals['_PRODUCTOLIST']._serialized_start=246
-  _globals['_PRODUCTOLIST']._serialized_end=306
-  _globals['_MODIFICARPRODUCTOREQUEST']._serialized_start=308
-  _globals['_MODIFICARPRODUCTOREQUEST']._serialized_end=386
-  _globals['_MODIFICARPRODUCTORESPONSE']._serialized_start=388
-  _globals['_MODIFICARPRODUCTORESPONSE']._serialized_end=467
-  _globals['_ELIMINARPRODUCTOREQUEST']._serialized_start=469
-  _globals['_ELIMINARPRODUCTOREQUEST']._serialized_end=506
-  _globals['_ELIMINARPRODUCTORESPONSE']._serialized_start=508
-  _globals['_ELIMINARPRODUCTORESPONSE']._serialized_end=546
-  _globals['_TRAERTODOSLOSPRODUCTOSREQUEST']._serialized_start=548
-  _globals['_TRAERTODOSLOSPRODUCTOSREQUEST']._serialized_end=579
-  _globals['_TRAERTODOSLOSPRODUCTOSRESPONSE']._serialized_start=581
-  _globals['_TRAERTODOSLOSPRODUCTOSRESPONSE']._serialized_end=659
-  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBREREQUEST']._serialized_start=661
-  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBREREQUEST']._serialized_end=717
-  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBRERESPONSE']._serialized_start=719
-  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBRERESPONSE']._serialized_end=806
-  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLEREQUEST']._serialized_start=808
-  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLEREQUEST']._serialized_end=862
-  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLERESPONSE']._serialized_start=864
-  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLERESPONSE']._serialized_end=950
-  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORREQUEST']._serialized_start=952
-  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORREQUEST']._serialized_end=1006
-  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORRESPONSE']._serialized_start=1008
-  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORRESPONSE']._serialized_end=1094
-  _globals['_TRAERPRODUCTOPORCODIGOREQUEST']._serialized_start=1096
-  _globals['_TRAERPRODUCTOPORCODIGOREQUEST']._serialized_end=1143
-  _globals['_TRAERPRODUCTOPORCODIGORESPONSE']._serialized_start=1145
-  _globals['_TRAERPRODUCTOPORCODIGORESPONSE']._serialized_end=1229
-  _globals['_PRODUCTO']._serialized_start=1232
-  _globals['_PRODUCTO']._serialized_end=2155
+  _globals['_PRODUCTOGRPCDTO']._serialized_end=126
+  _globals['_AGREGARPRODUCTOREQUEST']._serialized_start=128
+  _globals['_AGREGARPRODUCTOREQUEST']._serialized_end=204
+  _globals['_AGREGARPRODUCTORESPONSE']._serialized_start=206
+  _globals['_AGREGARPRODUCTORESPONSE']._serialized_end=283
+  _globals['_PRODUCTOLIST']._serialized_start=285
+  _globals['_PRODUCTOLIST']._serialized_end=345
+  _globals['_MODIFICARPRODUCTOREQUEST']._serialized_start=347
+  _globals['_MODIFICARPRODUCTOREQUEST']._serialized_end=425
+  _globals['_MODIFICARPRODUCTORESPONSE']._serialized_start=427
+  _globals['_MODIFICARPRODUCTORESPONSE']._serialized_end=506
+  _globals['_ELIMINARPRODUCTOREQUEST']._serialized_start=508
+  _globals['_ELIMINARPRODUCTOREQUEST']._serialized_end=553
+  _globals['_ELIMINARPRODUCTORESPONSE']._serialized_start=555
+  _globals['_ELIMINARPRODUCTORESPONSE']._serialized_end=601
+  _globals['_TRAERTODOSLOSPRODUCTOSREQUEST']._serialized_start=603
+  _globals['_TRAERTODOSLOSPRODUCTOSREQUEST']._serialized_end=634
+  _globals['_TRAERTODOSLOSPRODUCTOSRESPONSE']._serialized_start=636
+  _globals['_TRAERTODOSLOSPRODUCTOSRESPONSE']._serialized_end=714
+  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBREREQUEST']._serialized_start=716
+  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBREREQUEST']._serialized_end=772
+  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBRERESPONSE']._serialized_start=774
+  _globals['_TRAERTODOSLOSPRODUCTOSPORNOMBRERESPONSE']._serialized_end=861
+  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLEREQUEST']._serialized_start=863
+  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLEREQUEST']._serialized_end=917
+  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLERESPONSE']._serialized_start=919
+  _globals['_TRAERTODOSLOSPRODUCTOSPORTALLERESPONSE']._serialized_end=1005
+  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORREQUEST']._serialized_start=1007
+  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORREQUEST']._serialized_end=1061
+  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORRESPONSE']._serialized_start=1063
+  _globals['_TRAERTODOSLOSPRODUCTOSPORCOLORRESPONSE']._serialized_end=1149
+  _globals['_TRAERPRODUCTOPORCODIGOREQUEST']._serialized_start=1151
+  _globals['_TRAERPRODUCTOPORCODIGOREQUEST']._serialized_end=1198
+  _globals['_TRAERPRODUCTOPORCODIGORESPONSE']._serialized_start=1200
+  _globals['_TRAERPRODUCTOPORCODIGORESPONSE']._serialized_end=1284
+  _globals['_PRODUCTO']._serialized_start=1287
+  _globals['_PRODUCTO']._serialized_end=2210
 # @@protoc_insertion_point(module_scope)

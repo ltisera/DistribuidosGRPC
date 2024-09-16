@@ -12,6 +12,7 @@ app.use(express.json());
 
 const usuarioController = require('./controllers/usuarioController');
 const tiendaController = require('./controllers/tiendaController');
+const productoController = require('./controllers/productoController')
 
 app.use(session({
   secret: 'tp-grpc',
@@ -120,6 +121,43 @@ app.post('/eliminarTienda', tiendaController.eliminarTienda);
 app.get('/api/tiendas/filtradas', tiendaController.traerTiendasFiltradas);
 
 // PRODUCTO
+
+app.get('/crearProducto', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearProducto.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.post('/crearProducto', productoController.crearProducto);
+
+app.get('/productos', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'productos.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/api/productos', productoController.traerProductos);
+
+app.get('/producto/:idProducto', productoController.mostrarProducto);
+
+app.get('/modificarProducto', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'modificarProducto.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.post('/modificarProducto', productoController.modificarProducto);
+
+app.post('/eliminarProducto', productoController.eliminarProducto);
+
+app.get('/api/productos/filtrados', productoController.traerProductosFiltrados);
+
 
 const PORT = 3000;
 app.listen(PORT, () => {

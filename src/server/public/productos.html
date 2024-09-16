@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Productos</title>
+    <link rel="stylesheet" href="/css/tienda.css">
+</head>
+<body>
+    <header>
+        <h1>Lista de Productos</h1>
+    </header>
+
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/crearProducto">Crear Producto</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+    
+    <div id="popup"></div>
+    
+    <div class="container">
+        <form id="filter-form">
+            <label for="idProducto-filter">Filtrar por ID Producto:</label>
+            <input type="text" id="idProducto-filter" name="idProducto" placeholder="Escribe el ID Producto">
+            
+            <label for="nombre-filter">Filtrar por Nombre:</label>
+            <input type="text" id="nombre-filter" name="nombre-filter" placeholder="Escribe el Nombre del Producto">
+            
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+    <div class="container colPrimera">
+        <div class="box c1">ID</div>
+        <div class="box c2">Nombre</div>
+        <div class="box c3">Foto</div>
+        <div class="box c4">Color</div>
+        <div class="box c5">Código</div>
+        <div class="box c6"></div>
+    </div>
+
+    <div id="rellenarProductos"></div>
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/producto.js"></script>
+</body>
+</html>

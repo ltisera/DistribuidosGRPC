@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Producto</title>
+    <link rel="stylesheet" href="/css/crearTienda.css">
+    
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear Producto</h1>
+        <form id="createProductoForm" action="/crearProducto" method="post">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="foto">Foto:</label>
+            <input type="text" id="foto" name="foto" required>
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" required>
+            
+            <label for="codigo">Codigo:</label>
+            <input type="text" id="codigo" name="codigo" required>
+            
+
+            <button type="submit">Crear Producto</button>
+        </form>
+    </div>
+    <script src="/js/crearProducto.js"></script>
+</body>
+</html>
