@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Tienda</title>
+    <link rel="stylesheet" href="/css/crearTienda.css">
+    
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear Tienda</h1>
+        <form id="createTiendaForm" action="/crearTienda" method="post">
+            <label for="direccion">Direccion:</label>
+            <input type="text" id="direccion" name="direccion" required>
+
+            <label for="ciudad">Ciudad:</label>
+            <input type="text" id="ciudad" name="ciudad" required>
+
+            <label for="provincia">Provincia:</label>
+            <input type="text" id="provincia" name="provincia" required>
+
+            <label for="habilitado">Habilitado:</label>
+            <select id="habilitado" name="habilitado" required>
+                <option value="true">Sí</option>
+                <option value="false">No</option>
+            </select>
+
+            <button type="submit">Crear Tienda</button>
+        </form>
+    </div>
+    <script src="/js/crearTienda.js"></script>
+</body>
+</html>
