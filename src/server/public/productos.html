@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Productos</title>
+    <link rel="stylesheet" href="/css/producto.css">
+</head>
+<body>
+    <header>
+        <h1>Lista de Productos</h1>
+    </header>
+
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/tienda">Tienda</a>
+        <a href="/productos">Producto</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+    
+    <div id="popup"></div>
+    
+    <div class="container">
+        <form id="filter-form">
+            <label for="nombre-filter">Filtrar por nombre:</label>
+            <input type="text" id="nombre-filter" name="nombre" placeholder="Escribe el nombre">
+            
+            <label for="codigo-filter">Filtrar por codigo:</label>
+            <input type="text" id="codigo-filter" name="codigo" placeholder="Escribe el codigo">
+            
+            <label for="talle-filter">Filtrar por talle:</label>
+            <input type="text" id="talle-filter" name="talle" placeholder="Escribe el talle">
+            
+            <label for="color-filter">Filtrar por color:</label>
+            <input type="text" id="color-filter" name="color" placeholder="Escribe el color">
+            
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+    <div class="container colPrimera">
+        <div class="box c1">Foto</div>
+        <div class="box c1">ID</div>
+        <div class="box c2">Codigo</div>
+        <div class="box c3">Nombre</div>
+        <div class="box c4">Color</div>
+        <div class="box c5">Talle</div>
+        <div class="box c6"></div>
+    </div>
+
+    <div id="rellenarProductos"></div>
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/producto.js"></script>
+</body>
+</html>

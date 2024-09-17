@@ -54,6 +54,11 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.TraerTodosLosProductosRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosResponse.FromString,
                 _registered_method=True)
+        self.TraerTodosLosProductosFiltrados = channel.unary_unary(
+                '/producto.Producto/TraerTodosLosProductosFiltrados',
+                request_serializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
+                response_deserializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
+                _registered_method=True)
         self.TraerTodosLosProductosPorNombre = channel.unary_unary(
                 '/producto.Producto/TraerTodosLosProductosPorNombre',
                 request_serializer=producto__pb2.TraerTodosLosProductosPorNombreRequest.SerializeToString,
@@ -98,6 +103,12 @@ class ProductoServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def TraerTodosLosProductos(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TraerTodosLosProductosFiltrados(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -149,6 +160,11 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.TraerTodosLosProductos,
                     request_deserializer=producto__pb2.TraerTodosLosProductosRequest.FromString,
                     response_serializer=producto__pb2.TraerTodosLosProductosResponse.SerializeToString,
+            ),
+            'TraerTodosLosProductosFiltrados': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerTodosLosProductosFiltrados,
+                    request_deserializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.FromString,
+                    response_serializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.SerializeToString,
             ),
             'TraerTodosLosProductosPorNombre': grpc.unary_unary_rpc_method_handler(
                     servicer.TraerTodosLosProductosPorNombre,
@@ -279,6 +295,33 @@ class Producto(object):
             '/producto.Producto/TraerTodosLosProductos',
             producto__pb2.TraerTodosLosProductosRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def TraerTodosLosProductosFiltrados(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/TraerTodosLosProductosFiltrados',
+            producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
+            producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
             options,
             channel_credentials,
             insecure,

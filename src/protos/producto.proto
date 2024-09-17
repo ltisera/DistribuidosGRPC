@@ -7,6 +7,7 @@ service Producto {
   rpc ModificarProducto(ModificarProductoRequest) returns (ModificarProductoResponse) {}
   rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
   rpc TraerTodosLosProductos(TraerTodosLosProductosRequest) returns (TraerTodosLosProductosResponse) {}
+  rpc TraerTodosLosProductosFiltrados(TraerTodosLosProductosFiltradosRequest) returns (TraerTodosLosProductosFiltradosResponse) {}
   rpc TraerTodosLosProductosPorNombre(TraerTodosLosProductosPorNombreRequest) returns (TraerTodosLosProductosPorNombreResponse) {}
   rpc TraerTodosLosProductosPorTalle(TraerTodosLosProductosPorTalleRequest) returns (TraerTodosLosProductosPorTalleResponse) {}
   rpc TraerTodosLosProductosPorColor(TraerTodosLosProductosPorColorRequest) returns (TraerTodosLosProductosPorColorResponse) {}
@@ -14,9 +15,12 @@ service Producto {
 }
 
 message ProductoGrpcDTO {
-  int64 id = 1;
+  int64 idProducto = 1;
   string nombre = 2;
   string foto = 3;
+  string color = 4;
+  string codigo = 5;
+  string talle = 6;
 }
 
 message AgregarProductoRequest {
@@ -84,4 +88,15 @@ message TraerProductoPorCodigoRequest {
 
 message TraerProductoPorCodigoResponse {
     ProductoGrpcDTO productoGrpcDTO = 1;
+}
+
+message TraerTodosLosProductosFiltradosRequest {
+  string nombre = 1;
+  string codigo = 2;
+  string talle = 3;
+  string color = 4;
+}
+
+message TraerTodosLosProductosFiltradosResponse {
+  ProductoList productoList = 1;
 }

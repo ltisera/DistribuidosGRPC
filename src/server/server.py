@@ -18,10 +18,12 @@ from protos import usuario_pb2
 from protos import usuario_pb2_grpc
 from protos import tienda_pb2
 from protos import tienda_pb2_grpc
+from protos import producto_pb2
+from protos import producto_pb2_grpc
 
 from DAO.tiendaDAO import TiendaDAO
 from DAO.usuarioDAO import UsuarioDAO
-
+from DAO.productoDAO import ProductoDAO
 
 # USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
@@ -298,11 +300,142 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return tienda_pb2.TraerTodasLasTiendasFiltradasResponse()
+        
+
+# PRODUCTO
+class ProductoServicer(producto_pb2_grpc.ProductoServicer):
+    def AgregarProducto(self, request, context):
+        try:
+            idProducto = request.productoGrpcDTO.idProducto
+            nombre = request.productoGrpcDTO.nombre
+            foto = request.productoGrpcDTO.foto
+            color = request.productoGrpcDTO.color
+            codigo = request.productoGrpcDTO.codigo
+            talle = request.productoGrpcDTO.talle
+
+            tdao = ProductoDAO()
+            idProducto = tdao.agregarProducto(idProducto, nombre, foto, color, codigo, talle)
+            return producto_pb2.AgregarProductoResponse(idProducto = idProducto)
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.AgregarProductoResponse()
+        
+    def ObtenerProducto(self, request, context):
+        try:
+            tdao = ProductoDAO()
+            idProducto = request.idProducto
+            producto = tdao.obtenerProducto(idProducto)
+
+
+            if producto is None:
+                context.set_code(grpc.StatusCode.NOT_FOUND)
+                context.set_details(f'Producto con id {idProducto} no encontrado.')
+                return producto_pb2.ObtenerProductoResponse()
+
+            producto_dto = producto_pb2.ProductoGrpcDTO(
+                    idProducto=producto[0],
+                    nombre=producto[1],
+                    foto=producto[2],
+                    color=producto[3],
+                    codigo=producto[4],
+                    talle=producto[5]
+                ) 
+
+            response = producto_pb2.ObtenerProductoResponse(productoGrpcDTO=producto_dto)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.ObtenerProductoResponse()
+
+    def ModificarProducto(self, request, context):
+        try:
+            idProducto = request.productoGrpcDTO.idProducto
+            nombre = request.productoGrpcDTO.nombre
+            foto = request.productoGrpcDTO.foto
+            color = request.productoGrpcDTO.color
+            codigo = request.productoGrpcDTO.codigo
+            talle = request.productoGrpcDTO.talle
+
+            tdao = ProductoDAO()
+            idProducto = tdao.modificarProducto(idProducto, nombre, foto, color, codigo, talle)
+            response = producto_pb2.ModificarProductoResponse(idProducto=idProducto)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.ModificarProductoResponse()
+
+    def EliminarProducto(self, request, context):
+        try:
+            idProducto = request.idProducto
+
+            tdao = ProductoDAO()
+            idProducto = tdao.eliminarProducto(idProducto)
+            response = producto_pb2.EliminarProductoResponse(idProducto=idProducto)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.EliminarProductoResponse()
+
+    def TraerTodosLosProductos(self, request, context):
+        try:
+            tdao = ProductoDAO()
+            productos = tdao.traerTodosLosProductos()
+            producto_list = producto_pb2.ProductoList()
+            for producto in productos:
+                producto_dto = producto_pb2.ProductoGrpcDTO(
+                    idProducto=producto[0],
+                    nombre=producto[1],
+                    foto=producto[2],
+                    color=producto[3],
+                    codigo=producto[4],
+                    talle=producto[5],
+                )
+                producto_list.productos.append(producto_dto)
+            response = producto_pb2.TraerTodosLosProductosResponse(productoList=producto_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.TraerTodosLosProductosResponse()
+        
+    def TraerTodosLosProductosFiltrados(self, request, context):
+        try:
+            nombre = request.nombre
+            codigo = request.codigo
+            talle = request.talle
+            color = request.color
+            tdao = ProductoDAO()
+            productos = tdao.traerTodosLosProductosFiltrados(nombre, codigo, talle, color)
+            producto_list = producto_pb2.ProductoList()
+            print(productos)
+            if productos:
+                for producto in productos:
+                    producto_dto = producto_pb2.ProductoGrpcDTO(
+                        idProducto=producto[0],
+                        nombre=producto[1],
+                        foto=producto[2],
+                        color=producto[3],
+                        codigo=producto[4],
+                        talle=producto[5],
+                    )
+                    producto_list.productos.append(producto_dto)
+
+            response = producto_pb2.TraerTodosLosProductosFiltradosResponse(productoList=producto_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.TraerTodosLosProductosFiltradosResponse()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     usuario_pb2_grpc.add_UsuarioServicer_to_server(UsuarioServicer(), server)
     tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
+    producto_pb2_grpc.add_ProductoServicer_to_server(ProductoServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC iniciado en el puerto 50051")
