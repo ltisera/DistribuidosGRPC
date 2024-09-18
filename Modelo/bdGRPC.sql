@@ -59,7 +59,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `bdGRPC`.`Producto` (
   `idProducto` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
-  `foto` VARCHAR(45) NULL,
+  `foto` VARCHAR(450) NULL,
   `color` VARCHAR(45) NULL,
   `codigo` VARCHAR(45) NULL,
   `habilitado` TINYINT NULL,
@@ -126,3 +126,4 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 INSERT INTO `bdgrpc`.`tienda` (`direccion`, `ciudad`, `provincia`, `habilitado`) VALUES ('UnaTienda', 'City ', 'Alguna', TRUE);
 INSERT INTO `bdgrpc`.`usuario` (`usuario`, `password`, `nombre`, `apellido`, `habilitado`, `casaCentral`, `Tienda_idTienda`) VALUES ( 'root', 'root', 'root', 'root', TRUE, TRUE, '1');
+INSERT INTO `bdgrpc`.`producto` (`nombre`, `foto`, `color`, `codigo`, `habilitado`) VALUES ('remera', 'https://dcdn.mitiendanube.com/stores/002/140/898/products/remera-azul1-f298c4d74417595e9616513267212895-640-0.jpg', 'azul', 'vasdga', '1');
