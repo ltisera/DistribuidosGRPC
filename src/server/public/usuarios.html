@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Usuarios</title>
-    <link rel="stylesheet" href="/css/usuario.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    
 </head>
 <body>
     <header>
@@ -21,23 +22,25 @@
 
     <div id="popup"></div>
 
-    <div class="container">
-        <form id="filter-form">
-            <label for="nombre-filter">Filtrar por Nombre:</label>
-            <input type="text" id="nombre-filter" name="nombre" placeholder="Escribe nombre">
-            
-            <label for="tienda-filter">Filtrar por Tienda:</label>
-            <input type="text" id="tienda-filter" name="idTienda" placeholder="Escribe idTienda">
-            
-            <button type="submit">Filtrar</button>
-        </form>
+    <div class="containerL">
+        <div class="colFiltro">
+            <form id="filter-form">
+                <label for="nombre-filter">Filtrar por Nombre:</label>
+                <input type="text" id="nombre-filter" name="nombre" placeholder="Escribe nombre">
+                
+                <label for="tienda-filter">Filtrar por Tienda:</label>
+                <input type="text" id="tienda-filter" name="idTienda" placeholder="Escribe idTienda">
+                
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
     </div>
     <div class="container colPrimera">
         <div class="box c1">ID</div>
         <div class="box c2">Usuario</div>
         <div class="box c3">Nombre</div>
         <div class="box c4">Apellido</div>
-        <div class="box c5">Casa Central</div>
+        <div class="box c5">C. Central</div>
         <div class="box c5">Tienda</div>
         <div class="box c5">Habilitado</div>
         <div class="box c6"></div>

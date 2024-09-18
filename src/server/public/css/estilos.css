@@ -107,6 +107,15 @@ body {
     flex-flow: row wrap;
     margin: auto;
 }
+.containerL {
+    display: flex;
+    justify-content:left;
+    margin-left: 10px;
+    margin-right: 20px;
+    max-width: 1600px;    
+    flex-flow: row wrap;
+    margin: auto;
+}
 
 .box {
     padding: 1px;
@@ -173,8 +182,14 @@ body {
 .colPrimera{
     background-color:#383737;
     color: #ffffff;
+    
+}
+.colFiltro{
+    background-color:#383737;
+    color: #ffffff;
     padding: 5px;
-    margin-top: 10px;
+    border-top-right-radius: 5px;
+    
 }
 .col1{
     background-color: #f4f4f4;
