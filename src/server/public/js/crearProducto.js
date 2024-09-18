@@ -10,11 +10,14 @@ async function agregarTiendasALista(){
         const listaTienda = document.querySelector('#listaTiendas');
         listaTienda.innerHTML = ``
 
-        tiendas.forEach(tienda => {
+        tiendas.forEach((tienda, index) => {
             listaTienda.innerHTML += `
-            <div class="tienda">
-                <span class="textoTienda">${tienda.idTienda}&nbsp;${tienda.direccion}</span>
-                <input type="checkbox" id="${tienda.idTienda}" name="${tienda.idTienda}">
+            <div class="tienda col${1 + index%2}">
+                <div class="textoTienda">${tienda.idTienda} ${tienda.provincia}, ${tienda.ciudad}, ${tienda.direccion}</div>
+                <div>
+                    <input type="checkbox" class="chckTienda" id="${tienda.idTienda}" name="${tienda.idTienda}">
+                </div>
+                
             </div>
         `});
     })

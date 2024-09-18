@@ -1,6 +1,14 @@
 .listaTiendas {
     display: flex;
     flex-direction: column;
+    
+}
+.listaGeneral {
+    display: flex;
+    flex-direction: column;
+    border: solid 1px #383737;
+    padding: 5px;
+    border-radius: 4px;
 }
 
 .tienda {
@@ -8,4 +16,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+}
+.chckTienda{
+    margin-top: 10px;
 }
