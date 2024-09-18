@@ -1,6 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('createProductoForm').addEventListener('submit', handleSubmit);
+    agregarTiendasALista();
 });
+
+async function agregarTiendasALista(){
+    fetch('/api/tiendas')
+    .then(response => response.json())
+    .then(tiendas => {
+        const listaTienda = document.querySelector('#listaTiendas');
+        listaTienda.innerHTML = ``
+
+        tiendas.forEach(tienda => {
+            listaTienda.innerHTML += `
+            <div class="tienda">
+                <span class="textoTienda">${tienda.idTienda}&nbsp;${tienda.direccion}</span>
+                <input type="checkbox" id="${tienda.idTienda}" name="${tienda.idTienda}">
+            </div>
+        `});
+    })
+    .catch(error => {
+        console.error('Error al cargar la lista de tiendas:', error);
+    });
+}
 
 async function handleSubmit(event) {
     event.preventDefault();  // Evita el comportamiento predeterminado de enviar el formulario

@@ -1,0 +1,11 @@
+.listaTiendas {
+    display: flex;
+    flex-direction: column;
+}
+
+.tienda {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
