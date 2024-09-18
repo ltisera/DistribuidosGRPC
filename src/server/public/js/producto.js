@@ -90,7 +90,10 @@ function fetchProductos() {
             }
             var nuevaDiv = `
             <div class="container col${1 + (index % 2)}">
-                <div class="box c1 ${bordeB} bordeR">${producto.foto}</div>
+                <div class="box ${bordeB}">
+                    <img class="box cajaFoto" src=${producto.foto}></img>
+                </div>
+                
                 <div class="box c1 ${bordeB} bordeR">${producto.idProducto}</div>
                 <div class="box c2 ${bordeB}">${producto.codigo}</div>
                 <div class="box c3 ${bordeB}">${producto.nombre}</div>
