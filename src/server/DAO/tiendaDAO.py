@@ -19,9 +19,9 @@ class TiendaDAO(ConexionBD):
                 print("Ya existe una tienda con ese código.")
                 return 0
             
-            sql = ("INSERT INTO tienda (idTienda, direccion, ciudad, provincia, habilitado)"
-                   "VALUES (%s, %s, %s, %s, %s)")
-            values = (idTienda, direccion, ciudad, provincia, habilitado)
+            sql = ("INSERT INTO tienda (direccion, ciudad, provincia, habilitado)"
+                   "VALUES (%s, %s, %s, %s)")
+            values = (direccion, ciudad, provincia, habilitado)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Tienda agregada con éxito.")

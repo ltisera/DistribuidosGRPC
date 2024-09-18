@@ -2,6 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 
 from settings.conexionDB import ConexionBD
+from DAO.stockDAO import StockDAO
 
 class ProductoDAO(ConexionBD):
     def __init__(self):
@@ -19,12 +20,14 @@ class ProductoDAO(ConexionBD):
                 print("Ya existe un producto con ese codigo.")
                 return 0
             
-            sql = ("INSERT INTO producto (idProducto, nombre, foto, color, codigo, habilitado)"
-                   "VALUES (%s, %s, %s, %s, %s, %s)")
-            values = (idProducto, nombre, foto, color, codigo, habilitado)
+            sql = ("INSERT INTO producto (nombre, foto, color, codigo, habilitado)"
+                   "VALUES (%s, %s, %s, %s, %s)")
+            values = (nombre, foto, color, codigo, habilitado)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Producto agregada con éxito.")
+            sdao = StockDAO()
+            sdao.agregarStock(1, 0,talle, self._micur.lastrowid )
             return self._micur.lastrowid 
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -113,7 +116,7 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductos(self):
         try:
             self.crearConexion()
-            sql = ("SELECT *, 'S' AS talle FROM producto")
+            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto;")
             self._micur.execute(sql)
             resultados = self._micur.fetchall()
             return resultados
@@ -131,7 +134,7 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductosFiltrados(self, nombre, codigo, talle, color):
         try:
             self.crearConexion()
-            sql = "SELECT *, 'S' AS talle FROM producto WHERE 1=1"
+            sql = "SELECT producto.*, stock.talle AS tallE FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE 1=1"
             values = []
             
             if nombre.strip() != "":
