@@ -25,7 +25,7 @@ async function handleSubmit(event) {
             alert("Hubo un error al crear la tienda. Verifica los datos.");
         } else {
             // Redirigir a otra página si la tienda se creó correctamente
-            window.location.href = '/tiendas?mensaje=successAddStore';
+            window.location.href = '/tiendas?mensaje=successAddTienda';
         }
     } catch (error) {
         console.error('Error:', error);

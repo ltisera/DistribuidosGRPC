@@ -209,7 +209,7 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
                 context.set_details(f'Tienda con id {idTienda} no encontrado.')
                 return tienda_pb2.ObtenerTiendaResponse()
 
-            tienda_dto = tienda_pb2.tiendaGrpcDTO(
+            tienda_dto = tienda_pb2.TiendaGrpcDTO(
                     idTienda=tienda[0],
                     direccion=tienda[1],
                     ciudad=tienda[2],

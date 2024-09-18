@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch(`/tienda/${idTienda}`)
         .then(response => response.json())
         .then(data => {
+            document.getElementById('idTiendaTexto').value = data.idTienda;
             document.getElementById('idTienda').value = data.idTienda;
             document.getElementById('direccion').value = data.direccion;
             document.getElementById('ciudad').value = data.ciudad;

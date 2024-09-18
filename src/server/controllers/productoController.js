@@ -24,7 +24,7 @@ function crearProducto(req, res) {
 
     agregarProducto(idProducto, nombre, foto, color, codigo, talle)
     .then(() => {
-        res.redirect('/productos?mensaje=succesAddProducto')
+        res.redirect('/productos?mensaje=successAddProducto')
       })
       .catch((error) => {
         console.error('Error:', error);

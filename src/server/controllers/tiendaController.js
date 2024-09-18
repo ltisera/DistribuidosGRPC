@@ -25,7 +25,7 @@ function crearTienda(req, res) {
 
     agregarTienda(idTienda, direccion, ciudad, provincia, habilitadoBool)
     .then(() => {
-        res.redirect('/tiendas?mensaje=succesAddTienda')
+        res.redirect('/tiendas?mensaje=successAddTienda')
       })
       .catch((error) => {
         console.error('Error:', error);

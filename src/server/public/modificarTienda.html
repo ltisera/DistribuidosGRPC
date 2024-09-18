@@ -10,8 +10,9 @@
     <div class="form-container">
         <h1>Modificar Tienda</h1>
         <form id="editTiendaForm" action="/modificarTienda" method="post">
-            <label for="idTienda">Codigo de Tienda:</label>
-            <input type="text" id="idTienda" name="idTienda" disabled>
+            <label for="idTienda">Código de Tienda:</label>
+            <input type="text" id="idTiendaTexto" disabled>
+            <input type="hidden" id="idTienda" name="idTienda">
 
             <label for="direccion">Direccion:</label>
             <input type="text" id="direccion" name="direccion" required>

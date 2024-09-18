@@ -13,16 +13,6 @@ service Usuario {
 }
 
 message UsuarioGrpcDTO {
-  string usuario = 1;
-  string password = 2;
-  string nombre = 3;
-  string apellido = 4;
-  bool habilitado = 5;
-  bool casaCentral = 6;
-  int64 idTienda = 7;
-}
-
-message UsuarioGrpcDTO {
   int64 idUsuario = 1;
   string usuario = 2;
   string password = 3;
