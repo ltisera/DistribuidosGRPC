@@ -20,9 +20,11 @@ const client = new productoProto.Producto('localhost:50051', grpc.credentials.cr
 // CREAR PRODUCTO
 function crearProducto(req, res) {
   if (req.session.authenticated) {
-    const { idProducto, nombre, foto, color, codigo, talle} = req.body;
+    const { idProducto, nombre, foto, color, codigo, talle, tiendasSeleccionadas} = req.body;
+    
+    const tiendas = JSON.parse(tiendasSeleccionadas);
 
-    agregarProducto(idProducto, nombre, foto, color, codigo, talle)
+    agregarProducto(idProducto, nombre, foto, color, codigo, talle, tiendas)
     .then(response => {
       if (response  === '0') {
         res.status(400).send("El codigo de producto ya existe")
@@ -178,7 +180,7 @@ function traerProductosFiltrados(req, res) {
 }
 
 // AGREGAR PRODUCTO AUXILIAR
-function agregarProducto(idProducto, nombre, foto, color, codigo, talle) {
+function agregarProducto(idProducto, nombre, foto, color, codigo, talle, tiendas) {
   return new Promise((resolve, reject) => {
     const nuevoProducto = {
         idProducto: idProducto,
@@ -190,7 +192,7 @@ function agregarProducto(idProducto, nombre, foto, color, codigo, talle) {
         talle: talle
     };
 
-    const request = { productoGrpcDTO: nuevoProducto };
+    const request = { productoGrpcDTO: nuevoProducto, tiendas: tiendas};
 
     client.AgregarProducto(request, (error, response) => {
       if (error) {

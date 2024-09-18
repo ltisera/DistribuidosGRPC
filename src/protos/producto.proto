@@ -23,6 +23,7 @@ message ProductoGrpcDTO {
 
 message AgregarProductoRequest {
   ProductoGrpcDTO productoGrpcDTO = 1;
+  repeated int64 tiendas = 2;
 }
 
 message AgregarProductoResponse {

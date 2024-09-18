@@ -11,15 +11,17 @@ async function agregarTiendasALista(){
         listaTienda.innerHTML = ``
 
         tiendas.forEach((tienda, index) => {
-            listaTienda.innerHTML += `
-            <div class="tienda col${1 + index%2}">
-                <div class="textoTienda">${tienda.idTienda} ${tienda.provincia}, ${tienda.ciudad}, ${tienda.direccion}</div>
-                <div>
-                    <input type="checkbox" class="chckTienda" id="${tienda.idTienda}" name="${tienda.idTienda}">
+            if (index > 0){
+                listaTienda.innerHTML += `
+                <div class="tienda col${1 + index%2}">
+                    <div class="textoTienda">${tienda.idTienda} ${tienda.provincia}, ${tienda.ciudad}, ${tienda.direccion}</div>
+                    <div>
+                        <input type="checkbox" class="chckTienda" id="${tienda.idTienda}" name="${tienda.idTienda}">
+                    </div>
+                    
                 </div>
-                
-            </div>
-        `});
+            `}
+        });
     })
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);
@@ -30,6 +32,15 @@ async function handleSubmit(event) {
     event.preventDefault();  // Evita el comportamiento predeterminado de enviar el formulario
 
     const formData = new FormData(event.target);  // Recoge los datos del formulario
+
+    // Recoger los checkboxes seleccionados (tiendas)
+    const tiendasSeleccionadas = [];
+    document.querySelectorAll('#listaTiendas input[type="checkbox"]:checked').forEach(checkbox => {
+        tiendasSeleccionadas.push(checkbox.id);  // Asume que el id del checkbox es el id de la tienda
+    });
+
+    formData.append('tiendasSeleccionadas', JSON.stringify(tiendasSeleccionadas));  // Añadir tiendas seleccionadas al formData
+
     const data = new URLSearchParams(formData).toString();  // Convierte los datos a una cadena de URL
 
     try {

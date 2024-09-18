@@ -24,6 +24,7 @@ from protos import producto_pb2_grpc
 from DAO.tiendaDAO import TiendaDAO
 from DAO.usuarioDAO import UsuarioDAO
 from DAO.productoDAO import ProductoDAO
+from DAO.stockDAO import StockDAO
 
 # USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
@@ -312,9 +313,11 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             codigo = request.productoGrpcDTO.codigo
             habilitado = request.productoGrpcDTO.habilitado
             talle = request.productoGrpcDTO.talle
-
             pdao = ProductoDAO()
+            sdao = StockDAO()
             idProducto = pdao.agregarProducto(idProducto, nombre, foto, color, codigo, habilitado, talle)
+            for tienda in request.tiendas:
+                sdao.agregarStock(tienda,0,talle,idProducto)
             return producto_pb2.AgregarProductoResponse(idProducto = idProducto)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -385,7 +388,7 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
     def TraerTodosLosProductos(self, request, context):
         try:
             pdao = ProductoDAO()
-            productos = pdao.traerTodosLosProductos()
+            productos = pdao.traerTodosLosProductos(1)
             producto_list = producto_pb2.ProductoList()
             for producto in productos:
                 producto_dto = producto_pb2.ProductoGrpcDTO(
@@ -412,7 +415,7 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             talle = request.talle
             color = request.color
             pdao = ProductoDAO()
-            productos = pdao.traerTodosLosProductosFiltrados(nombre, codigo, talle, color)
+            productos = pdao.traerTodosLosProductosFiltrados(1,nombre, codigo, talle, color)
             producto_list = producto_pb2.ProductoList()
             if productos:
                 for producto in productos:

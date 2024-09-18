@@ -16,7 +16,6 @@ class StockDAO(ConexionBD):
             values = (idTienda, cantidad, talle, idProducto)
             self._micur.execute(sql, values)
             self._bd.commit()
-            print("Stock agregada con éxito.")
             return self._micur.lastrowid 
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")

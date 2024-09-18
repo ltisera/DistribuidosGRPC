@@ -113,11 +113,12 @@ class ProductoDAO(ConexionBD):
         
         return None
     
-    def traerTodosLosProductos(self):
+    def traerTodosLosProductos(self, idTienda):
         try:
             self.crearConexion()
-            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto;")
-            self._micur.execute(sql)
+            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s")
+            values = [idTienda]
+            self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
             return resultados
         except mysql.connector.errors.IntegrityError as err:
@@ -131,11 +132,11 @@ class ProductoDAO(ConexionBD):
         
         return None
     
-    def traerTodosLosProductosFiltrados(self, nombre, codigo, talle, color):
+    def traerTodosLosProductosFiltrados(self, idTienda, nombre, codigo, talle, color):
         try:
             self.crearConexion()
-            sql = "SELECT producto.*, stock.talle AS tallE FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE 1=1"
-            values = []
+            sql = "SELECT producto.*, stock.talle AS tallE FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s"
+            values = [idTienda]
             
             if nombre.strip() != "":
                 sql += " AND nombre LIKE %s"
@@ -145,7 +146,9 @@ class ProductoDAO(ConexionBD):
                 sql += " AND codigo LIKE %s"
                 values.append(codigo)
 
-            #implementar talle
+            if talle.strip() != "":
+                sql += " AND stock.talle LIKE %s"
+                values.append(talle)
 
             if color.strip() != "":
                 sql += " AND color LIKE %s"
