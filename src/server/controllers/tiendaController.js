@@ -20,10 +20,9 @@ const client = new tiendaProto.Tienda('localhost:50051', grpc.credentials.create
 // CREAR TIENDA
 function crearTienda(req, res) {
   if (req.session.authenticated) {
-    const { idTienda, direccion, ciudad, provincia, habilitado} = req.body;
-    const habilitadoBool = (habilitado == "true");
+    const { idTienda, direccion, ciudad, provincia} = req.body;
 
-    agregarTienda(idTienda, direccion, ciudad, provincia, habilitadoBool)
+    agregarTienda(idTienda, direccion, ciudad, provincia)
     .then(() => {
         res.redirect('/tiendas?mensaje=successAddTienda')
       })
@@ -58,14 +57,14 @@ function mostrarTienda(req, res) {
 // MODIFICAR TIENDA
 function modificarTienda(req, res) {
   if (req.session.authenticated) {
-    const { idTienda, direccion, ciudad, provincia, habilitado} = req.body;
+    const { idTienda, direccion, ciudad, provincia} = req.body;
 
     const tiendaActualizar = {
         idTienda: parseInt(idTienda, 10),
         direccion,
         ciudad,
         provincia,
-        habilitado: habilitado === 'true',
+        habilitado: true
     };
     client.ModificarTienda({ tiendaGrpcDTO: tiendaActualizar }, (error, response) => {
         if (error) {
@@ -171,14 +170,14 @@ function traerTiendasFiltradas(req, res) {
 }
 
 // AGREGAR TIENDA AUXILIAR
-function agregarTienda(idTienda, direccion, ciudad, provincia, habilitado) {
+function agregarTienda(idTienda, direccion, ciudad, provincia) {
   return new Promise((resolve, reject) => {
     const nuevaTienda = {
         idTienda: idTienda,
         direccion: direccion,
         ciudad: ciudad,
         provincia: provincia,
-        habilitado: habilitado
+        habilitado: true
     };
 
     const request = { tiendaGrpcDTO: nuevaTienda };

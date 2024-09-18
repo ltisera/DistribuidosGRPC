@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('direccion').value = data.direccion;
             document.getElementById('ciudad').value = data.ciudad;
             document.getElementById('provincia').value = data.provincia;
-            document.getElementById('habilitado').value = data.habilitado.toString();
         })
         .catch(error => {
             console.error('Error al cargar los datos de la tienda:', error);

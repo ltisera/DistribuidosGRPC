@@ -55,10 +55,9 @@ function cerrarSesion(req, res) {
 function crearUsuario(req, res) {
   if (req.session.authenticated) {
     const { usuario, password, nombre, apellido, casaCentral, idTienda } = req.body;
-    const habilitadoBool = true;
     const casaCentralBool = casaCentral === 'on';
 
-    agregarUsuario(usuario, password, nombre, apellido, habilitadoBool, casaCentralBool, parseInt(idTienda, 10))
+    agregarUsuario(usuario, password, nombre, apellido, casaCentralBool, parseInt(idTienda, 10))
     .then(response => {
         if (response  === '-1') {
           res.status(400).send("La tienda no existe")
@@ -99,7 +98,7 @@ function mostrarUsuario(req, res) {
 // MODIFICAR USUARIO
 function modificarUsuario(req, res) {
   if (req.session.authenticated) {
-    const { userId, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda } = req.body;
+    const { userId, usuario, password, nombre, apellido, casaCentral, idTienda } = req.body;
 
     const usuarioActualizar = {
         idUsuario: parseInt(userId, 10),
@@ -107,7 +106,7 @@ function modificarUsuario(req, res) {
         password,
         nombre,
         apellido,
-        habilitado: habilitado === 'true',
+        habilitado: true,
         casaCentral: casaCentral === 'true',
         idTienda: parseInt(idTienda, 10)
     };
@@ -159,6 +158,9 @@ function traerUsuarios(req, res) {
           const usuarios = response.usuarioList.usuarios.map(usuario => ({
             idUsuario: usuario.idUsuario,
             usuario: usuario.usuario,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            casaCentral: usuario.casaCentral,
             tienda: usuario.idTienda,
             habilitado: usuario.habilitado
           }));
@@ -197,6 +199,9 @@ function traerUsuariosFiltrados(req, res) {
           const usuarios = response.usuarioList.usuarios.map(usuario => ({
             idUsuario: usuario.idUsuario,
             usuario: usuario.usuario,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            casaCentral: usuario.casaCentral,
             tienda: usuario.idTienda,
             habilitado: usuario.habilitado
           }));
@@ -216,14 +221,14 @@ function traerUsuariosFiltrados(req, res) {
 }
 
 // AGREGAR USUARIO AUXILIAR
-function agregarUsuario(usuario, password, nombre, apellido, habilitado, casaCentral, idTienda) {
+function agregarUsuario(usuario, password, nombre, apellido, casaCentral, idTienda) {
   return new Promise((resolve, reject) => {
     const nuevoUsuario = {
       usuario: usuario,
       password: password,
       nombre: nombre,
       apellido: apellido,
-      habilitado: habilitado,
+      habilitado: true,
       casaCentral: casaCentral,
       idTienda: idTienda
     };

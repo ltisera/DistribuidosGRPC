@@ -97,9 +97,6 @@ class UsuarioDAO(ConexionBD):
                 print("El nombre de usuario ya existe.")
                 return 0
 
-            habilitado = int(habilitado)
-            casaCentral = int(casaCentral)
-
             sql = ("UPDATE usuario SET usuario = %s, password = %s, nombre = %s, apellido = %s, habilitado = %s, casaCentral = %s, Tienda_idTienda = %s WHERE idUsuario = %s")
             values = (usuario, password, nombre, apellido, habilitado, casaCentral, idTienda, idUsuario)
 

@@ -94,8 +94,9 @@ function fetchProductos() {
                 <div class="box c1 ${bordeB} bordeR">${producto.idProducto}</div>
                 <div class="box c2 ${bordeB}">${producto.codigo}</div>
                 <div class="box c3 ${bordeB}">${producto.nombre}</div>
-                <div class="box c4 ${bordeB} bordeR">${producto.color}</div>
-                <div class="box c5 ${bordeB}">${producto.talle}</div>       
+                <div class="box c4 ${bordeB}">${producto.color}</div>
+                <div class="box c5 ${bordeB} bordeR">${producto.talle}</div>
+                <div class="box c5 ${bordeB}">${producto.habilitado ? 'Sí' : 'No'}</div>             
                 <div class="box c6 ${bordeB}">
                     <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}')">Modificar</button>
                     <button class="btn-delete" onclick="deleteProducto('${producto.idProducto}')">Eliminar</button>

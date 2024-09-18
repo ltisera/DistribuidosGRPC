@@ -310,10 +310,11 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             foto = request.productoGrpcDTO.foto
             color = request.productoGrpcDTO.color
             codigo = request.productoGrpcDTO.codigo
+            habilitado = request.productoGrpcDTO.habilitado
             talle = request.productoGrpcDTO.talle
 
             pdao = ProductoDAO()
-            idProducto = pdao.agregarProducto(idProducto, nombre, foto, color, codigo, talle)
+            idProducto = pdao.agregarProducto(idProducto, nombre, foto, color, codigo, habilitado, talle)
             return producto_pb2.AgregarProductoResponse(idProducto = idProducto)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -338,7 +339,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
                     foto=producto[2],
                     color=producto[3],
                     codigo=producto[4],
-                    talle=producto[5]
+                    habilitado=producto[5],
+                    talle=producto[6]
                 ) 
 
             response = producto_pb2.ObtenerProductoResponse(productoGrpcDTO=producto_dto)
@@ -355,10 +357,11 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             foto = request.productoGrpcDTO.foto
             color = request.productoGrpcDTO.color
             codigo = request.productoGrpcDTO.codigo
+            habilitado = request.productoGrpcDTO.habilitado
             talle = request.productoGrpcDTO.talle
 
             pdao = ProductoDAO()
-            idProducto = pdao.modificarProducto(idProducto, nombre, foto, color, codigo, talle)
+            idProducto = pdao.modificarProducto(idProducto, nombre, foto, color, codigo, habilitado, talle)
             response = producto_pb2.ModificarProductoResponse(idProducto=idProducto)
             return response
         except Exception as e:
@@ -391,7 +394,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
                     foto=producto[2],
                     color=producto[3],
                     codigo=producto[4],
-                    talle=producto[5],
+                    habilitado=producto[5],
+                    talle=producto[6],
                 )
                 producto_list.productos.append(producto_dto)
             response = producto_pb2.TraerTodosLosProductosResponse(productoList=producto_list)
@@ -418,7 +422,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
                         foto=producto[2],
                         color=producto[3],
                         codigo=producto[4],
-                        talle=producto[5],
+                        habilitado=producto[5],
+                        talle=producto[6],
                     )
                     producto_list.productos.append(producto_dto)
 

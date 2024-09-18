@@ -39,6 +39,11 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.AgregarProductoRequest.SerializeToString,
                 response_deserializer=producto__pb2.AgregarProductoResponse.FromString,
                 _registered_method=True)
+        self.ObtenerProducto = channel.unary_unary(
+                '/producto.Producto/ObtenerProducto',
+                request_serializer=producto__pb2.ObtenerProductoRequest.SerializeToString,
+                response_deserializer=producto__pb2.ObtenerProductoResponse.FromString,
+                _registered_method=True)
         self.ModificarProducto = channel.unary_unary(
                 '/producto.Producto/ModificarProducto',
                 request_serializer=producto__pb2.ModificarProductoRequest.SerializeToString,
@@ -59,32 +64,18 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
                 _registered_method=True)
-        self.TraerTodosLosProductosPorNombre = channel.unary_unary(
-                '/producto.Producto/TraerTodosLosProductosPorNombre',
-                request_serializer=producto__pb2.TraerTodosLosProductosPorNombreRequest.SerializeToString,
-                response_deserializer=producto__pb2.TraerTodosLosProductosPorNombreResponse.FromString,
-                _registered_method=True)
-        self.TraerTodosLosProductosPorTalle = channel.unary_unary(
-                '/producto.Producto/TraerTodosLosProductosPorTalle',
-                request_serializer=producto__pb2.TraerTodosLosProductosPorTalleRequest.SerializeToString,
-                response_deserializer=producto__pb2.TraerTodosLosProductosPorTalleResponse.FromString,
-                _registered_method=True)
-        self.TraerTodosLosProductosPorColor = channel.unary_unary(
-                '/producto.Producto/TraerTodosLosProductosPorColor',
-                request_serializer=producto__pb2.TraerTodosLosProductosPorColorRequest.SerializeToString,
-                response_deserializer=producto__pb2.TraerTodosLosProductosPorColorResponse.FromString,
-                _registered_method=True)
-        self.TraerProductoPorCodigo = channel.unary_unary(
-                '/producto.Producto/TraerProductoPorCodigo',
-                request_serializer=producto__pb2.TraerProductoPorCodigoRequest.SerializeToString,
-                response_deserializer=producto__pb2.TraerProductoPorCodigoResponse.FromString,
-                _registered_method=True)
 
 
 class ProductoServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AgregarProducto(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ObtenerProducto(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -114,30 +105,6 @@ class ProductoServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def TraerTodosLosProductosPorNombre(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def TraerTodosLosProductosPorTalle(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def TraerTodosLosProductosPorColor(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def TraerProductoPorCodigo(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_ProductoServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -145,6 +112,11 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.AgregarProducto,
                     request_deserializer=producto__pb2.AgregarProductoRequest.FromString,
                     response_serializer=producto__pb2.AgregarProductoResponse.SerializeToString,
+            ),
+            'ObtenerProducto': grpc.unary_unary_rpc_method_handler(
+                    servicer.ObtenerProducto,
+                    request_deserializer=producto__pb2.ObtenerProductoRequest.FromString,
+                    response_serializer=producto__pb2.ObtenerProductoResponse.SerializeToString,
             ),
             'ModificarProducto': grpc.unary_unary_rpc_method_handler(
                     servicer.ModificarProducto,
@@ -165,26 +137,6 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.TraerTodosLosProductosFiltrados,
                     request_deserializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.FromString,
                     response_serializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.SerializeToString,
-            ),
-            'TraerTodosLosProductosPorNombre': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerTodosLosProductosPorNombre,
-                    request_deserializer=producto__pb2.TraerTodosLosProductosPorNombreRequest.FromString,
-                    response_serializer=producto__pb2.TraerTodosLosProductosPorNombreResponse.SerializeToString,
-            ),
-            'TraerTodosLosProductosPorTalle': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerTodosLosProductosPorTalle,
-                    request_deserializer=producto__pb2.TraerTodosLosProductosPorTalleRequest.FromString,
-                    response_serializer=producto__pb2.TraerTodosLosProductosPorTalleResponse.SerializeToString,
-            ),
-            'TraerTodosLosProductosPorColor': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerTodosLosProductosPorColor,
-                    request_deserializer=producto__pb2.TraerTodosLosProductosPorColorRequest.FromString,
-                    response_serializer=producto__pb2.TraerTodosLosProductosPorColorResponse.SerializeToString,
-            ),
-            'TraerProductoPorCodigo': grpc.unary_unary_rpc_method_handler(
-                    servicer.TraerProductoPorCodigo,
-                    request_deserializer=producto__pb2.TraerProductoPorCodigoRequest.FromString,
-                    response_serializer=producto__pb2.TraerProductoPorCodigoResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -214,6 +166,33 @@ class Producto(object):
             '/producto.Producto/AgregarProducto',
             producto__pb2.AgregarProductoRequest.SerializeToString,
             producto__pb2.AgregarProductoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ObtenerProducto(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/ObtenerProducto',
+            producto__pb2.ObtenerProductoRequest.SerializeToString,
+            producto__pb2.ObtenerProductoResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -322,114 +301,6 @@ class Producto(object):
             '/producto.Producto/TraerTodosLosProductosFiltrados',
             producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TraerTodosLosProductosPorNombre(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/producto.Producto/TraerTodosLosProductosPorNombre',
-            producto__pb2.TraerTodosLosProductosPorNombreRequest.SerializeToString,
-            producto__pb2.TraerTodosLosProductosPorNombreResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TraerTodosLosProductosPorTalle(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/producto.Producto/TraerTodosLosProductosPorTalle',
-            producto__pb2.TraerTodosLosProductosPorTalleRequest.SerializeToString,
-            producto__pb2.TraerTodosLosProductosPorTalleResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TraerTodosLosProductosPorColor(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/producto.Producto/TraerTodosLosProductosPorColor',
-            producto__pb2.TraerTodosLosProductosPorColorRequest.SerializeToString,
-            producto__pb2.TraerTodosLosProductosPorColorResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def TraerProductoPorCodigo(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/producto.Producto/TraerProductoPorCodigo',
-            producto__pb2.TraerProductoPorCodigoRequest.SerializeToString,
-            producto__pb2.TraerProductoPorCodigoResponse.FromString,
             options,
             channel_credentials,
             insecure,

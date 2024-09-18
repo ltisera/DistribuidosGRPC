@@ -78,24 +78,30 @@ function fetchUsuarios() {
     fetch(urlFiltro)
     .then(response => response.json())
     .then(users => {
-        const tableBody = document.querySelector('#users-table tbody');
-        tableBody.innerHTML = '';
+        const divHtml = document.querySelector('#rellenarUsuarios');
+        divHtml.innerHTML = "";;
 
-        users.forEach(user => {
-            const row = document.createElement('tr');
-
-            row.innerHTML = `
-                <td>${user.idUsuario}</td>
-                <td>${user.usuario}</td>
-                <td>${user.habilitado ? 'Sí' : 'No'}</td>
-                <td>${user.tienda}</td>
-                <td>
+        users.forEach((user, index) => {
+            var bordeB = "";
+            if(index === user.length - 1){
+                bordeB = "bordeB"
+            }
+            var nuevaDiv = `
+            <div class="container col${1 + (index % 2)}">
+                <div class="box c1 ${bordeB} bordeR">${user.idUsuario}</div>
+                <div class="box c2 ${bordeB}">${user.usuario}</div>
+                <div class="box c3 ${bordeB}">${user.nombre}</div>
+                <div class="box c4 ${bordeB}">${user.apellido}</div>
+                <div class="box c5 ${bordeB}">${user.casaCentral ? 'Sí' : 'No'}</div>
+                <div class="box c5 ${bordeB} bordeR">${user.tienda}</div>
+                <div class="box c5 ${bordeB}">${user.habilitado ? 'Sí' : 'No'}</div>             
+                <div class="box c6 ${bordeB}">
                     <button class="btn-modify" onclick="modifyUser('${user.idUsuario}')">Modificar</button>
                     <button class="btn-delete" onclick="deleteUser('${user.idUsuario}')">Eliminar</button>
-                </td>
+                </div>
+            </div>
             `;
-
-            tableBody.appendChild(row);
+            divHtml.innerHTML += nuevaDiv;
         });
     })
     .catch(error => {

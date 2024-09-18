@@ -23,8 +23,12 @@ function crearProducto(req, res) {
     const { idProducto, nombre, foto, color, codigo, talle} = req.body;
 
     agregarProducto(idProducto, nombre, foto, color, codigo, talle)
-    .then(() => {
+    .then(response => {
+      if (response  === '0') {
+        res.status(400).send("El codigo de producto ya existe")
+      } else{
         res.redirect('/productos?mensaje=successAddProducto')
+      }
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -58,14 +62,16 @@ function mostrarProducto(req, res) {
 // MODIFICAR PRODUCTO
 function modificarProducto(req, res) {
   if (req.session.authenticated) {
-    const {idProducto, nombre, foto, color, codigo} = req.body;
+    const {idProducto, nombre, foto, color, codigo, talle} = req.body;
 
     const productoActualizar = {
         idProducto: parseInt(idProducto, 10),
         nombre,
         foto,
         color,
-        codigo
+        codigo,
+        habilitado: true,
+        talle
     };
     client.ModificarProducto({ productoGrpcDTO: productoActualizar }, (error, response) => {
         if (error) {
@@ -118,6 +124,7 @@ function traerProductos(req, res) {
             foto: producto.foto,
             color: producto.color,
             codigo: producto.codigo,
+            habilitado: producto.habilitado,
             talle: producto.talle
           }));
           res.json(productos);{}
@@ -152,6 +159,7 @@ function traerProductosFiltrados(req, res) {
             foto: producto.foto,
             color: producto.color,
             codigo: producto.codigo,
+            habilitado: producto.habilitado,
             talle: producto.talle
           }));
           res.json(productos);
@@ -178,6 +186,7 @@ function agregarProducto(idProducto, nombre, foto, color, codigo, talle) {
         foto: foto,
         color: color,
         codigo: codigo,
+        habilitado: true,
         talle: talle
     };
 

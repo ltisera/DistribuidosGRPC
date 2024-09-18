@@ -22,7 +22,7 @@ async function handleSubmit(event) {
         
         // Manejo de la respuesta del servidor
         if (response.status === 400) {
-            alert("Hubo un error al crear el producto. Verifica los datos.");
+            alert(result);
         } else {
             // Redirigir a otra página si el producto se creó correctamente
             window.location.href = '/productos?mensaje=successAddProducto';

@@ -7,21 +7,21 @@ class ProductoDAO(ConexionBD):
     def __init__(self):
         super().__init__()
 
-    def agregarProducto(self, idProducto, nombre, foto, color, codigo, talle):
+    def agregarProducto(self, idProducto, nombre, foto, color, codigo, habilitado, talle):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT COUNT(*) FROM producto WHERE idProducto = %s"
-            self._micur.execute(check_sql, (idProducto,))
-            countUsuario = self._micur.fetchone()[0]
+            check_sql = "SELECT COUNT(*) FROM producto WHERE codigo = %s"
+            self._micur.execute(check_sql, (codigo,))
+            countProducto = self._micur.fetchone()[0]
         
-            if countUsuario > 0:
-                print("Ya existe un producto con ese ID.")
+            if countProducto > 0:
+                print("Ya existe un producto con ese codigo.")
                 return 0
             
-            sql = ("INSERT INTO producto (idProducto, nombre, foto, color, codigo)"
-                   "VALUES (%s, %s, %s, %s, %s)")
-            values = (idProducto, nombre, foto, color, codigo)
+            sql = ("INSERT INTO producto (idProducto, nombre, foto, color, codigo, habilitado)"
+                   "VALUES (%s, %s, %s, %s, %s, %s)")
+            values = (idProducto, nombre, foto, color, codigo, habilitado)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Producto agregada con éxito.")
@@ -56,12 +56,12 @@ class ProductoDAO(ConexionBD):
         
         return None
     
-    def modificarProducto(self, idProducto, nombre, foto, color, codigo, talle):
+    def modificarProducto(self, idProducto, nombre, foto, color, codigo, habilitado, talle):
         try:
             self.crearConexion()
 
             check_sql = "SELECT COUNT(*) FROM producto WHERE idProducto != %s AND codigo = %s"
-            self._micur.execute(check_sql, (idProducto,))
+            self._micur.execute(check_sql, (idProducto,codigo))
             countProducto = self._micur.fetchone()[0]
         
             if countProducto  > 0:

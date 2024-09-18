@@ -60,8 +60,6 @@ class TiendaDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            habilitado = int(habilitado)
-
             sql = ("UPDATE tienda SET direccion = %s, ciudad = %s, provincia = %s, habilitado = %s WHERE idTienda = %s")
             values = (direccion, ciudad, provincia, habilitado, idTienda)
 

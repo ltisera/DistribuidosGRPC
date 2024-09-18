@@ -4,15 +4,12 @@ package producto;
 
 service Producto {
   rpc AgregarProducto(AgregarProductoRequest) returns (AgregarProductoResponse) {}
+  rpc ObtenerProducto(ObtenerProductoRequest) returns (ObtenerProductoResponse) {}
   rpc ModificarProducto(ModificarProductoRequest) returns (ModificarProductoResponse) {}
   rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
   rpc TraerTodosLosProductos(TraerTodosLosProductosRequest) returns (TraerTodosLosProductosResponse) {}
   rpc TraerTodosLosProductosFiltrados(TraerTodosLosProductosFiltradosRequest) returns (TraerTodosLosProductosFiltradosResponse) {}
-  rpc TraerTodosLosProductosPorNombre(TraerTodosLosProductosPorNombreRequest) returns (TraerTodosLosProductosPorNombreResponse) {}
-  rpc TraerTodosLosProductosPorTalle(TraerTodosLosProductosPorTalleRequest) returns (TraerTodosLosProductosPorTalleResponse) {}
-  rpc TraerTodosLosProductosPorColor(TraerTodosLosProductosPorColorRequest) returns (TraerTodosLosProductosPorColorResponse) {}
-  rpc TraerProductoPorCodigo(TraerProductoPorCodigoRequest) returns (TraerProductoPorCodigoResponse) {}
-}
+ }
 
 message ProductoGrpcDTO {
   int64 idProducto = 1;
@@ -20,7 +17,8 @@ message ProductoGrpcDTO {
   string foto = 3;
   string color = 4;
   string codigo = 5;
-  string talle = 6;
+  bool habilitado = 6;
+  string talle = 7;
 }
 
 message AgregarProductoRequest {
