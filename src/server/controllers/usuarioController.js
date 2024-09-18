@@ -85,8 +85,8 @@ function mostrarUsuario(req, res) {
         if (error) {
             console.error('Error al obtener usuario:', error);
             res.status(500).send('Error al obtener usuario');
-        } else if (response && response.usuarioObtenerGrpcDTO) {
-            res.json(response.usuarioObtenerGrpcDTO);
+        } else if (response && response.usuarioGrpcDTO) {
+            res.json(response.usuarioGrpcDTO);
         } else {
             res.status(404).send('Usuario no encontrado');
         }
@@ -111,7 +111,7 @@ function modificarUsuario(req, res) {
         casaCentral: casaCentral === 'true',
         idTienda: parseInt(idTienda, 10)
     };
-    client.ModificarUsuario({ usuarioObtenerGrpcDTO: usuarioActualizar }, (error, response) => {
+    client.ModificarUsuario({ usuarioGrpcDTO: usuarioActualizar }, (error, response) => {
         if (error) {
           console.error('Error al modificar usuario:', error);
           res.status(500).send('Error al modificar usuario');
@@ -234,7 +234,6 @@ function agregarUsuario(usuario, password, nombre, apellido, habilitado, casaCen
       if (error) {
         reject('Error al llamar al método AgregarUsuario: ' + error.message);
       } else {
-        console.log('Respuesta:', response);
         resolve(response.idUsuario);
       }
     });

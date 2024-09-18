@@ -89,8 +89,8 @@ class UsuarioDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT COUNT(*) FROM usuario WHERE usuario = %s"
-            self._micur.execute(check_sql, (usuario,))
+            check_sql = "SELECT COUNT(*) FROM usuario WHERE idUsuario != %s AND usuario = %s"
+            self._micur.execute(check_sql, (idUsuario, usuario,))
             countUsuario = self._micur.fetchone()[0]
         
             if countUsuario > 0:
@@ -107,15 +107,18 @@ class UsuarioDAO(ConexionBD):
             self._bd.commit()
             print("Usuario actualizado con éxito.")
         except mysql.connector.errors.IntegrityError as err:
+            idUsuario = None
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
+            idUsuario = None
             print(f"Database Error: {str(err)}")
         except Exception as e:
+            idUsuario = None
             print(f"Unexpected Error: {str(e)}")
         finally:
             self.cerrarConexion()
         
-        return None
+        return idUsuario
     
     def eliminarUsuario(self, idUsuario):
         try:

@@ -22,7 +22,7 @@ message UsuarioGrpcDTO {
   int64 idTienda = 7;
 }
 
-message UsuarioObtenerGrpcDTO {
+message UsuarioGrpcDTO {
   int64 idUsuario = 1;
   string usuario = 2;
   string password = 3;
@@ -56,11 +56,11 @@ message ObtenerUsuarioRequest {
 }
 
 message ObtenerUsuarioResponse {
-  UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
+  UsuarioGrpcDTO usuarioGrpcDTO = 1;
 }
 
 message ModificarUsuarioRequest {
-  UsuarioObtenerGrpcDTO usuarioObtenerGrpcDTO = 1;
+  UsuarioGrpcDTO usuarioGrpcDTO = 1;
 }
 
 message ModificarUsuarioResponse {
@@ -76,7 +76,7 @@ message EliminarUsuarioResponse {
 }
 
 message UsuarioList {
-  repeated UsuarioObtenerGrpcDTO usuarios = 1;
+  repeated UsuarioGrpcDTO usuarios = 1;
 }
 
 message TraerTodosLosUsuariosRequest {

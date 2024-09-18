@@ -28,11 +28,19 @@ message AgregarProductoRequest {
 }
 
 message AgregarProductoResponse {
-    ProductoGrpcDTO productoGrpcDTO = 1;
+  int64 idProducto = 1;
 }
 
 message ProductoList {
   repeated ProductoGrpcDTO productos = 1;
+}
+
+message ObtenerProductoRequest {
+  int64 idProducto = 1;
+}
+
+message ObtenerProductoResponse {
+  ProductoGrpcDTO productoGrpcDTO = 1;
 }
 
 message ModificarProductoRequest {
@@ -40,22 +48,22 @@ message ModificarProductoRequest {
 }
 
 message ModificarProductoResponse {
-    ProductoGrpcDTO productoGrpcDTO = 1;
+  int64 idProducto = 1;
 }
 
 message EliminarProductoRequest {
-  int64 id = 1;
+  int64 idProducto = 1;
 }
 
 message EliminarProductoResponse {
-    int64 id = 1;
+  int64 idProducto = 1;
 }
 
 message TraerTodosLosProductosRequest {
 }
 
 message TraerTodosLosProductosResponse {
-    ProductoList productoList = 1;
+  ProductoList productoList = 1;
 }
 
 message TraerTodosLosProductosPorNombreRequest {
@@ -83,11 +91,11 @@ message TraerTodosLosProductosPorColorResponse {
 }
 
 message TraerProductoPorCodigoRequest {
-  int64 codigo = 1;
+  string codigo = 1;
 }
 
 message TraerProductoPorCodigoResponse {
-    ProductoGrpcDTO productoGrpcDTO = 1;
+  ProductoGrpcDTO productoGrpcDTO = 1;
 }
 
 message TraerTodosLosProductosFiltradosRequest {

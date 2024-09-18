@@ -2,20 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const idTienda = params.get('idTienda');
 
-    if (usuario) {
-        fetch(`/tienda/${idTienda}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('idTienda').value = data.idTienda;
-                document.getElementById('direccion').value = data.direccion;
-                document.getElementById('ciudad').value = data.ciudad;
-                document.getElementById('provincia').value = data.provincia;
-                document.getElementById('habilitado').value = data.habilitado.toString();
-            })
-            .catch(error => {
-                console.error('Error al cargar los datos de la tienda:', error);
-            });
-    }
+    fetch(`/tienda/${idTienda}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('idTienda').value = data.idTienda;
+            document.getElementById('direccion').value = data.direccion;
+            document.getElementById('ciudad').value = data.ciudad;
+            document.getElementById('provincia').value = data.provincia;
+            document.getElementById('habilitado').value = data.habilitado.toString();
+        })
+        .catch(error => {
+            console.error('Error al cargar los datos de la tienda:', error);
+        });
 
     document.getElementById('editTiendaForm').addEventListener('submit', handleSubmit);
 });

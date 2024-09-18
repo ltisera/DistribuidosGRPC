@@ -60,14 +60,6 @@ class TiendaDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT COUNT(*) FROM tienda WHERE idTienda = %s"
-            self._micur.execute(check_sql, (idTienda,))
-            countTienda = self._micur.fetchone()[0]
-        
-            if countTienda > 0:
-                print("Ese codigo de tienda ya existe.")
-                return 0
-
             habilitado = int(habilitado)
 
             sql = ("UPDATE tienda SET direccion = %s, ciudad = %s, provincia = %s, habilitado = %s WHERE idTienda = %s")
@@ -77,15 +69,18 @@ class TiendaDAO(ConexionBD):
             self._bd.commit()
             print("Tienda actualizada con éxito.")
         except mysql.connector.errors.IntegrityError as err:
+            idTienda = None
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
+            idTienda = None
             print(f"Database Error: {str(err)}")
+            idTienda = None
         except Exception as e:
             print(f"Unexpected Error: {str(e)}")
         finally:
             self.cerrarConexion()
         
-        return None
+        return idTienda
 
     def eliminarTienda(self, idTienda):
         try:
@@ -142,7 +137,6 @@ class TiendaDAO(ConexionBD):
 
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
-            print(resultados) 
             return resultados
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")

@@ -84,6 +84,14 @@ app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
 
 // TIENDA
 
+app.get('/crearTienda', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearTienda.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
 app.post('/crearTienda', tiendaController.crearTienda);
 
 app.get('/tiendas', (req, res) => {
@@ -113,6 +121,14 @@ app.post('/eliminarTienda', tiendaController.eliminarTienda);
 app.get('/api/tiendas/filtradas', tiendaController.traerTiendasFiltradas);
 
 // PRODUCTO
+
+app.get('/crearProducto', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearProducto.html'));
+  } else {
+    res.redirect('/');
+  }
+});
 
 app.post('/crearProducto', productoController.crearProducto);
 

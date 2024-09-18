@@ -74,7 +74,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
                 context.set_details(f'Usuario con id {idUsuario} no encontrado.')
                 return usuario_pb2.ObtenerUsuarioResponse()
 
-            usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+            usuario_dto = usuario_pb2.UsuarioGrpcDTO(
                     idUsuario=usuario[0],
                     usuario=usuario[1],
                     password=usuario[2],
@@ -85,7 +85,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
                     idTienda=usuario[7]
                 )
 
-            response = usuario_pb2.ObtenerUsuarioResponse(usuarioObtenerGrpcDTO=usuario_dto)
+            response = usuario_pb2.ObtenerUsuarioResponse(usuarioGrpcDTO=usuario_dto)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -94,14 +94,14 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
 
     def ModificarUsuario(self, request, context):
         try:
-            idUsuario = request.usuarioObtenerGrpcDTO.idUsuario
-            usuario = request.usuarioObtenerGrpcDTO.usuario
-            password = request.usuarioObtenerGrpcDTO.password
-            nombre = request.usuarioObtenerGrpcDTO.nombre
-            apellido = request.usuarioObtenerGrpcDTO.apellido
-            habilitado = request.usuarioObtenerGrpcDTO.habilitado
-            casaCentral = request.usuarioObtenerGrpcDTO.casaCentral
-            idTienda = request.usuarioObtenerGrpcDTO.idTienda
+            idUsuario = request.usuarioGrpcDTO.idUsuario
+            usuario = request.usuarioGrpcDTO.usuario
+            password = request.usuarioGrpcDTO.password
+            nombre = request.usuarioGrpcDTO.nombre
+            apellido = request.usuarioGrpcDTO.apellido
+            habilitado = request.usuarioGrpcDTO.habilitado
+            casaCentral = request.usuarioGrpcDTO.casaCentral
+            idTienda = request.usuarioGrpcDTO.idTienda
 
             udao = UsuarioDAO()
             idUsuario = udao.modificarUsuario(idUsuario, usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
@@ -132,7 +132,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
             usuario_list = usuario_pb2.UsuarioList()
             
             for usuario in usuarios:
-                usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+                usuario_dto = usuario_pb2.UsuarioGrpcDTO(
                     idUsuario=usuario[0],
                     usuario=usuario[1],
                     password=usuario[2],
@@ -160,7 +160,7 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
 
             if usuarios:
                 for usuario in usuarios:
-                    usuario_dto = usuario_pb2.UsuarioObtenerGrpcDTO(
+                    usuario_dto = usuario_pb2.UsuarioGrpcDTO(
                         idUsuario=usuario[0],
                         usuario=usuario[1],
                         password=usuario[2],
@@ -209,7 +209,7 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
                 context.set_details(f'Tienda con id {idTienda} no encontrado.')
                 return tienda_pb2.ObtenerTiendaResponse()
 
-            tienda_dto = tienda_pb2.TiendaGrpcDTO(
+            tienda_dto = tienda_pb2.tiendaGrpcDTO(
                     idTienda=tienda[0],
                     direccion=tienda[1],
                     ciudad=tienda[2],
@@ -282,7 +282,6 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
             tdao = TiendaDAO()
             tiendas = tdao.traerTodasLasTiendasFiltradas(idTienda, estado)
             tienda_list = tienda_pb2.TiendaList()
-            print(tiendas)
             if tiendas:
                 for tienda in tiendas:
                     tienda_dto = tienda_pb2.TiendaGrpcDTO(
@@ -313,8 +312,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             codigo = request.productoGrpcDTO.codigo
             talle = request.productoGrpcDTO.talle
 
-            tdao = ProductoDAO()
-            idProducto = tdao.agregarProducto(idProducto, nombre, foto, color, codigo, talle)
+            pdao = ProductoDAO()
+            idProducto = pdao.agregarProducto(idProducto, nombre, foto, color, codigo, talle)
             return producto_pb2.AgregarProductoResponse(idProducto = idProducto)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -323,9 +322,9 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
         
     def ObtenerProducto(self, request, context):
         try:
-            tdao = ProductoDAO()
+            pdao = ProductoDAO()
             idProducto = request.idProducto
-            producto = tdao.obtenerProducto(idProducto)
+            producto = pdao.obtenerProducto(idProducto)
 
 
             if producto is None:
@@ -358,8 +357,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             codigo = request.productoGrpcDTO.codigo
             talle = request.productoGrpcDTO.talle
 
-            tdao = ProductoDAO()
-            idProducto = tdao.modificarProducto(idProducto, nombre, foto, color, codigo, talle)
+            pdao = ProductoDAO()
+            idProducto = pdao.modificarProducto(idProducto, nombre, foto, color, codigo, talle)
             response = producto_pb2.ModificarProductoResponse(idProducto=idProducto)
             return response
         except Exception as e:
@@ -371,8 +370,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
         try:
             idProducto = request.idProducto
 
-            tdao = ProductoDAO()
-            idProducto = tdao.eliminarProducto(idProducto)
+            pdao = ProductoDAO()
+            idProducto = pdao.eliminarProducto(idProducto)
             response = producto_pb2.EliminarProductoResponse(idProducto=idProducto)
             return response
         except Exception as e:
@@ -382,8 +381,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
 
     def TraerTodosLosProductos(self, request, context):
         try:
-            tdao = ProductoDAO()
-            productos = tdao.traerTodosLosProductos()
+            pdao = ProductoDAO()
+            productos = pdao.traerTodosLosProductos()
             producto_list = producto_pb2.ProductoList()
             for producto in productos:
                 producto_dto = producto_pb2.ProductoGrpcDTO(
@@ -408,10 +407,9 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             codigo = request.codigo
             talle = request.talle
             color = request.color
-            tdao = ProductoDAO()
-            productos = tdao.traerTodosLosProductosFiltrados(nombre, codigo, talle, color)
+            pdao = ProductoDAO()
+            productos = pdao.traerTodosLosProductosFiltrados(nombre, codigo, talle, color)
             producto_list = producto_pb2.ProductoList()
-            print(productos)
             if productos:
                 for producto in productos:
                     producto_dto = producto_pb2.ProductoGrpcDTO(

@@ -36,11 +36,11 @@ message ObtenerTiendaRequest {
 }
 
 message ObtenerTiendaResponse {
-  TiendaGrpcDTO tiendaObtenerGrpcDTO = 1;
+  TiendaGrpcDTO tiendaGrpcDTO = 1;
 }
 
 message ModificarTiendaRequest {
-  TiendaGrpcDTO tiendaObtenerGrpcDTO = 1;
+  TiendaGrpcDTO tiendaGrpcDTO = 1;
 }
 
 message ModificarTiendaResponse {

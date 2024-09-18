@@ -72,11 +72,6 @@ function fetchProductos() {
     const talle = encodeURIComponent(document.querySelector('#talle-filter').value);
     const color = encodeURIComponent(document.querySelector('#color-filter').value);
     var urlFiltro = ""
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa");
-    console.log(codigo);
-    console.log(nombre);
-    console.log(talle);
-    console.log(color);
     if(codigo || nombre || talle || color){
         console.log("entrea accccaaaaaaaaaa");
         urlFiltro = `/api/productos/filtrados?codigo=${codigo}&nombre=${nombre}&talle=${talle}&color=${color}`

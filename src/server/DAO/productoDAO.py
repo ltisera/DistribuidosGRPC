@@ -16,7 +16,7 @@ class ProductoDAO(ConexionBD):
             countUsuario = self._micur.fetchone()[0]
         
             if countUsuario > 0:
-                print("Ya existe una producto con ese código.")
+                print("Ya existe un producto con ese ID.")
                 return 0
             
             sql = ("INSERT INTO producto (idProducto, nombre, foto, color, codigo)"
@@ -60,32 +60,33 @@ class ProductoDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT COUNT(*) FROM producto WHERE idProducto = %s"
+            check_sql = "SELECT COUNT(*) FROM producto WHERE idProducto != %s AND codigo = %s"
             self._micur.execute(check_sql, (idProducto,))
             countProducto = self._micur.fetchone()[0]
         
-            if countProducto > 0:
-                print("Ese codigo de producto ya existe.")
+            if countProducto  > 0:
+                print("El codigo de producto ya existe.")
                 return 0
 
-            habilitado = int(habilitado)
-
-            sql = ("UPDATE producto SET nombre = %s, foto = %s, color = %s WHERE idProducto = %s")
-            values = (nombre, foto, color, idProducto)
+            sql = ("UPDATE producto SET nombre = %s, foto = %s, color = %s, codigo= %s WHERE idProducto = %s")
+            values = (nombre, foto, color, codigo, idProducto)
 
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Producto actualizada con éxito.")
         except mysql.connector.errors.IntegrityError as err:
+            idProducto = None
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
+            idProducto = None
             print(f"Database Error: {str(err)}")
         except Exception as e:
+            idProducto = None
             print(f"Unexpected Error: {str(e)}")
         finally:
             self.cerrarConexion()
         
-        return None
+        return idProducto
 
     def eliminarProducto(self, idProducto):
         try:
@@ -115,7 +116,6 @@ class ProductoDAO(ConexionBD):
             sql = ("SELECT *, 'S' AS talle FROM producto")
             self._micur.execute(sql)
             resultados = self._micur.fetchall()
-            print(resultados)
             return resultados
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -150,7 +150,6 @@ class ProductoDAO(ConexionBD):
 
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
-            print(resultados) 
             return resultados
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")

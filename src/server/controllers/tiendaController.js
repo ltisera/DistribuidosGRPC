@@ -75,7 +75,7 @@ function modificarTienda(req, res) {
           if (response.idTienda  === '0') {
             res.status(400).send("El codigo de tienda ya existe")
           } else{
-            res.redirect('/usuarios?mensaje=successModifyUser');
+            res.redirect('/usuarios?mensaje=successModifyTienda');
           }
         }
     });
@@ -187,7 +187,6 @@ function agregarTienda(idTienda, direccion, ciudad, provincia, habilitado) {
       if (error) {
         reject('Error al llamar al método AgregarTienda: ' + error.message);
       } else {
-        console.log('Respuesta:', response);
         resolve(response.idTienda);
       }
     });

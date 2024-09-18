@@ -47,7 +47,7 @@ function mostrarProducto(req, res) {
         } else if (response && response.productoGrpcDTO) {
             res.json(response.productoGrpcDTO);
         } else {
-            res.status(404).send('Producto no encontrada');
+            res.status(404).send('Producto no encontrado');
         }
     });
   } else {
@@ -65,7 +65,7 @@ function modificarProducto(req, res) {
         nombre,
         foto,
         color,
-        codigo,
+        codigo
     };
     client.ModificarProducto({ productoGrpcDTO: productoActualizar }, (error, response) => {
         if (error) {
@@ -73,9 +73,9 @@ function modificarProducto(req, res) {
           res.status(500).send('Error al modificar producto');
         } else {
           if (response.idProducto  === '0') {
-            res.status(400).send("El codigo de producto ya existe")
+            res.status(400).send("El codigo del producto ya existe")
           } else{
-            res.redirect('/usuarios?mensaje=successModifyUser');
+            res.redirect('/productos?mensaje=successModifyProduct');
           }
         }
     });
@@ -187,7 +187,6 @@ function agregarProducto(idProducto, nombre, foto, color, codigo, talle) {
       if (error) {
         reject('Error al llamar al método AgregarProducto: ' + error.message);
       } else {
-        console.log('Respuesta:', response);
         resolve(response.idProducto);
       }
     });
