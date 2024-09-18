@@ -79,11 +79,11 @@ function fetchUsuarios() {
     .then(response => response.json())
     .then(users => {
         const divHtml = document.querySelector('#rellenarUsuarios');
-        divHtml.innerHTML = "";;
+        divHtml.innerHTML = "";
 
         users.forEach((user, index) => {
             var bordeB = "";
-            if(index === user.length - 1){
+            if(index === users.length - 1){
                 bordeB = "bordeB"
             }
             var nuevaDiv = `

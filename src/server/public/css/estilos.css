@@ -178,10 +178,17 @@ body {
     background-color: #383737;
     text-align: center;
 }
+.c6P {
+    width: 50px;
+    flex-grow: 1;
+    text-align: center;
+}
 
 .colPrimera{
     background-color:#383737;
     color: #ffffff;
+    border-top-right-radius: 5px;
+    
     
 }
 .colFiltro{
