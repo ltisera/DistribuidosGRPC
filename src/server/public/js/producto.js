@@ -42,8 +42,8 @@ function showPopup(message) {
     }
 }
 
-function modifyProducto(idProducto) {
-    window.location.href = `/modificarProducto?idProducto=${idProducto}`;
+function modifyProducto(idProducto, talle) {
+    window.location.href = `/modificarProducto?idProducto=${idProducto}&talle=${talle}`;
 }
 
 function deleteProducto(idProducto) {
@@ -101,7 +101,7 @@ function fetchProductos() {
                 <div class="box c5 ${bordeB} bordeR">${producto.talle} <button class = "buttonAdd">+</button></div>
                 <div class="box c5 ${bordeB}">${producto.habilitado ? 'Sí' : 'No'}</div>             
                 <div class="box c6 ${bordeB}">
-                    <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}')">Modificar</button>
+                    <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}','${producto.talle}')">Modificar</button>
                     <button class="btn-delete" onclick="deleteProducto('${producto.idProducto}')">Eliminar</button>
                 </div>
             </div>

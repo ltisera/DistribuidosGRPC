@@ -1,16 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
     const idProducto = params.get('idProducto');
+    const talle = params.get('talle');
+    agregarTiendasALista();
 
-    fetch(`/producto/${idProducto}`)
+    fetch(`/producto/${idProducto}/${talle}`)
         .then(response => response.json())
         .then(data => {
-            document.getElementById('idProducto').value = data.idProducto;
-            document.getElementById('codigo').value = data.codigo;
-            document.getElementById('nombre').value = data.nombre;
-            document.getElementById('foto').value = data.foto;
-            document.getElementById('color').value = data.color;
-            document.getElementById('talle').value = data.talle;
+            console.log(data.tiendas.tiendas);
+            document.getElementById('idProducto').value = data.producto.idProducto;
+            document.getElementById('codigo').value = data.producto.codigo;
+            document.getElementById('nombre').value = data.producto.nombre;
+            document.getElementById('foto').value = data.producto.foto;
+            document.getElementById('color').value = data.producto.color;
+            document.getElementById('talle').value = talle;
+            document.getElementById('talleTexto').value = talle;
+            data.tiendas.tiendas.forEach((tienda, index) => {
+                if (tienda.idTienda != 1){
+                    console.log(`#${tienda.idTienda}`);
+                    document.getElementById(tienda.idTienda).checked = true;
+                }
+            });
         })
         .catch(error => {
             console.error('Error al cargar los datos de la producto:', error);
@@ -18,6 +28,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('editProductoForm').addEventListener('submit', handleSubmit);
 });
+
+async function agregarTiendasALista(){
+    fetch('/api/tiendas')
+    .then(response => response.json())
+    .then(tiendas => {
+        const listaTienda = document.querySelector('#listaTiendas');
+        listaTienda.innerHTML = ``
+
+        tiendas.forEach((tienda, index) => {
+            if (index > 0){
+                listaTienda.innerHTML += `
+                <div class="tienda col${1 + index%2}">
+                    <div class="textoTienda">${tienda.idTienda} ${tienda.provincia}, ${tienda.ciudad}, ${tienda.direccion}</div>
+                    <div>
+                        <input type="checkbox" class="chckTienda" id="${tienda.idTienda}" name="${tienda.idTienda}">
+                    </div>
+                    
+                </div>
+            `}
+        });
+    })
+    .catch(error => {
+        console.error('Error al cargar la lista de tiendas:', error);
+    });
+}
 
 async function handleSubmit(event) {
     event.preventDefault();

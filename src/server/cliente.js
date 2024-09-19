@@ -142,7 +142,7 @@ app.get('/productos', (req, res) => {
 
 app.get('/api/productos', productoController.traerProductos);
 
-app.get('/producto/:idProducto', productoController.mostrarProducto);
+app.get('/producto/:idProducto/:talle', productoController.mostrarProducto);
 
 app.get('/modificarProducto', (req, res) => {
   if (req.session.authenticated) {

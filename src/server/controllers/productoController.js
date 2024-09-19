@@ -45,13 +45,16 @@ function crearProducto(req, res) {
 // OBETENER PRODUCTO
 function mostrarProducto(req, res) {
   if (req.session.authenticated) {
-    const { idProducto } = req.params;
-    client.ObtenerProducto({ idProducto: parseInt(idProducto, 10) }, (error, response) => {
+    const { idProducto, talle } = req.params;
+    client.ObtenerProducto({ idProducto: parseInt(idProducto, 10), talle: talle}, (error, response) => {
         if (error) {
             console.error('Error al obtener producto:', error);
             res.status(500).send('Error al obtener producto');
         } else if (response && response.productoGrpcDTO) {
-            res.json(response.productoGrpcDTO);
+          res.json({
+            producto: response.productoGrpcDTO,
+            tiendas: response.tiendas || []
+          });
         } else {
             res.status(404).send('Producto no encontrado');
         }

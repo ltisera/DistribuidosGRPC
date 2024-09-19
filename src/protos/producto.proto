@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package producto;
 
+import "tienda.proto";
+
 service Producto {
   rpc AgregarProducto(AgregarProductoRequest) returns (AgregarProductoResponse) {}
   rpc ObtenerProducto(ObtenerProductoRequest) returns (ObtenerProductoResponse) {}
@@ -36,10 +38,12 @@ message ProductoList {
 
 message ObtenerProductoRequest {
   int64 idProducto = 1;
+  string talle = 2;
 }
 
 message ObtenerProductoResponse {
   ProductoGrpcDTO productoGrpcDTO = 1;
+  tienda.TiendaList tiendas = 2;
 }
 
 message ModificarProductoRequest {

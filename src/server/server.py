@@ -328,13 +328,31 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
         try:
             pdao = ProductoDAO()
             idProducto = request.idProducto
+            talle = request.talle
             producto = pdao.obtenerProducto(idProducto)
-
 
             if producto is None:
                 context.set_code(grpc.StatusCode.NOT_FOUND)
                 context.set_details(f'Producto con id {idProducto} no encontrado.')
                 return producto_pb2.ObtenerProductoResponse()
+                
+            sdao = StockDAO()
+            listaTiendas = sdao.obtenerTiendasDeProducto(idProducto, talle)
+            tienda_list = tienda_pb2.TiendaList()
+            if listaTiendas:
+                for tienda in listaTiendas:
+                    tienda_dto = tienda_pb2.TiendaGrpcDTO(
+                        idTienda=tienda[0],
+                        direccion=tienda[1],
+                        ciudad=tienda[2],
+                        provincia=tienda[3],
+                        habilitado=tienda[4],
+                    )
+                    tienda_list.tiendas.append(tienda_dto)
+            print("hola")
+            for t in tienda_list.tiendas:
+                print(t.ciudad)
+            print("chau")
 
             producto_dto = producto_pb2.ProductoGrpcDTO(
                     idProducto=producto[0],
@@ -345,8 +363,8 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
                     habilitado=producto[5],
                     talle=producto[6]
                 ) 
-
-            response = producto_pb2.ObtenerProductoResponse(productoGrpcDTO=producto_dto)
+            
+            response = producto_pb2.ObtenerProductoResponse(productoGrpcDTO=producto_dto, tiendas=tienda_list)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
