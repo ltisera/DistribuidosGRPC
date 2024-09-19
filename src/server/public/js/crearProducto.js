@@ -1,7 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('createProductoForm').addEventListener('submit', handleSubmit);
     agregarTiendasALista();
+    // Genera un código de producto al cargar la página
+    document.getElementById('codigo').value = generarCodigoAleatorio();
 });
+
+function generarCodigoAleatorio(length = 10) {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let codigo = '';
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * caracteres.length);
+        codigo += caracteres[randomIndex];
+    }
+    return codigo;
+}
 
 async function agregarTiendasALista(){
     fetch('/api/tiendas')
@@ -18,9 +30,8 @@ async function agregarTiendasALista(){
                     <div>
                         <input type="checkbox" class="chckTienda" id="${tienda.idTienda}" name="${tienda.idTienda}">
                     </div>
-                    
                 </div>
-            `}
+            `;}
         });
     })
     .catch(error => {

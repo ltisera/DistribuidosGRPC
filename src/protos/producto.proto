@@ -11,7 +11,7 @@ service Producto {
   rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
   rpc TraerTodosLosProductos(TraerTodosLosProductosRequest) returns (TraerTodosLosProductosResponse) {}
   rpc TraerTodosLosProductosFiltrados(TraerTodosLosProductosFiltradosRequest) returns (TraerTodosLosProductosFiltradosResponse) {}
- }
+}
 
 message ProductoGrpcDTO {
   int64 idProducto = 1;

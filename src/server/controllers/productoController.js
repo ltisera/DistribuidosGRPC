@@ -19,11 +19,11 @@ const client = new productoProto.Producto('localhost:50051', grpc.credentials.cr
 
 // CREAR PRODUCTO
 function crearProducto(req, res) {
-  if (req.session.authenticated) {
+    if (req.session.authenticated) {
     const { idProducto, nombre, foto, color, codigo, talle, tiendasSeleccionadas} = req.body;
     
     const tiendas = JSON.parse(tiendasSeleccionadas);
-
+    
     agregarProducto(idProducto, nombre, foto, color, codigo, talle, tiendas)
     .then(response => {
       if (response  === '0') {

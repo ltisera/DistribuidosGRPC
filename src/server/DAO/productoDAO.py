@@ -39,6 +39,31 @@ class ProductoDAO(ConexionBD):
             self.cerrarConexion()
         
         return None
+
+    def verificarCodigoUnico(self, codigo, idProducto=None):
+        try:
+            self.crearConexion()
+            
+            # Consulta para verificar si el código ya existe
+            if idProducto:
+                check_sql = "SELECT COUNT(*) FROM producto WHERE codigo = %s AND idProducto != %s"
+                self._micur.execute(check_sql, (codigo, idProducto))
+            else:
+                check_sql = "SELECT COUNT(*) FROM producto WHERE codigo = %s"
+                self._micur.execute(check_sql, (codigo,))
+            
+            countProducto = self._micur.fetchone()[0]
+            return countProducto > 0
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+        
+        return False  
     
     def obtenerProducto(self, idProducto):
         try:
