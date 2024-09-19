@@ -10,6 +10,14 @@ class StockDAO(ConexionBD):
     def agregarStock(self, idTienda, cantidad, talle, idProducto):
         try:
             self.crearConexion()
+
+            check_sql = "SELECT COUNT(*) FROM stock WHERE tienda = %s AND producto = %s AND talle LIKE %s"
+            self._micur.execute(check_sql, (idTienda, idProducto, talle))
+            countStock = self._micur.fetchone()[0]
+        
+            if countStock > 0:
+                print("El producto " + str(idProducto) + " con el talle " + str(talle) + " ya está habilitado en la tienda " + str(idTienda))
+                return 0
             
             sql = ("INSERT INTO stock (tienda, cantidad, talle, producto)"
                    "VALUES (%s, %s, %s, %s)")
@@ -47,6 +55,24 @@ class StockDAO(ConexionBD):
         
         return None
     
+    def obtenerStockPorTiendaProductoYTalle(self, idTienda, talle, idProducto):
+        try:
+            self.crearConexion()
+            check_sql = "SELECT idStock FROM stock WHERE tienda = %s AND producto = %s AND talle LIKE %s"
+            self._micur.execute(check_sql, (idTienda, idProducto, talle))
+            id = self._micur.fetchone()[0]
+            return id
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+        
+        return id
+    
     def obtenerTiendasDeProducto(self, idProducto, talle):
         try:
             self.crearConexion()
@@ -54,8 +80,6 @@ class StockDAO(ConexionBD):
             values = [idProducto, talle]
             self._micur.execute(sql, values)
             resultados = self._micur.fetchall()
-            print("lista tiendas")
-            print(resultados)
             return resultados
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -95,13 +119,11 @@ class StockDAO(ConexionBD):
     def eliminarStock(self, idStock):
         try:
             self.crearConexion()
-            
-        #implementar
-            #sql = ("UPDATE stock SET habilitado = %s WHERE idStock = %s")
-            #values = (0, idStock)
+            sql = ("DELETE FROM stock WHERE idStock = %s")
+            values = (idStock,)
 
-            #self._micur.execute(sql, values)
-            #self._bd.commit()
+            self._micur.execute(sql, values)
+            self._bd.commit()
             print("Stock eliminada con éxito.")
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")

@@ -58,6 +58,15 @@ async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
+
+
+    const tiendas = [];
+    document.querySelectorAll('#listaTiendas input[type="checkbox"]').forEach(checkbox => {
+        tiendas.push({ id: checkbox.id, estado: checkbox.checked }); 
+    });
+
+    formData.append('tiendas', JSON.stringify(tiendas));
+
     const data = new URLSearchParams(formData).toString();
 
     try {

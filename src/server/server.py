@@ -349,10 +349,6 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
                         habilitado=tienda[4],
                     )
                     tienda_list.tiendas.append(tienda_dto)
-            print("hola")
-            for t in tienda_list.tiendas:
-                print(t.ciudad)
-            print("chau")
 
             producto_dto = producto_pb2.ProductoGrpcDTO(
                     idProducto=producto[0],
@@ -384,6 +380,15 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             pdao = ProductoDAO()
             idProducto = pdao.modificarProducto(idProducto, nombre, foto, color, codigo, habilitado, talle)
             response = producto_pb2.ModificarProductoResponse(idProducto=idProducto)
+
+            sdao = StockDAO()
+            for tienda in request.tiendas:
+                if(tienda.estado):
+                    sdao.agregarStock(tienda.id,0,talle,idProducto)
+                else:
+                    id = sdao.obtenerStockPorTiendaProductoYTalle(tienda.id,talle,idProducto)
+                    if(id is not None):
+                        sdao.eliminarStock(id)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')

@@ -36,7 +36,7 @@ async function handleSubmit(event) {
     // Recoger los checkboxes seleccionados (tiendas)
     const tiendasSeleccionadas = [];
     document.querySelectorAll('#listaTiendas input[type="checkbox"]:checked').forEach(checkbox => {
-        tiendasSeleccionadas.push(checkbox.id);  // Asume que el id del checkbox es el id de la tienda
+        tiendasSeleccionadas.push(checkbox.id);
     });
 
     formData.append('tiendasSeleccionadas', JSON.stringify(tiendasSeleccionadas));  // Añadir tiendas seleccionadas al formData

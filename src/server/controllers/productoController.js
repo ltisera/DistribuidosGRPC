@@ -67,7 +67,9 @@ function mostrarProducto(req, res) {
 // MODIFICAR PRODUCTO
 function modificarProducto(req, res) {
   if (req.session.authenticated) {
-    const {idProducto, nombre, foto, color, codigo, talle} = req.body;
+    const {idProducto, nombre, foto, color, codigo, talle, tiendas} = req.body;
+
+    const lsttiendas = JSON.parse(tiendas);
 
     const productoActualizar = {
         idProducto: parseInt(idProducto, 10),
@@ -78,7 +80,7 @@ function modificarProducto(req, res) {
         habilitado: true,
         talle
     };
-    client.ModificarProducto({ productoGrpcDTO: productoActualizar }, (error, response) => {
+    client.ModificarProducto({ productoGrpcDTO: productoActualizar, tiendas: lsttiendas}, (error, response) => {
         if (error) {
           console.error('Error al modificar producto:', error);
           res.status(500).send('Error al modificar producto');

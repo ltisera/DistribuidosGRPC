@@ -48,6 +48,12 @@ message ObtenerProductoResponse {
 
 message ModificarProductoRequest {
   ProductoGrpcDTO productoGrpcDTO = 1;
+  repeated ListaEstado tiendas = 2;
+}
+
+message ListaEstado {
+  int64 id = 1;  
+  bool estado = 2;
 }
 
 message ModificarProductoResponse {
