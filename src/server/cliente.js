@@ -156,6 +156,16 @@ app.post('/modificarProducto', productoController.modificarProducto);
 
 app.post('/eliminarProducto', productoController.eliminarProducto);
 
+app.get('/agregarTalle', (req, res) => {
+  if (req.session.authenticated) {
+      res.sendFile(path.join(__dirname, 'public', 'agregarTalle.html'));
+  } else {
+      res.redirect('/');
+  }
+});
+
+app.post('/agregarTalle', productoController.agregarTalle);
+
 app.get('/api/productos/filtrados', productoController.traerProductosFiltrados);
 
 const PORT = 3000;

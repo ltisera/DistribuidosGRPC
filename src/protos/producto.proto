@@ -6,6 +6,7 @@ import "tienda.proto";
 
 service Producto {
   rpc AgregarProducto(AgregarProductoRequest) returns (AgregarProductoResponse) {}
+  rpc AgregarTalle(AgregarTalleRequest) returns (AgregarTalleResponse) {}
   rpc ObtenerProducto(ObtenerProductoRequest) returns (ObtenerProductoResponse) {}
   rpc ModificarProducto(ModificarProductoRequest) returns (ModificarProductoResponse) {}
   rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
@@ -30,6 +31,16 @@ message AgregarProductoRequest {
 
 message AgregarProductoResponse {
   int64 idProducto = 1;
+}
+
+message AgregarTalleRequest {
+  int64 idProducto = 1;
+  repeated int64 tiendas = 2;
+  string talle = 3;
+}
+
+message AgregarTalleResponse {
+  int64 idStock = 1;
 }
 
 message ProductoList {

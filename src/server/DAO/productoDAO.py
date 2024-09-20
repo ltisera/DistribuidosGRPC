@@ -141,7 +141,7 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductos(self, idTienda):
         try:
             self.crearConexion()
-            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s")
+            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s ORDER BY stock.producto")
             values = [idTienda]
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()

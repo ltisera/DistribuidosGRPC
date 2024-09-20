@@ -97,6 +97,30 @@ function modificarProducto(req, res) {
   }
 }
 
+// AGREGAR TALLE
+function agregarTalle(req, res) {
+  if (req.session.authenticated) {
+    const {idProducto, tiendas, talle} = req.body;
+    const lsttiendas = JSON.parse(tiendas);
+
+    client.AgregarTalle({ idProducto: idProducto, tiendas: lsttiendas, talle: talle}, (error, response) => {
+        if (error) {
+          console.error('Error al agregar el talle:', error);
+          res.status(500).send('Error al agregar el talle');
+        } else {
+          if (response.idStock  === '0') {
+            res.status(400).send("Ya existe ese talle del producto")
+          } else{
+            res.redirect('/productos?mensaje=successAddTalle');
+          }
+        }
+    });
+  } else {
+    res.redirect('/');
+  }
+}
+
+
 // ELIMINAR PRODUCTO
 function eliminarProducto(req, res) {
   if (req.session.authenticated) {
@@ -213,6 +237,7 @@ module.exports = {
   crearProducto,
   mostrarProducto,
   modificarProducto,
+  agregarTalle,
   traerProductos,
   eliminarProducto,
   traerProductosFiltrados

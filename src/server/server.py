@@ -323,7 +323,23 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return producto_pb2.AgregarProductoResponse()
-        
+
+    def AgregarTalle(self, request, context):
+        try:
+            idProducto = request.idProducto
+            talle = request.talle
+            sdao = StockDAO()
+            idStock = sdao.agregarStock(1,0,talle,idProducto)
+            if (idStock > 0):
+                for tienda in request.tiendas:
+                    sdao.agregarStock(tienda,0,talle,idProducto)
+            return producto_pb2.AgregarTalleResponse(idStock = idStock)
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.AgregarTalleResponse()
+
+
     def ObtenerProducto(self, request, context):
         try:
             pdao = ProductoDAO()

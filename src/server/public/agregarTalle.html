@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Producto</title>
+    <link rel="stylesheet" href="/css/crearTienda.css">
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="/css/crearProducto.css">
+    <link rel="stylesheet" href="/css/modificarTienda.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Modificar Producto</h1>
+        <form id="addTalleForm" action="/agregarTalle" method="post">
+            <input type="hidden" id="idProducto" name="idProducto">
+
+            <label for="codigo">Código de Producto:</label>
+            <input type="text" id="codigo" name="codigo" disabled>
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" disabled>
+
+            <label for="color">Color:</label>
+            <input type="text" id="color" name="color" disabled>
+
+            <label for="talle">Talle:</label>
+            <input type="text" id="talle" name="talle" required>
+            
+            <label for="tiendas">Asignar a Tiendas:</label>
+            <div class="listaGeneral">
+                <div class="listaTiendas" id="listaTiendas"></div>
+            </div>
+
+            <button type="submit">Guardar Cambios</button>
+            <button type="button" class="cancel-button" onclick="window.location.href='/productos';">Cancelar</button>
+        </form>
+    </div>
+
+    <script src="/js/agregarTalle.js"></script>
+</body>
+</html>

@@ -39,6 +39,11 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.AgregarProductoRequest.SerializeToString,
                 response_deserializer=producto__pb2.AgregarProductoResponse.FromString,
                 _registered_method=True)
+        self.AgregarTalle = channel.unary_unary(
+                '/producto.Producto/AgregarTalle',
+                request_serializer=producto__pb2.AgregarTalleRequest.SerializeToString,
+                response_deserializer=producto__pb2.AgregarTalleResponse.FromString,
+                _registered_method=True)
         self.ObtenerProducto = channel.unary_unary(
                 '/producto.Producto/ObtenerProducto',
                 request_serializer=producto__pb2.ObtenerProductoRequest.SerializeToString,
@@ -70,6 +75,12 @@ class ProductoServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AgregarProducto(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AgregarTalle(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -112,6 +123,11 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.AgregarProducto,
                     request_deserializer=producto__pb2.AgregarProductoRequest.FromString,
                     response_serializer=producto__pb2.AgregarProductoResponse.SerializeToString,
+            ),
+            'AgregarTalle': grpc.unary_unary_rpc_method_handler(
+                    servicer.AgregarTalle,
+                    request_deserializer=producto__pb2.AgregarTalleRequest.FromString,
+                    response_serializer=producto__pb2.AgregarTalleResponse.SerializeToString,
             ),
             'ObtenerProducto': grpc.unary_unary_rpc_method_handler(
                     servicer.ObtenerProducto,
@@ -166,6 +182,33 @@ class Producto(object):
             '/producto.Producto/AgregarProducto',
             producto__pb2.AgregarProductoRequest.SerializeToString,
             producto__pb2.AgregarProductoResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AgregarTalle(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/AgregarTalle',
+            producto__pb2.AgregarTalleRequest.SerializeToString,
+            producto__pb2.AgregarTalleResponse.FromString,
             options,
             channel_credentials,
             insecure,
