@@ -31,6 +31,7 @@ message IniciarSesionRequest {
 message IniciarSesionResponse {
   int64 idUsuario = 1;
   bool casaCentral = 2;
+  int64 idTienda = 3;
 }
 
 message AgregarUsuarioRequest {

@@ -233,6 +233,93 @@ function agregarProducto(idProducto, nombre, foto, color, codigo, talle, tiendas
   });
 }
 
+// TRAER STOCK
+function traerStock(req, res) {
+  if (req.session.authenticated) {
+    client.TraerProductosXTienda({idTienda: req.session.idTienda}, (error, response) => {
+      if (error) {
+        console.error('Error al llamar al método TraerProductosXTienda: ' + error.message);
+        return res.status(400).send('Error al traer stock');
+      }
+      try {
+        if (response && response.productoList && response.productoList.productos) {
+          const productos = response.productoList.productos.map(producto => ({
+            idProducto: producto.idProducto,
+            nombre: producto.nombre,
+            foto: producto.foto,
+            color: producto.color,
+            codigo: producto.codigo,
+            cantidad: producto.cantidad,
+            talle: producto.talle,
+            idStock: producto.idStock
+          }));
+          res.json(productos);{}
+        } else {
+          console.error('Respuesta del servidor no contiene ProductoList.');
+          res.status(400).send('Error en la respuesta del servidor');
+        }
+      } catch (e) {
+        console.error('Error al procesar la respuesta:', e);
+        res.status(500).send('Error al procesar la respuesta');
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
+}
+
+// TRAER STOCK FILTRADO
+function traerStockFiltrado(req, res) {
+  if (req.session.authenticated) {
+    let {codigo, nombre, talle, color} = req.query
+    client.TraerProductosFiltradosXTienda({idTienda: req.session.idTienda, codigo, nombre, talle, color}, (error, response) => {
+      if (error) {
+        console.error('Error al llamar al método TraerProductosFiltradosXTienda: ' + error.message);
+        return res.status(400).send('Error al traer productos');
+      }
+      try {
+        if (response && response.productoList && response.productoList.productos) {
+          const productos = response.productoList.productos.map(producto => ({
+            idProducto: producto.idProducto,
+            nombre: producto.nombre,
+            foto: producto.foto,
+            color: producto.color,
+            codigo: producto.codigo,
+            cantidad: producto.cantidad,
+            talle: producto.talle,
+            idStock: producto.idStock
+          }));
+          res.json(productos);
+        } else {
+          console.error('Respuesta del servidor no contiene ProductoList.');
+          res.status(400).send('Error en la respuesta del servidor');
+        }
+      } catch (e) {
+        console.error('Error al procesar la respuesta:', e);
+        res.status(500).send('Error al procesar la respuesta');
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
+}
+
+function agregarStock(req, res) {
+  if (req.session.authenticated) {
+    const {idStock, cantidad} = req.body;
+    client.AgregarStock({ idStock: parseInt(idStock, 10), cantidad: parseInt(cantidad, 10)}, (error, response) => {
+        if (error) {
+          console.error('Error al agregar el stock:', error);
+          res.status(500).send('Error al agregar el stock');
+        } else {
+          res.redirect('/stock?mensaje=successAddStock');
+        }
+    });
+  } else {
+    res.redirect('/');
+  }
+}
+
 module.exports = {
   crearProducto,
   mostrarProducto,
@@ -240,5 +327,8 @@ module.exports = {
   agregarTalle,
   traerProductos,
   eliminarProducto,
-  traerProductosFiltrados
+  traerProductosFiltrados,
+  traerStock,
+  traerStockFiltrado,
+  agregarStock
 };

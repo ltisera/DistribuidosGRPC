@@ -44,6 +44,11 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.AgregarTalleRequest.SerializeToString,
                 response_deserializer=producto__pb2.AgregarTalleResponse.FromString,
                 _registered_method=True)
+        self.AgregarStock = channel.unary_unary(
+                '/producto.Producto/AgregarStock',
+                request_serializer=producto__pb2.AgregarStockRequest.SerializeToString,
+                response_deserializer=producto__pb2.AgregarStockResponse.FromString,
+                _registered_method=True)
         self.ObtenerProducto = channel.unary_unary(
                 '/producto.Producto/ObtenerProducto',
                 request_serializer=producto__pb2.ObtenerProductoRequest.SerializeToString,
@@ -69,6 +74,16 @@ class ProductoStub(object):
                 request_serializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
                 response_deserializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
                 _registered_method=True)
+        self.TraerProductosXTienda = channel.unary_unary(
+                '/producto.Producto/TraerProductosXTienda',
+                request_serializer=producto__pb2.TraerProductosXTiendaRequest.SerializeToString,
+                response_deserializer=producto__pb2.TraerProductosXTiendaResponse.FromString,
+                _registered_method=True)
+        self.TraerProductosFiltradosXTienda = channel.unary_unary(
+                '/producto.Producto/TraerProductosFiltradosXTienda',
+                request_serializer=producto__pb2.TraerProductosFiltradosXTiendaRequest.SerializeToString,
+                response_deserializer=producto__pb2.TraerProductosFiltradosXTiendaResponse.FromString,
+                _registered_method=True)
 
 
 class ProductoServicer(object):
@@ -81,6 +96,12 @@ class ProductoServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def AgregarTalle(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AgregarStock(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -116,6 +137,18 @@ class ProductoServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def TraerProductosXTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def TraerProductosFiltradosXTienda(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_ProductoServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -128,6 +161,11 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.AgregarTalle,
                     request_deserializer=producto__pb2.AgregarTalleRequest.FromString,
                     response_serializer=producto__pb2.AgregarTalleResponse.SerializeToString,
+            ),
+            'AgregarStock': grpc.unary_unary_rpc_method_handler(
+                    servicer.AgregarStock,
+                    request_deserializer=producto__pb2.AgregarStockRequest.FromString,
+                    response_serializer=producto__pb2.AgregarStockResponse.SerializeToString,
             ),
             'ObtenerProducto': grpc.unary_unary_rpc_method_handler(
                     servicer.ObtenerProducto,
@@ -153,6 +191,16 @@ def add_ProductoServicer_to_server(servicer, server):
                     servicer.TraerTodosLosProductosFiltrados,
                     request_deserializer=producto__pb2.TraerTodosLosProductosFiltradosRequest.FromString,
                     response_serializer=producto__pb2.TraerTodosLosProductosFiltradosResponse.SerializeToString,
+            ),
+            'TraerProductosXTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerProductosXTienda,
+                    request_deserializer=producto__pb2.TraerProductosXTiendaRequest.FromString,
+                    response_serializer=producto__pb2.TraerProductosXTiendaResponse.SerializeToString,
+            ),
+            'TraerProductosFiltradosXTienda': grpc.unary_unary_rpc_method_handler(
+                    servicer.TraerProductosFiltradosXTienda,
+                    request_deserializer=producto__pb2.TraerProductosFiltradosXTiendaRequest.FromString,
+                    response_serializer=producto__pb2.TraerProductosFiltradosXTiendaResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -209,6 +257,33 @@ class Producto(object):
             '/producto.Producto/AgregarTalle',
             producto__pb2.AgregarTalleRequest.SerializeToString,
             producto__pb2.AgregarTalleResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def AgregarStock(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/AgregarStock',
+            producto__pb2.AgregarStockRequest.SerializeToString,
+            producto__pb2.AgregarStockResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -344,6 +419,60 @@ class Producto(object):
             '/producto.Producto/TraerTodosLosProductosFiltrados',
             producto__pb2.TraerTodosLosProductosFiltradosRequest.SerializeToString,
             producto__pb2.TraerTodosLosProductosFiltradosResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def TraerProductosXTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/TraerProductosXTienda',
+            producto__pb2.TraerProductosXTiendaRequest.SerializeToString,
+            producto__pb2.TraerProductosXTiendaResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def TraerProductosFiltradosXTienda(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/producto.Producto/TraerProductosFiltradosXTienda',
+            producto__pb2.TraerProductosFiltradosXTiendaRequest.SerializeToString,
+            producto__pb2.TraerProductosFiltradosXTiendaResponse.FromString,
             options,
             channel_credentials,
             insecure,

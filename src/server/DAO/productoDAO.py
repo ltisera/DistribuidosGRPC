@@ -141,7 +141,7 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductos(self, idTienda):
         try:
             self.crearConexion()
-            sql = ("SELECT producto.*, stock.talle AS talle FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s ORDER BY stock.producto")
+            sql = ("SELECT producto.*, stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s ORDER BY stock.producto")
             values = [idTienda]
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
@@ -160,7 +160,7 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductosFiltrados(self, idTienda, nombre, codigo, talle, color):
         try:
             self.crearConexion()
-            sql = "SELECT producto.*, stock.talle AS tallE FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s"
+            sql = "SELECT producto.*, stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s"
             values = [idTienda]
             
             if nombre.strip() != "":
@@ -179,6 +179,7 @@ class ProductoDAO(ConexionBD):
                 sql += " AND color LIKE %s"
                 values.append(color)
 
+            sql += " ORDER BY stock.producto"
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
             return resultados

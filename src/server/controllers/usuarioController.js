@@ -28,11 +28,15 @@ function iniciarSesion(req, res) {
       req.session.authenticated = true;
       req.session.usuario = usuario;
       req.session.idUsuario = response.idUsuario;
-      req.session.tipoUsuario = "general";
+      req.session.idTienda = response.idTienda;
       if (response.casaCentral){
         req.session.tipoUsuario = "casaCentral";
+        res.redirect('/home');
+      }else{
+        req.session.tipoUsuario = "general";
+        res.redirect('/stock');
       }
-      res.redirect('/home');
+      
     } else {
         res.redirect('/?mensaje=sessionFailed');
     }

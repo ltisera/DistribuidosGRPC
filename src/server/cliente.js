@@ -168,6 +168,23 @@ app.post('/agregarTalle', productoController.agregarTalle);
 
 app.get('/api/productos/filtrados', productoController.traerProductosFiltrados);
 
+// STOCK
+
+app.get('/stock', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'stock.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/api/stock', productoController.traerStock);
+
+app.get('/api/stock/filtrado', productoController.traerStockFiltrado);
+
+app.post('/agregarStock', productoController.agregarStock);
+
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Servidor web ejecutándose en http://localhost:${PORT}`);

@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetchProductos();
+    fetchStock();
     document.querySelector('#filter-form').addEventListener('submit', (event) => {
         event.preventDefault();
-        fetchProductos();
+        fetchStock();
     });
 
     const params = new URLSearchParams(window.location.search);
@@ -11,17 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mensaje) {
         let messageText = '';
         switch (mensaje) {
-            case 'successAddProducto':
-                messageText = 'Producto agregado con éxito!';
-                break;
-            case 'successModifyProducto':
-                messageText = 'Producto actualizado con éxito!';
-                break;
-            case 'successDeleteProducto':
-                messageText = 'Producto eliminado con éxito!';
-                break;
-            case 'successAddTalle':
-                messageText = 'Talle agregado con éxito!';
+            case 'successAddStock':
+                messageText = 'Stock agregado con éxito!';
                 break;
             default:
                 messageText = '';
@@ -45,44 +36,16 @@ function showPopup(message) {
     }
 }
 
-function agregarTalle(idProducto, talle) {
-    window.location.href = `/agregarTalle?idProducto=${idProducto}&talle=${talle}`
-}
-
-function modifyProducto(idProducto, talle) {
-    window.location.href = `/modificarProducto?idProducto=${idProducto}&talle=${talle}`;
-}
-
-function deleteProducto(idProducto) {
-    fetch('/eliminarProducto', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productoId: idProducto })
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.href = '/productos?mensaje=successDeleteProducto';
-        } else {
-            console.error('Error al eliminar producto');
-        }
-    })
-    .catch(error => {
-        console.error('Error al enviar solicitud de eliminación:', error);
-    });
-}
-
-function fetchProductos() {
+function fetchStock() {
     const codigo = encodeURIComponent(document.querySelector('#codigo-filter').value);
     const nombre = encodeURIComponent(document.querySelector('#nombre-filter').value);
     const talle = encodeURIComponent(document.querySelector('#talle-filter').value);
     const color = encodeURIComponent(document.querySelector('#color-filter').value);
     var urlFiltro = ""
     if(codigo || nombre || talle || color){
-        urlFiltro = `/api/productos/filtrados?codigo=${codigo}&nombre=${nombre}&talle=${talle}&color=${color}`
+        urlFiltro = `/api/stock/filtrado?codigo=${codigo}&nombre=${nombre}&talle=${talle}&color=${color}`
     } else {
-        urlFiltro = '/api/productos'
+        urlFiltro = '/api/stock'
     } 
     fetch(urlFiltro)
     .then(response => response.json())
@@ -104,11 +67,14 @@ function fetchProductos() {
                 <div class="box c2 ${bordeB}">${producto.codigo}</div>
                 <div class="box c3 ${bordeB}">${producto.nombre}</div>
                 <div class="box c4 ${bordeB}">${producto.color}</div>
-                <div class="box c5 ${bordeB} bordeR">${producto.talle} <button class = "buttonAdd" onclick="agregarTalle('${producto.idProducto}','${producto.talle}')">+</button></div>
-                <div class="box c5 ${bordeB}">${producto.habilitado ? 'Sí' : 'No'}</div>             
+                <div class="box c5 ${bordeB} bordeR">${producto.talle} </div>
+                <div class="box c5 ${bordeB}">${producto.cantidad}</div>             
                 <div class="box c6 ${bordeB}">
-                    <button class="btn-modify" onclick="modifyProducto('${producto.idProducto}','${producto.talle}')">Modificar</button>
-                    <button class="btn-delete" onclick="deleteProducto('${producto.idProducto}')">Eliminar</button>
+                    <form id="agregarStockForm" action="/agregarStock" method="post">
+                        <input type="hidden" id="idStock" name="idStock" value="${producto.idStock}">
+                        <input type="number" id="cantidad" name="cantidad" required>
+                        <button class = "buttonAdd" onclick="agregarStock()">+</button>
+                    </form>
                 </div>
             </div>
             `;
@@ -120,16 +86,16 @@ function fetchProductos() {
     });
 }
 
-
-
-async function handleSubmit(event) {
+async function agregarStock(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const data = new URLSearchParams(formData).toString();
+
+    console.log(data);
     
     try {
-        const response = await fetch('/crearProducto', {
+        const response = await fetch('/agregarStock', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -142,10 +108,10 @@ async function handleSubmit(event) {
         if (response.status === 400) {
             alert("Error " + result);
         } else {
-            window.location.href = '/productos?mensaje=successAddProducto';
+            window.location.href = '/stock?mensaje=successAddStock';
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Hubo un problema al crear la producto.');
+        alert('Hubo un problema al agregar el stock del producto.');
     }
 }

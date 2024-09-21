@@ -35,12 +35,14 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
         usuario = udao.iniciarSesion(usuario, password)
         idUsuario = -1
         casaCentral = ""
+        idTienda = -1
 
         if usuario is not None:
             idUsuario = usuario[0]
             casaCentral = usuario[6]
+            idTienda = usuario[7]
 
-        return usuario_pb2.IniciarSesionResponse(idUsuario=idUsuario, casaCentral=casaCentral)
+        return usuario_pb2.IniciarSesionResponse(idUsuario=idUsuario, casaCentral=casaCentral, idTienda=idTienda)
 
     def AgregarUsuario(self, request, context):
         #agregado = "" 
@@ -475,6 +477,74 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return producto_pb2.TraerTodosLosProductosFiltradosResponse()
+        
+# STOCK
+
+    def AgregarStock(self, request, context):
+        try:
+            idStock = request.idStock
+            cantidad = request.cantidad
+            sdao = StockDAO()
+            sdao.modificarStock(idStock, cantidad)
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+        return producto_pb2.AgregarStockResponse()
+
+    def TraerProductosXTienda(self, request, context):
+        try:
+            pdao = ProductoDAO()
+            productos = pdao.traerTodosLosProductos(request.idTienda)
+            producto_list = producto_pb2.StockList()
+            for producto in productos:
+                producto_dto = producto_pb2.StockGrpcDTO(
+                    idProducto=producto[0],
+                    nombre=producto[1],
+                    foto=producto[2],
+                    color=producto[3],
+                    codigo=producto[4],
+                    cantidad=producto[7],
+                    talle=producto[6],
+                    idStock=producto[8],
+                )
+                producto_list.productos.append(producto_dto)
+            response = producto_pb2.TraerProductosXTiendaResponse(productoList=producto_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.TraerProductosXTiendaResponse()
+        
+    def TraerProductosFiltradosXTienda(self, request, context):
+        try:
+            idTienda = request.idTienda
+            nombre = request.nombre
+            codigo = request.codigo
+            talle = request.talle
+            color = request.color
+            pdao = ProductoDAO()
+            productos = pdao.traerTodosLosProductosFiltrados(idTienda, nombre, codigo, talle, color)
+            producto_list = producto_pb2.StockList()
+            if productos:
+                for producto in productos:
+                    producto_dto = producto_pb2.StockGrpcDTO(
+                        idProducto=producto[0],
+                        nombre=producto[1],
+                        foto=producto[2],
+                        color=producto[3],
+                        codigo=producto[4],
+                        cantidad=producto[7],
+                        talle=producto[6],
+                        idStock=producto[8],
+                    )
+                    producto_list.productos.append(producto_dto)
+
+            response = producto_pb2.TraerProductosFiltradosXTiendaResponse(productoList=producto_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return producto_pb2.TraerProductosFiltradosXTiendaResponse()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

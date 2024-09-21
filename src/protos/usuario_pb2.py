@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rusuario.proto\x12\x07usuario\"\xa3\x01\n\x0eUsuarioGrpcDTO\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\x12\x0f\n\x07usuario\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x0e\n\x06nombre\x18\x04 \x01(\t\x12\x10\n\x08\x61pellido\x18\x05 \x01(\t\x12\x12\n\nhabilitado\x18\x06 \x01(\x08\x12\x13\n\x0b\x63\x61saCentral\x18\x07 \x01(\x08\x12\x10\n\x08idTienda\x18\x08 \x01(\x03\"9\n\x14IniciarSesionRequest\x12\x0f\n\x07usuario\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"?\n\x15IniciarSesionResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\x12\x13\n\x0b\x63\x61saCentral\x18\x02 \x01(\x08\"H\n\x15\x41gregarUsuarioRequest\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"+\n\x16\x41gregarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"*\n\x15ObtenerUsuarioRequest\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"I\n\x16ObtenerUsuarioResponse\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"J\n\x17ModificarUsuarioRequest\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"-\n\x18ModificarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"+\n\x16\x45liminarUsuarioRequest\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\",\n\x17\x45liminarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"8\n\x0bUsuarioList\x12)\n\x08usuarios\x18\x01 \x03(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"\x1e\n\x1cTraerTodosLosUsuariosRequest\"J\n\x1dTraerTodosLosUsuariosResponse\x12)\n\x0busuarioList\x18\x01 \x01(\x0b\x32\x14.usuario.UsuarioList\"I\n%TraerTodosLosUsuariosFiltradosRequest\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"S\n&TraerTodosLosUsuariosFiltradosResponse\x12)\n\x0busuarioList\x18\x01 \x01(\x0b\x32\x14.usuario.UsuarioList2\xa6\x05\n\x07Usuario\x12N\n\rIniciarSesion\x12\x1d.usuario.IniciarSesionRequest\x1a\x1e.usuario.IniciarSesionResponse\x12S\n\x0e\x41gregarUsuario\x12\x1e.usuario.AgregarUsuarioRequest\x1a\x1f.usuario.AgregarUsuarioResponse\"\x00\x12S\n\x0eObtenerUsuario\x12\x1e.usuario.ObtenerUsuarioRequest\x1a\x1f.usuario.ObtenerUsuarioResponse\"\x00\x12Y\n\x10ModificarUsuario\x12 .usuario.ModificarUsuarioRequest\x1a!.usuario.ModificarUsuarioResponse\"\x00\x12V\n\x0f\x45liminarUsuario\x12\x1f.usuario.EliminarUsuarioRequest\x1a .usuario.EliminarUsuarioResponse\"\x00\x12h\n\x15TraerTodosLosUsuarios\x12%.usuario.TraerTodosLosUsuariosRequest\x1a&.usuario.TraerTodosLosUsuariosResponse\"\x00\x12\x83\x01\n\x1eTraerTodosLosUsuariosFiltrados\x12..usuario.TraerTodosLosUsuariosFiltradosRequest\x1a/.usuario.TraerTodosLosUsuariosFiltradosResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rusuario.proto\x12\x07usuario\"\xa3\x01\n\x0eUsuarioGrpcDTO\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\x12\x0f\n\x07usuario\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\x0e\n\x06nombre\x18\x04 \x01(\t\x12\x10\n\x08\x61pellido\x18\x05 \x01(\t\x12\x12\n\nhabilitado\x18\x06 \x01(\x08\x12\x13\n\x0b\x63\x61saCentral\x18\x07 \x01(\x08\x12\x10\n\x08idTienda\x18\x08 \x01(\x03\"9\n\x14IniciarSesionRequest\x12\x0f\n\x07usuario\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"Q\n\x15IniciarSesionResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\x12\x13\n\x0b\x63\x61saCentral\x18\x02 \x01(\x08\x12\x10\n\x08idTienda\x18\x03 \x01(\x03\"H\n\x15\x41gregarUsuarioRequest\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"+\n\x16\x41gregarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"*\n\x15ObtenerUsuarioRequest\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"I\n\x16ObtenerUsuarioResponse\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"J\n\x17ModificarUsuarioRequest\x12/\n\x0eusuarioGrpcDTO\x18\x01 \x01(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"-\n\x18ModificarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"+\n\x16\x45liminarUsuarioRequest\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\",\n\x17\x45liminarUsuarioResponse\x12\x11\n\tidUsuario\x18\x01 \x01(\x03\"8\n\x0bUsuarioList\x12)\n\x08usuarios\x18\x01 \x03(\x0b\x32\x17.usuario.UsuarioGrpcDTO\"\x1e\n\x1cTraerTodosLosUsuariosRequest\"J\n\x1dTraerTodosLosUsuariosResponse\x12)\n\x0busuarioList\x18\x01 \x01(\x0b\x32\x14.usuario.UsuarioList\"I\n%TraerTodosLosUsuariosFiltradosRequest\x12\x10\n\x08idTienda\x18\x01 \x01(\x03\x12\x0e\n\x06nombre\x18\x02 \x01(\t\"S\n&TraerTodosLosUsuariosFiltradosResponse\x12)\n\x0busuarioList\x18\x01 \x01(\x0b\x32\x14.usuario.UsuarioList2\xa6\x05\n\x07Usuario\x12N\n\rIniciarSesion\x12\x1d.usuario.IniciarSesionRequest\x1a\x1e.usuario.IniciarSesionResponse\x12S\n\x0e\x41gregarUsuario\x12\x1e.usuario.AgregarUsuarioRequest\x1a\x1f.usuario.AgregarUsuarioResponse\"\x00\x12S\n\x0eObtenerUsuario\x12\x1e.usuario.ObtenerUsuarioRequest\x1a\x1f.usuario.ObtenerUsuarioResponse\"\x00\x12Y\n\x10ModificarUsuario\x12 .usuario.ModificarUsuarioRequest\x1a!.usuario.ModificarUsuarioResponse\"\x00\x12V\n\x0f\x45liminarUsuario\x12\x1f.usuario.EliminarUsuarioRequest\x1a .usuario.EliminarUsuarioResponse\"\x00\x12h\n\x15TraerTodosLosUsuarios\x12%.usuario.TraerTodosLosUsuariosRequest\x1a&.usuario.TraerTodosLosUsuariosResponse\"\x00\x12\x83\x01\n\x1eTraerTodosLosUsuariosFiltrados\x12..usuario.TraerTodosLosUsuariosFiltradosRequest\x1a/.usuario.TraerTodosLosUsuariosFiltradosResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -36,33 +36,33 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_INICIARSESIONREQUEST']._serialized_start=192
   _globals['_INICIARSESIONREQUEST']._serialized_end=249
   _globals['_INICIARSESIONRESPONSE']._serialized_start=251
-  _globals['_INICIARSESIONRESPONSE']._serialized_end=314
-  _globals['_AGREGARUSUARIOREQUEST']._serialized_start=316
-  _globals['_AGREGARUSUARIOREQUEST']._serialized_end=388
-  _globals['_AGREGARUSUARIORESPONSE']._serialized_start=390
-  _globals['_AGREGARUSUARIORESPONSE']._serialized_end=433
-  _globals['_OBTENERUSUARIOREQUEST']._serialized_start=435
-  _globals['_OBTENERUSUARIOREQUEST']._serialized_end=477
-  _globals['_OBTENERUSUARIORESPONSE']._serialized_start=479
-  _globals['_OBTENERUSUARIORESPONSE']._serialized_end=552
-  _globals['_MODIFICARUSUARIOREQUEST']._serialized_start=554
-  _globals['_MODIFICARUSUARIOREQUEST']._serialized_end=628
-  _globals['_MODIFICARUSUARIORESPONSE']._serialized_start=630
-  _globals['_MODIFICARUSUARIORESPONSE']._serialized_end=675
-  _globals['_ELIMINARUSUARIOREQUEST']._serialized_start=677
-  _globals['_ELIMINARUSUARIOREQUEST']._serialized_end=720
-  _globals['_ELIMINARUSUARIORESPONSE']._serialized_start=722
-  _globals['_ELIMINARUSUARIORESPONSE']._serialized_end=766
-  _globals['_USUARIOLIST']._serialized_start=768
-  _globals['_USUARIOLIST']._serialized_end=824
-  _globals['_TRAERTODOSLOSUSUARIOSREQUEST']._serialized_start=826
-  _globals['_TRAERTODOSLOSUSUARIOSREQUEST']._serialized_end=856
-  _globals['_TRAERTODOSLOSUSUARIOSRESPONSE']._serialized_start=858
-  _globals['_TRAERTODOSLOSUSUARIOSRESPONSE']._serialized_end=932
-  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSREQUEST']._serialized_start=934
-  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSREQUEST']._serialized_end=1007
-  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSRESPONSE']._serialized_start=1009
-  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSRESPONSE']._serialized_end=1092
-  _globals['_USUARIO']._serialized_start=1095
-  _globals['_USUARIO']._serialized_end=1773
+  _globals['_INICIARSESIONRESPONSE']._serialized_end=332
+  _globals['_AGREGARUSUARIOREQUEST']._serialized_start=334
+  _globals['_AGREGARUSUARIOREQUEST']._serialized_end=406
+  _globals['_AGREGARUSUARIORESPONSE']._serialized_start=408
+  _globals['_AGREGARUSUARIORESPONSE']._serialized_end=451
+  _globals['_OBTENERUSUARIOREQUEST']._serialized_start=453
+  _globals['_OBTENERUSUARIOREQUEST']._serialized_end=495
+  _globals['_OBTENERUSUARIORESPONSE']._serialized_start=497
+  _globals['_OBTENERUSUARIORESPONSE']._serialized_end=570
+  _globals['_MODIFICARUSUARIOREQUEST']._serialized_start=572
+  _globals['_MODIFICARUSUARIOREQUEST']._serialized_end=646
+  _globals['_MODIFICARUSUARIORESPONSE']._serialized_start=648
+  _globals['_MODIFICARUSUARIORESPONSE']._serialized_end=693
+  _globals['_ELIMINARUSUARIOREQUEST']._serialized_start=695
+  _globals['_ELIMINARUSUARIOREQUEST']._serialized_end=738
+  _globals['_ELIMINARUSUARIORESPONSE']._serialized_start=740
+  _globals['_ELIMINARUSUARIORESPONSE']._serialized_end=784
+  _globals['_USUARIOLIST']._serialized_start=786
+  _globals['_USUARIOLIST']._serialized_end=842
+  _globals['_TRAERTODOSLOSUSUARIOSREQUEST']._serialized_start=844
+  _globals['_TRAERTODOSLOSUSUARIOSREQUEST']._serialized_end=874
+  _globals['_TRAERTODOSLOSUSUARIOSRESPONSE']._serialized_start=876
+  _globals['_TRAERTODOSLOSUSUARIOSRESPONSE']._serialized_end=950
+  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSREQUEST']._serialized_start=952
+  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSREQUEST']._serialized_end=1025
+  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSRESPONSE']._serialized_start=1027
+  _globals['_TRAERTODOSLOSUSUARIOSFILTRADOSRESPONSE']._serialized_end=1110
+  _globals['_USUARIO']._serialized_start=1113
+  _globals['_USUARIO']._serialized_end=1791
 # @@protoc_insertion_point(module_scope)

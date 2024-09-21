@@ -92,16 +92,15 @@ class StockDAO(ConexionBD):
         
         return None
     
-    def modificarStock(self, idStock, cantidad, talle):
+    def modificarStock(self, idStock, cantidad):
         try:
             self.crearConexion()
 
-            sql = ("UPDATE stock SET cantidad = %s, talle = %s WHERE idStock = %s")
-            values = (talle, cantidad, idStock)
+            sql = ("UPDATE stock SET cantidad = cantidad + %s WHERE idStock = %s")
+            values = (cantidad, idStock)
 
             self._micur.execute(sql, values)
             self._bd.commit()
-            print("Stock actualizada con éxito.")
         except mysql.connector.errors.IntegrityError as err:
             idStock = None
             print(f"Integrity Error: {str(err)}")

@@ -7,11 +7,14 @@ import "tienda.proto";
 service Producto {
   rpc AgregarProducto(AgregarProductoRequest) returns (AgregarProductoResponse) {}
   rpc AgregarTalle(AgregarTalleRequest) returns (AgregarTalleResponse) {}
+  rpc AgregarStock(AgregarStockRequest) returns (AgregarStockResponse) {}
   rpc ObtenerProducto(ObtenerProductoRequest) returns (ObtenerProductoResponse) {}
   rpc ModificarProducto(ModificarProductoRequest) returns (ModificarProductoResponse) {}
   rpc EliminarProducto(EliminarProductoRequest) returns (ModificarProductoResponse) {}
   rpc TraerTodosLosProductos(TraerTodosLosProductosRequest) returns (TraerTodosLosProductosResponse) {}
   rpc TraerTodosLosProductosFiltrados(TraerTodosLosProductosFiltradosRequest) returns (TraerTodosLosProductosFiltradosResponse) {}
+  rpc TraerProductosXTienda(TraerProductosXTiendaRequest) returns (TraerProductosXTiendaResponse) {}
+  rpc TraerProductosFiltradosXTienda(TraerProductosFiltradosXTiendaRequest) returns (TraerProductosFiltradosXTiendaResponse) {}
 }
 
 message ProductoGrpcDTO {
@@ -22,6 +25,17 @@ message ProductoGrpcDTO {
   string codigo = 5;
   bool habilitado = 6;
   string talle = 7;
+}
+
+message StockGrpcDTO {
+  int64 idProducto = 1;
+  string nombre = 2;
+  string foto = 3;
+  string color = 4;
+  string codigo = 5;
+  int64 cantidad = 6;
+  string talle = 7;
+  int64 idStock = 9;
 }
 
 message AgregarProductoRequest {
@@ -45,6 +59,10 @@ message AgregarTalleResponse {
 
 message ProductoList {
   repeated ProductoGrpcDTO productos = 1;
+}
+
+message StockList {
+  repeated StockGrpcDTO productos = 1;
 }
 
 message ObtenerProductoRequest {
@@ -86,38 +104,6 @@ message TraerTodosLosProductosResponse {
   ProductoList productoList = 1;
 }
 
-message TraerTodosLosProductosPorNombreRequest {
-  string nombre = 1;
-}
-
-message TraerTodosLosProductosPorNombreResponse {
-  ProductoList productoList = 1;
-}
-
-message TraerTodosLosProductosPorTalleRequest {
-  string talle = 1;
-}
-
-message TraerTodosLosProductosPorTalleResponse {
-  ProductoList productoList = 1;
-}
-
-message TraerTodosLosProductosPorColorRequest {
-  string color = 1;
-}
-
-message TraerTodosLosProductosPorColorResponse {
-  ProductoList productoList = 1;
-}
-
-message TraerProductoPorCodigoRequest {
-  string codigo = 1;
-}
-
-message TraerProductoPorCodigoResponse {
-  ProductoGrpcDTO productoGrpcDTO = 1;
-}
-
 message TraerTodosLosProductosFiltradosRequest {
   string nombre = 1;
   string codigo = 2;
@@ -127,4 +113,32 @@ message TraerTodosLosProductosFiltradosRequest {
 
 message TraerTodosLosProductosFiltradosResponse {
   ProductoList productoList = 1;
+}
+
+message TraerProductosXTiendaRequest {
+  int64 idTienda = 1;
+}
+
+message TraerProductosXTiendaResponse {
+  StockList productoList = 1;
+}
+
+message TraerProductosFiltradosXTiendaRequest {
+  int64 idTienda = 1;
+  string nombre = 2;
+  string codigo = 3;
+  string talle = 4;
+  string color = 5;
+}
+
+message TraerProductosFiltradosXTiendaResponse {
+  StockList productoList = 1;
+}
+
+message AgregarStockRequest {
+  int64 idStock = 1;
+  int64 cantidad = 2;
+}
+
+message AgregarStockResponse {
 }
