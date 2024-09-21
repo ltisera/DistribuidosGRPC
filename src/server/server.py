@@ -494,7 +494,7 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
     def TraerProductosXTienda(self, request, context):
         try:
             pdao = ProductoDAO()
-            productos = pdao.traerTodosLosProductos(request.idTienda)
+            productos = pdao.traerTodosLosProductos(request.idTienda, True)
             producto_list = producto_pb2.StockList()
             for producto in productos:
                 producto_dto = producto_pb2.StockGrpcDTO(
@@ -523,7 +523,7 @@ class ProductoServicer(producto_pb2_grpc.ProductoServicer):
             talle = request.talle
             color = request.color
             pdao = ProductoDAO()
-            productos = pdao.traerTodosLosProductosFiltrados(idTienda, nombre, codigo, talle, color)
+            productos = pdao.traerTodosLosProductosFiltrados(idTienda, nombre, codigo, talle, color, True)
             producto_list = producto_pb2.StockList()
             if productos:
                 for producto in productos:

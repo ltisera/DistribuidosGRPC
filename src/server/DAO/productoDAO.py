@@ -138,11 +138,14 @@ class ProductoDAO(ConexionBD):
         
         return None
     
-    def traerTodosLosProductos(self, idTienda):
+    def traerTodosLosProductos(self, idTienda, soloHabilitados = False):
         try:
             self.crearConexion()
-            sql = ("SELECT producto.*, stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s ORDER BY stock.producto")
+            sql = ("SELECT producto.*, stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s")
             values = [idTienda]
+            if(soloHabilitados):
+                sql += " AND producto.habilitado = TRUE"
+            sql += " ORDER BY stock.producto"
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
             return resultados
@@ -157,7 +160,7 @@ class ProductoDAO(ConexionBD):
         
         return None
     
-    def traerTodosLosProductosFiltrados(self, idTienda, nombre, codigo, talle, color):
+    def traerTodosLosProductosFiltrados(self, idTienda, nombre, codigo, talle, color, soloHabilitados = False):
         try:
             self.crearConexion()
             sql = "SELECT producto.*, stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto WHERE stock.tienda = %s"
@@ -179,6 +182,8 @@ class ProductoDAO(ConexionBD):
                 sql += " AND color LIKE %s"
                 values.append(color)
 
+            if(soloHabilitados):
+                sql += " AND producto.habilitado = TRUE"
             sql += " ORDER BY stock.producto"
             self._micur.execute(sql, tuple(values))
             resultados = self._micur.fetchall()
