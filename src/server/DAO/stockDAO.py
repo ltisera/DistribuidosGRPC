@@ -60,7 +60,7 @@ class StockDAO(ConexionBD):
             self.crearConexion()
             check_sql = "SELECT idStock FROM stock WHERE tienda = %s AND producto = %s AND talle LIKE %s"
             self._micur.execute(check_sql, (idTienda, idProducto, talle))
-            id = self._micur.fetchone()[0]
+            id = self._micur.fetchone()
             return id
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
@@ -119,7 +119,7 @@ class StockDAO(ConexionBD):
         try:
             self.crearConexion()
             sql = ("DELETE FROM stock WHERE idStock = %s")
-            values = (idStock,)
+            values = (idStock)
 
             self._micur.execute(sql, values)
             self._bd.commit()

@@ -126,7 +126,7 @@ function eliminarProducto(req, res) {
   if (req.session.authenticated) {
     const { idProducto } = req.body;
     const idProductoDelete =  parseInt(idProducto, 10)
-    client.EliminarProducto({ idProductoDelete }, (error, response) => {
+    client.EliminarProducto({ idProducto: idProductoDelete }, (error, response) => {
         if (error) {
             console.error('Error al eliminar producto:', error);
             res.status(500).send('Error al eliminar producto');

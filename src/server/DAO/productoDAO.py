@@ -96,12 +96,12 @@ class ProductoDAO(ConexionBD):
                 print("El codigo de producto ya existe.")
                 return 0
 
-            sql = ("UPDATE producto SET nombre = %s, foto = %s, color = %s, codigo= %s WHERE idProducto = %s")
-            values = (nombre, foto, color, codigo, idProducto)
+            sql = ("UPDATE producto SET nombre = %s, foto = %s, color = %s, codigo= %s, habilitado = %s WHERE idProducto = %s")
+            values = (nombre, foto, color, codigo, habilitado, idProducto)
 
             self._micur.execute(sql, values)
             self._bd.commit()
-            print("Producto actualizada con éxito.")
+            print("Producto actualizado con éxito.")
         except mysql.connector.errors.IntegrityError as err:
             idProducto = None
             print(f"Integrity Error: {str(err)}")
@@ -120,13 +120,12 @@ class ProductoDAO(ConexionBD):
         try:
             self.crearConexion()
             
-        #implementar
-            #sql = ("UPDATE producto SET habilitado = %s WHERE idProducto = %s")
-            #values = (0, idProducto)
+            sql = ("UPDATE producto SET habilitado = %s WHERE idProducto = %s")
+            values = (0, idProducto)
 
-            #self._micur.execute(sql, values)
-            #self._bd.commit()
-            print("Producto eliminada con éxito.")
+            self._micur.execute(sql, values)
+            self._bd.commit()
+            print("Producto eliminado con éxito.")
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:

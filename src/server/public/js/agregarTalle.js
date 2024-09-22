@@ -1,8 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
+    agregarTiendasALista();
+    document.getElementById('addTalleForm').addEventListener('submit', handleSubmit);
+});
+
+function agregarDetalles(){
     const params = new URLSearchParams(window.location.search);
     const idProducto = params.get('idProducto');
     const talle = params.get('talle');
-    agregarTiendasALista();
 
     fetch(`/producto/${idProducto}/${talle}`)
         .then(response => response.json())
@@ -20,11 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error al cargar los datos de la producto:', error);
         });
+}
 
-    document.getElementById('addTalleForm').addEventListener('submit', handleSubmit);
-});
-
-async function agregarTiendasALista(){
+function agregarTiendasALista(){
     fetch('/api/tiendas')
     .then(response => response.json())
     .then(tiendas => {
@@ -43,6 +45,7 @@ async function agregarTiendasALista(){
                 </div>
             `}
         });
+        agregarDetalles()
     })
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);

@@ -53,7 +53,7 @@ function deleteTienda(idTienda) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ tiendaId: idTienda })
+        body: JSON.stringify({ idTienda: idTienda })
     })
     .then(response => {
         if (response.ok) {
