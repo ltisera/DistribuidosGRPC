@@ -3,6 +3,18 @@ document.addEventListener('DOMContentLoaded', () => {
     agregarTiendasALista();
 });
 
+function cambioEnSelect(){
+    var select = document.getElementById("casaCentral");
+    var tienda = document.getElementById("idTienda")
+    if (select.value == "true"){
+        tienda.style.display = "none";
+        tienda.value = "1";
+    }else {
+        tienda.value = tienda.options[1].value;
+        tienda.style.display = "inline";    
+    }
+}
+
 async function agregarTiendasALista(){
     fetch('/api/tiendas')
     .then(response => response.json())
@@ -11,8 +23,13 @@ async function agregarTiendasALista(){
         seleccionTienda.innerHTML = '';
 
         tiendas.forEach(tienda => {
-            seleccionTienda.innerHTML += "<option value=" +tienda.idTienda+ ">" +tienda.idTienda+ "</option>"
+            if(tienda.idTienda == 1){
+                seleccionTienda.innerHTML += "<option hidden value=" +tienda.idTienda+ ">" +tienda.idTienda+ "</option>"
+            }else {
+                seleccionTienda.innerHTML += "<option value=" +tienda.idTienda+ ">" +tienda.idTienda+ "</option>"
+            }
         });
+        cambioEnSelect();
     })
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);

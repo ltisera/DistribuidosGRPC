@@ -24,14 +24,13 @@
             <input type="text" id="apellido" name="apellido" required>
 
             <label for="casaCentral">Casa Central:</label>
-            <select id="casaCentral" name="casaCentral" required>
+            <select onchange="cambioEnSelect()" id="casaCentral" name="casaCentral" required>
                 <option value="true">Sí</option>
                 <option value="false">No</option>
             </select>
 
             <label for="idTienda">ID de Tienda:</label>
             <select id="idTienda" name="idTienda" required></select>
-            </select>
 
             <button type="submit">Crear Usuario</button>
         </form>

@@ -1,8 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
+    agregarTiendasALista();
+    document.getElementById('editUserForm').addEventListener('submit', handleSubmit);
+});
+
+
+function cambioEnSelect(){
+    var select = document.getElementById("casaCentral");
+    var tienda = document.getElementById("idTienda")
+    if (select.value == "true"){
+        tienda.style.display = "none";
+        tienda.value = "1";
+    }else {
+        tienda.value = tienda.options[1].value;
+        tienda.style.display = "inline";    
+    }
+}
+
+function traerDetalles(){
     const params = new URLSearchParams(window.location.search);
     const idUsuario = params.get('idUsuario');
-    agregarTiendasALista();
-
     fetch(`/usuario/${idUsuario}`)
         .then(response => response.json())
         .then(data => {
@@ -12,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('nombre').value = data.nombre;
             document.getElementById('apellido').value = data.apellido;
             document.getElementById('casaCentral').value = data.casaCentral.toString();
+            cambioEnSelect();
             const selectTienda = document.getElementById('idTienda');
             const opciones = selectTienda.options;
             for (let i = 0; i < opciones.length; i++) {
@@ -24,9 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('Error al cargar los datos del usuario:', error);
         });
-
-    document.getElementById('editUserForm').addEventListener('submit', handleSubmit);
-});
+}
 
 async function agregarTiendasALista(){
     fetch('/api/tiendas')
@@ -38,11 +53,14 @@ async function agregarTiendasALista(){
         tiendas.forEach(tienda => {
             seleccionTienda.innerHTML += "<option value=" +tienda.idTienda+ ">" +tienda.idTienda+ "</option>"
         });
+
+        traerDetalles();
     })
     .catch(error => {
         console.error('Error al cargar la lista de tiendas:', error);
     });
 }
+
 async function handleSubmit(event) {
     event.preventDefault();
 
