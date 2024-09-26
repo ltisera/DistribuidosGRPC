@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selector de Color y Talle</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Selecciona Color y Talle</h1>
+        Talle: <button onclick="removeSize()">-</button> <button onclick="addSize()">+</button>
+        Color: <button onclick="removeColor()">-</button> <button onclick="addColor()">+</button>
+        <div class="matrix" id="matrix">
+            <div class="row">
+                <div class="cell"></div>
+                <div class="cell">
+                    <input type="text" placeholder="Color" id="colorInput0">
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">
+                    <input type="text" placeholder="Talle" id="sizeInput0">
+                </div>
+                <div class="cell">
+                    <input id="color:1,talle:1" type="checkbox">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
