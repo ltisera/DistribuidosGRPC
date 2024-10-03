@@ -22,8 +22,9 @@ function iniciarSesion(req, res) {
   const { usuario, password } = req.body;
   client.IniciarSesion({ usuario, password }, (error, response) => {
     if (error) {
-      console.error(error);
-      res.send('Error en la solicitud');
+      res.redirect('/?mensaje=sessionFailed');
+      //console.error(error);
+      //res.send('Error en la solicitud');
     } else if (response.idUsuario >= 0) {
       req.session.authenticated = true;
       req.session.usuario = usuario;
