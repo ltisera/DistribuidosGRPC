@@ -12,7 +12,7 @@ class UsuarioDAO(ConexionBD):
     def iniciarSesion(self, usuario, password):
         try:
             self.crearConexion()
-            sql = ("SELECT * FROM usuario u WHERE u.usuario = %s AND u.password = %s")
+            sql = ("SELECT * FROM usuario u WHERE u.usuario = %s AND u.password = %s AND u.habilitado = 1")
             self._micur.execute(sql, (usuario, password))
             resultado = self._micur.fetchone()
             print("Resultado", str(resultado))
