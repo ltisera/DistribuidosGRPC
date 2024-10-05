@@ -13,6 +13,7 @@ app.use(express.json());
 const usuarioController = require('./controllers/usuarioController');
 const tiendaController = require('./controllers/tiendaController');
 const productoController = require('./controllers/productoController');
+const ordenCompraController = require('./controllers/ordenCompraController');
 
 app.use(session({
   secret: 'tp-grpc',
@@ -184,6 +185,31 @@ app.get('/api/stock/filtrado', productoController.traerStockFiltrado);
 
 app.post('/agregarStock', productoController.agregarStock);
 
+
+// ORDEN COMPRA
+app.get('/crearOrden', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearOrden.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.post('/crearOrden', ordenCompraController.crearOrdenCompra);
+
+app.get('/ordenes', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'ordenes.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/api/ordenes', ordenCompraController.traerOrdenes);
+
+app.post('/modificarOrden', ordenCompraController.modificarOrdenCompra);
+
+app.post('/eliminarOrden', ordenCompraController.eliminarOrdenCompra);
 
 const PORT = 3000;
 app.listen(PORT, () => {

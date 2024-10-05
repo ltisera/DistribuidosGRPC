@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Orden de Compra</title>
+    <link rel="stylesheet" href="/css/crearUsuario.css">
+    
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear Orden de Compra</h1>
+        <form id="createOrdenForm" action="/crearOrden" method="post">
+            <label for="idStock">IdStock:</label>
+            <input type="text" id="idStock" name="idStock" required>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="text" id="cantidad" name="cantidad" required>
+
+            <button type="submit">Crear Orden de Compra</button>
+        </form>
+    </div>
+    <script src="/js/crearOrden.js"></script>
+</body>
+</html>

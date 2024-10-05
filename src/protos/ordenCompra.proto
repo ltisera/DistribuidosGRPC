@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package ordenCompra;
+
+service OrdenCompra {
+  rpc AgregarOrden(AgregarOrdenCompraRequest) returns (AgregarOrdenCompraResponse) {}
+  rpc ModificarOrden(ModificarOrdenCompraRequest) returns (ModificarOrdenCompraResponse) {}
+  rpc EliminarOrden(EliminarOrdenCompraRequest) returns (EliminarOrdenCompraResponse) {}
+  rpc TraerTodasLasOrdenes(TraerTodasLasOrdenesRequest) returns (TraerTodasLasOrdenesResponse) {}
+}
+
+message OrdenCompraGrpcDTO {
+  int64 idOrdenDeCompra = 1;
+  int64 idStock = 2;
+  string cantidad = 3;
+  string estado = 4;
+  string observaciones = 5;
+  int64 fechaSolicitud = 6;
+  int64 fechaRecepcion = 7;
+  int64 ordenDeDespacho = 8;
+}
+
+message AgregarOrdenCompraRequest {
+  OrdenCompraGrpcDTO ordenCompraGrpcDTO = 1;
+}
+
+message AgregarOrdenCompraResponse {
+  int64 idOrdenDeCompra = 1;
+}
+
+message OrdenCompraList {
+  repeated OrdenCompraGrpcDTO ordenes = 1;
+}
+
+message ModificarOrdenCompraRequest {
+  OrdenCompraGrpcDTO ordenCompraGrpcDTO = 1;
+}
+
+message ModificarOrdenCompraResponse {
+  int64 idOrdenDeCompra = 1;
+}
+
+message EliminarOrdenCompraRequest {
+  int64 idOrdenDeCompra = 1;
+}
+
+message EliminarOrdenCompraResponse {
+  int64 idOrdenDeCompra = 1;
+}
+
+message TraerTodasLasOrdenesRequest {
+}
+
+message TraerTodasLasOrdenesResponse {
+  OrdenCompraList ordenList = 1;
+}

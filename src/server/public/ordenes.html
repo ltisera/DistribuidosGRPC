@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Ordenes</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Lista de Ordenes</h1>
+    </header>
+
+    <nav>
+        <a href="/stock">Stock</a>
+        <a href="/crearOrden">Crear Orden de Compra</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+
+    <div id="popup"></div>
+
+    <div class="container colPrimera">
+        <div class="box c1">ID ORDEN</div>
+        <div class="box c2">ID STOCK</div>
+        <div class="box c3">Cantidad</div>
+        <div class="box c4">Estado</div>
+        <div class="box c5">Observaciones</div>
+        <div class="box c5">Fecha Solicitud</div>
+        <div class="box c5">Fecha Recepcion</div>
+        <div class="box c6">Orde de Despacho</div>
+        <div class="box c7P"></div>
+    </div>
+
+    <div id="rellenarOrdenes"></div>
+    
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/orden.js"></script>
+</body>
+</html>
