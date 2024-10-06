@@ -90,7 +90,7 @@ function eliminarOrdenCompra(req, res) {
 // TRAER ORDENES COMPRA
 function traerOrdenes(req, res) {
   if (req.session.authenticated) {
-    client.TraerTodasLasOrdenes({}, (error, response) => {
+    client.TraerTodasLasOrdenes({ idTienda: req.session.idTienda }, (error, response) => {
       if (error) {
         console.error('Error al llamar al método TraerTodasLasOrdenes: ' + error.message);
         return res.status(400).send('Error al traer ordenes');

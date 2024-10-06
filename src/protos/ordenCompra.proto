@@ -49,6 +49,7 @@ message EliminarOrdenCompraResponse {
 }
 
 message TraerTodasLasOrdenesRequest {
+  int64 idTienda = 1;
 }
 
 message TraerTodasLasOrdenesResponse {

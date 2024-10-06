@@ -590,7 +590,7 @@ class OrdenCompraServicer(ordenCompra_pb2_grpc.OrdenCompraServicer):
     def TraerTodasLasOrdenes(self, request, context):
         try:
             odao = OrdenCompraDAO()
-            ordenes = odao.traerTodasLasOrdenes()
+            ordenes = odao.traerTodasLasOrdenes(request.idTienda)
             orden_list = ordenCompra_pb2.OrdenCompraList()
             
             for orden in ordenes:

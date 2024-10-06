@@ -8,6 +8,8 @@ from settings.conexionDB import ConexionBD
 
 from confluent_kafka import Producer
 
+from DAO.stockDAO import StockDAO
+
 # Configuración del productor de Kafka
 conf = {
     'bootstrap.servers': 'localhost:29092',  # Dirección del servidor Kafka
@@ -84,7 +86,7 @@ class OrdenCompraDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT estado, ordenDeDespacho FROM ordendecompra WHERE idOrdenDeCompra = %s"
+            check_sql = "SELECT estado, ordenDeDespacho, cantidad, idStock FROM ordendecompra WHERE idOrdenDeCompra = %s"
             self._micur.execute(check_sql, (idOrdenCompra,))
             resultado = self._micur.fetchone()
 
@@ -92,7 +94,7 @@ class OrdenCompraDAO(ConexionBD):
                 print("Orden de compra no encontrada.")
                 return None
             
-            estado, ordenDeDespacho = resultado
+            estado, ordenDeDespacho, cantidad, idStock = resultado
 
             if estado != "ACEPTADA":
                 print("La orden no se puede modificar porque no está en estado 'ACEPTADA'.")
@@ -111,6 +113,18 @@ class OrdenCompraDAO(ConexionBD):
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Orden de compra actualizada con éxito.")
+
+            mensaje = {
+                'ordenDeDespacho': ordenDeDespacho,
+                'fechaRecepcion': fechaRecepcion,
+            }
+
+            producer.produce('recepcion', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+
+            producer.flush()
+
+            sdao = StockDAO()
+            sdao.modificarStock(idStock, cantidad)
 
             return idOrdenCompra
         except mysql.connector.errors.IntegrityError as err:
@@ -146,11 +160,11 @@ class OrdenCompraDAO(ConexionBD):
         
         return None
     
-    def traerTodasLasOrdenes(self):
+    def traerTodasLasOrdenes(self, idTienda):
         try:
             self.crearConexion()
-            sql = ("SELECT * FROM ordendecompra")
-            self._micur.execute(sql)
+            sql = ("SELECT * FROM ordendecompra o INNER JOIN stock s ON o.idStock = s.idStock WHERE s.tienda = %s")
+            self._micur.execute(sql, (idTienda,))
             resultados = self._micur.fetchall()
             return resultados
         except mysql.connector.errors.IntegrityError as err:

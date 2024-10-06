@@ -36,7 +36,6 @@ function showPopup(message) {
         popup.textContent = message;
         popup.classList.add('show');
         setTimeout(() => {
-            console.log("HOLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
             popup.classList.remove('show');
         }, 3000);
     }
