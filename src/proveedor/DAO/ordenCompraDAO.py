@@ -4,6 +4,8 @@ import os, sys
 import mysql.connector
 import json
 from mysql.connector import Error
+from DAO.ordenCompraAsociadaDAO import OrdenCompraAsociadaDAO
+from DAO.ordenDespachoDAO import OrdenDespachoDAO
 from settings.conexionDB import ConexionBD
 
 from confluent_kafka import Producer
@@ -29,48 +31,63 @@ class OrdenCompraDAO(ConexionBD):
     def __init__(self):
         super().__init__()
 
-    def agregarOrdenCompra(self, idTienda, idOrden, idStock, cantidad, fechaSolicitud):
+    def procesarOrdenCompra(self, idTienda, idOrden, idStock, codigo, cantidad, fechaSolicitud):
         try:
             self.crearConexion()
 
-            estado = "SOLICITADA"
-            ordenDeDespacho = None
-            fechaSolicitud = int(datetime.now().timestamp() * 1000)
-            fechaRecepcion = None
             observaciones = None
-            sql = ("INSERT INTO ordendecompra (idStock, cantidad, estado, observaciones, fechaSolicitud, fechaRecepcion, ordenDeDespacho) "
-                   "VALUES (%s, %s, %s, %s, %s, %s, %s)")
-            values = (idStock, cantidad, estado, observaciones, fechaSolicitud, fechaRecepcion, ordenDeDespacho)
-            print(values) 
+            ocaDao = OrdenCompraAsociadaDAO()
+        
+            stock = ocaDao.traerStock(idStock)
+
+            if stock is None:
+                print("No se encontró stock para el id proporcionado.")
+                return None
+            
+            resultado = OrdenCompraDAO.verificarDisponibilidad(codigo, cantidad)
+
+            if resultado == -2:
+                observaciones = f"Articulo {codigo}: no existe"
+                estado = "RECHAZADA"
+            elif resultado == -1:
+                observaciones = f"Articulo {codigo}: cantidad mal informada"
+                estado = "RECHAZADA"
+            elif resultado == 0:
+                observaciones = f"Articulo {codigo}: no se cuenta con stock disponible"
+                estado = "ACEPTADA"
+            else:
+                observaciones = None
+                estado = "ACEPTADA"
+                odDao = OrdenDespachoDAO()
+                fechaEstimada = int(datetime.now().timestamp() * 1000 + 259200000) # DENTRO DE 3 DIAS
+                idDespacho = odDao.agregarOrdenDespacho(fechaEstimada, idOrden)
+                mensaje = {
+                    'idOrdenDespacho': idDespacho,
+                    'idOrden': idOrden,
+                    'fechaEstimada': fechaEstimada,
+                }
+                producer.produce(f'{idTienda}/despacho', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+                producer.flush()
+                sDao = StockDAO()
+                sDao.modificarStock(codigo, cantidad)
+
+            mensaje = {
+                'idOrden': idOrden,
+                'estado': estado,
+                'observaciones': observaciones,
+            }
+
+            producer.produce(f'{idTienda}/solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+            producer.flush()
+
+            sql = ("INSERT INTO ordendecompra (codigo, tienda, color, talle, cantidad, estado, observaciones, fechaSolicitud, fechaRecepcion, ordenDeDespacho, idOrdenAsociada) "
+                   "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            values = (codigo, idTienda, stock.color, stock.talle, cantidad, estado, observaciones, fechaSolicitud, None, None, idOrden)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Orden de compra agregada con éxito.")
 
-            idOrden = self._micur.lastrowid 
-
-            check_sql = "SELECT tienda FROM stock WHERE idStock = %s"
-            self._micur.execute(check_sql, (idStock,))
-            resultado = self._micur.fetchone()
-
-            if resultado is None:
-                print("No se encontró la tienda para el idStock proporcionado.")
-                return None
-        
-            idTienda = resultado[0]
-
-            mensaje = {
-                'idTienda': idTienda,
-                'idOrdenDeCompra': idOrden,
-                'idStock': idStock,
-                'cantidad': cantidad,
-                'fechaSolicitud': fechaSolicitud
-            }
-
-            producer.produce('orden-de-compra', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
-
-            producer.flush()
-
-            return idOrden
+            return self._micur.lastrowid 
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
@@ -86,45 +103,12 @@ class OrdenCompraDAO(ConexionBD):
         try:
             self.crearConexion()
 
-            check_sql = "SELECT estado, ordenDeDespacho, cantidad, idStock FROM ordendecompra WHERE idOrdenDeCompra = %s"
-            self._micur.execute(check_sql, (idOrdenCompra,))
-            resultado = self._micur.fetchone()
-
-            if resultado is None:
-                print("Orden de compra no encontrada.")
-                return None
-            
-            estado, ordenDeDespacho, cantidad, idStock = resultado
-
-            if estado != "ACEPTADA":
-                print("La orden no se puede modificar porque no está en estado 'ACEPTADA'.")
-                return 0
-            
-            if not ordenDeDespacho:
-                print("La orden no se puede modificar porque el campo 'ordenDeDespacho' está vacío.")
-                return 0
-
-            estado = "RECIBIDA"
-            fechaRecepcion = int(datetime.now().timestamp() * 1000)
-
-            sql = ("UPDATE ordendecompra SET estado = %s, fechaRecepcion = %s WHERE idOrdenDeCompra = %s")
-            values = (estado, fechaRecepcion, idOrdenCompra)
+            sql = ("UPDATE ordendecompra SET observaciones = %s WHERE idOrdenDeCompra = %s")
+            values = (None)
 
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Orden de compra actualizada con éxito.")
-
-            mensaje = {
-                'ordenDeDespacho': ordenDeDespacho,
-                'fechaRecepcion': fechaRecepcion,
-            }
-
-            producer.produce('recepcion', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
-
-            producer.flush()
-
-            sdao = StockDAO()
-            sdao.modificarStock(idStock, cantidad)
 
             return idOrdenCompra
         except mysql.connector.errors.IntegrityError as err:
@@ -138,6 +122,34 @@ class OrdenCompraDAO(ConexionBD):
             return None
         finally:
             self.cerrarConexion()
-    
+
+    def verificarDisponibilidad(self, codigo, cantidad):
+        try:
+            sql = "SELECT * FROM stock WHERE producto = %s"
+            self._micur.execute(sql, (codigo,))
+            stock_resultado = self._micur.fetchone()
+
+            if stock_resultado is None:
+                return -2 #("Articulo: %s: No se encontró stock para el codigo proporcionado.", codigo)
+            
+            if cantidad < 1:
+                return 0-1 #("Articulo: %s: Cantidad mal informada.", codigo)
+
+            if cantidad > stock_resultado.cantidad:
+                return 0
+            
+            return 1
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+        
+        return None
+
+ 
 if __name__ == '__main__':
     a = OrdenCompraDAO()

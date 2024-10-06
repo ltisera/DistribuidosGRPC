@@ -3,8 +3,9 @@ import random
 import string
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+
+from DAO.ordenCompraDAO import OrdenCompraDAO
 from DAO.productoDAO import ProductoDAO
-import mysql.connector
 
 from confluent_kafka import Producer, Consumer, KafkaError
 
@@ -27,7 +28,7 @@ def delivery_report(err, msg):
 consumer_conf = {
     'bootstrap.servers': 'localhost:29092',
     'group.id': 'python-consumer-group',
-    'auto.offset.reset': 'earliest'
+    'auto.offset.reset': 'latest'
 }
 consumer = Consumer(consumer_conf)
 consumer.subscribe(['orden-de-compra'])
@@ -107,6 +108,16 @@ def listar_productos():
 # KAFKA
 def procesar_orden(data):
     print(f'Procesando orden de compra: {data}')
+    id_tienda = data.get('idTienda')
+    id_orden_de_compra = data.get('idOrdenDeCompra')
+    codigo = data.get('codigo')
+    cantidad = data.get('cantidad')
+    fecha_solicitud = data.get('fechaSolicitud')
+    idStock = data.get('idStock')
+    
+    odao = OrdenCompraDAO()
+    odao.procesarOrdenCompra(id_tienda, id_orden_de_compra, idStock, codigo, cantidad, fecha_solicitud)
+
 
 def consumir_mensajes():
     while True:

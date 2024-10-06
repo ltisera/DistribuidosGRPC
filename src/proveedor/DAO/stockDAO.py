@@ -35,12 +35,12 @@ class StockDAO(ConexionBD):
         
         return None
 
-    def modificarStock(self, idStock, cantidad):
+    def modificarStock(self, codigo, cantidad):
         try:
             self.crearConexion()
 
-            sql = ("UPDATE stock SET cantidad = %s WHERE idStock = %s")
-            values = (cantidad, idStock)
+            sql = ("UPDATE stock SET cantidad = cantidad - %s WHERE producto = %s")
+            values = (cantidad, codigo)
 
             self._micur.execute(sql, values)
             self._bd.commit()
