@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestión de Productos</h1>
+
+        <div class="form-container">
+            <h2>Agregar Producto</h2>
+            <form id="add-product-form">
+                <input type="text" id="nombre" placeholder="Nombre" required>
+                <input type="text" id="foto" placeholder="URL de la Foto" required>
+        
+                <div id="talle-container">
+                    <div class="talle-item">
+                        <input type="text" class="talle" placeholder="Talle" required>
+                        <div class="color-container">
+                            <div class="color-item">
+                                <input type="text" class="color" placeholder="Color" required>
+                                <input type="number" class="cantidad" placeholder="Cantidad" min="0" required>
+                            </div>
+                        </div>
+                        <button type="button" class="add-color">Agregar Color</button>
+                    </div>
+                </div>
+        
+                <button type="button" id="add-talle">Agregar otro talle</button>
+                <button type="submit" >Agregar Producto</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Lista de Productos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Color</th>
+                        <th>Talle</th>
+                        <th>Cantidad</th>
+                        <th>ID Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="product-list"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Modificar Producto</h2>
+            <form id="modify-product-form">
+                <input type="number" id="new-cantidad" placeholder="Nueva Cantidad" required min="0">
+                <input type="hidden" id="stock-id">
+                <button type="submit">Modificar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
