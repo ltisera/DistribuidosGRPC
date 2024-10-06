@@ -1,25 +1,36 @@
 import json
+import random
+import string
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from DAO.productoDAO import ProductoDAO
 import mysql.connector
 
-from confluent_kafka import Producer
+from confluent_kafka import Producer, Consumer, KafkaError
 
 # Configuración del productor de Kafka
-conf = {
+producer_conf = {
     'bootstrap.servers': 'localhost:29092',  # Dirección del servidor Kafka
     'client.id': 'python-producer'
 }
 
 # Crear el productor
-producer = Producer(conf)
+producer = Producer(producer_conf)
 
 def delivery_report(err, msg):
     if err is not None:
         print('Error al enviar el mensaje: {}'.format(err))
     else:
         print('Mensaje enviado a {} [{}]'.format(msg.topic(), msg.partition()))
+
+# Crear el consumidor
+consumer_conf = {
+    'bootstrap.servers': 'localhost:29092',
+    'group.id': 'python-consumer-group',
+    'auto.offset.reset': 'earliest'
+}
+consumer = Consumer(consumer_conf)
+consumer.subscribe(['orden-de-compra'])
 
 from DAO.stockDAO import StockDAO
 
@@ -39,34 +50,38 @@ def agregar_producto():
     pdao = ProductoDAO()
     try:
         print("Talles: ", talles)
+        tallesNovedades = []
         for talle_data in talles:
             talle = talle_data['talle']
             for color_data in talle_data['colores']:
                 color = color_data['color']
                 cantidad = int(color_data['cantidad'])
-                idProducto = pdao.agregarProducto(nombre, foto, color, talle, cantidad)
+                codigo = generar_codigo_aleatorio()
+                idProducto = pdao.agregarProducto(codigo, nombre, foto, color, talle, cantidad)
+                tallesNovedades.append({
+                    'talle': talle,
+                    'color': color,
+                    'codigo': codigo  # Incluye el código aquí
+                })
         if idProducto:
-            tallesNovedades = [
-                {
-                    'talle': talle_data['talle'],
-                    'colores': [color_data['color'] for color_data in talle_data['colores']]
-                }
-                for talle_data in talles
-            ]
-
             mensaje = {
-                'idProducto': idProducto,
+                'nombre': nombre,
                 'talles': tallesNovedades,
                 'url': foto,
             }
             producer.produce('novedades', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
             producer.flush()
 
-            return jsonify({'message': 'Producto agregado exitosamente', 'id': idProducto}), 201
+            return jsonify({'message': 'Producto agregado exitosamente', 'codigo': codigo}), 201
         else:
             return jsonify({'error': 'No se pudo agregar el producto'}), 400
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+def generar_codigo_aleatorio(length=10):
+    caracteres = string.ascii_letters + string.digits  # 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    codigo = ''.join(random.choice(caracteres) for _ in range(length))
+    return codigo
 
 @app.route('/api/producto/<int:idStock>/cantidad', methods=['PUT'])
 def modificar_cantidad(idStock):
@@ -89,5 +104,28 @@ def listar_productos():
     productos = pdao.traerTodosLosProductos()
     return jsonify(productos), 200
 
+# KAFKA
+def procesar_orden(data):
+    print(f'Procesando orden de compra: {data}')
+
+def consumir_mensajes():
+    while True:
+        msg = consumer.poll(1.0) 
+        if msg is None:
+            continue
+        if msg.error():
+            if msg.error().code() == KafkaError._PARTITION_EOF:
+                continue
+            else:
+                print(f'Error al consumir el mensaje: {msg.error()}')
+                break
+        else:
+            data = json.loads(msg.value().decode('utf-8'))
+            print(f'Mensaje recibido: {data}')
+
+            procesar_orden(data)
+
 if __name__ == '__main__':
+    import threading
+    threading.Thread(target=consumir_mensajes, daemon=True).start()
     app.run(port=5000)

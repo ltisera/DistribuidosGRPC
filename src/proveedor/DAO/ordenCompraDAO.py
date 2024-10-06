@@ -29,7 +29,7 @@ class OrdenCompraDAO(ConexionBD):
     def __init__(self):
         super().__init__()
 
-    def agregarOrdenCompra(self, idStock, cantidad):
+    def agregarOrdenCompra(self, idTienda, idOrden, idStock, cantidad, fechaSolicitud):
         try:
             self.crearConexion()
 
@@ -58,20 +58,9 @@ class OrdenCompraDAO(ConexionBD):
         
             idTienda = resultado[0]
 
-            check_sql = "SELECT codigo FROM producto p INNER JOIN stock s ON s.producto = p.idProducto WHERE s.idStock = %s"
-            self._micur.execute(check_sql, (idStock,))
-            resultado = self._micur.fetchone()
-
-            if resultado is None:
-                print("No se encontró el codigo del producto para el idStock proporcionado.")
-                return None
-        
-            codigo = resultado[0]
-
             mensaje = {
                 'idTienda': idTienda,
                 'idOrdenDeCompra': idOrden,
-                'codigo': codigo,
                 'idStock': idStock,
                 'cantidad': cantidad,
                 'fechaSolicitud': fechaSolicitud
@@ -149,45 +138,6 @@ class OrdenCompraDAO(ConexionBD):
             return None
         finally:
             self.cerrarConexion()
-    
-    def eliminarOrdenDeCompra(self, idOrdenDeCompra):
-        try:
-            self.crearConexion()
-
-            sql = ("DELETE FROM ordendecompra WHERE idOrdenDeCompra = %s")
-            values = (idOrdenDeCompra,)
-
-            self._micur.execute(sql, values)
-            self._bd.commit()
-            print("Orden de compra eliminada con éxito.")
-        except mysql.connector.errors.IntegrityError as err:
-            print(f"Integrity Error: {str(err)}")
-        except mysql.connector.Error as err:
-            print(f"Database Error: {str(err)}")
-        except Exception as e:
-            print(f"Unexpected Error: {str(e)}")
-        finally:
-            self.cerrarConexion()
-        
-        return None
-    
-    def traerTodasLasOrdenes(self, idTienda):
-        try:
-            self.crearConexion()
-            sql = ("SELECT * FROM ordendecompra o INNER JOIN stock s ON o.idStock = s.idStock WHERE s.tienda = %s")
-            self._micur.execute(sql, (idTienda,))
-            resultados = self._micur.fetchall()
-            return resultados
-        except mysql.connector.errors.IntegrityError as err:
-            print(f"Integrity Error: {str(err)}")
-        except mysql.connector.Error as err:
-            print(f"Database Error: {str(err)}")
-        except Exception as e:
-            print(f"Unexpected Error: {str(e)}")
-        finally:
-            self.cerrarConexion()
-        
-        return None
     
 if __name__ == '__main__':
     a = OrdenCompraDAO()

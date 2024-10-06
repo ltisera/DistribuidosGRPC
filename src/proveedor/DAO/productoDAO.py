@@ -8,19 +8,19 @@ class ProductoDAO(ConexionBD):
     def __init__(self):
         super().__init__()
 
-    def agregarProducto(self, nombre, foto, color, talle, cantidad):
+    def agregarProducto(self, codigo, nombre, foto, color, talle, cantidad):
         try:
             self.crearConexion()
 
-            sql = ("INSERT INTO producto (nombre, color, foto)"
-                   "VALUES (%s, %s, %s)")
-            values = (nombre, color, foto)
+            sql = ("INSERT INTO producto (codigo, nombre, color, foto)"
+                   "VALUES (%s, %s, %s, %s)")
+            values = (codigo, nombre, color, foto)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Producto agregado con éxito.")
             sdao = StockDAO()
-            sdao.agregarStock(cantidad, talle, self._micur.lastrowid )
-            return self._micur.lastrowid 
+            sdao.agregarStock(cantidad, talle, codigo )
+            return codigo
         except mysql.connector.errors.IntegrityError as err:
             print(f"Integrity Error: {str(err)}")
         except mysql.connector.Error as err:
@@ -35,8 +35,8 @@ class ProductoDAO(ConexionBD):
     def traerTodosLosProductos(self):
         try:
             self.crearConexion()
-            sql = ("SELECT producto.idProducto, producto.nombre, producto.color, producto.foto,"
-               "stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.idProducto = stock.producto")
+            sql = ("SELECT producto.codigo, producto.nombre, producto.color, producto.foto,"
+               "stock.talle, stock.cantidad, stock.idStock FROM producto INNER JOIN stock ON producto.codigo = stock.producto")
             self._micur.execute(sql)
             resultados = self._micur.fetchall()
             productos = []
