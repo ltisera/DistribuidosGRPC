@@ -149,6 +149,54 @@ class OrdenCompraDAO(ConexionBD):
             return None
         finally:
             self.cerrarConexion()
+
+    def actualizarOrdenCompra(self, idOrdenCompra, estado, observaciones):
+        try:
+            self.crearConexion()
+
+            sql = ("UPDATE ordendecompra SET estado = %s, observaciones = %s WHERE idOrdenDeCompra = %s")
+            values = (estado, observaciones, idOrdenCompra)
+
+            self._micur.execute(sql, values)
+            self._bd.commit()
+            print("Orden de compra actualizada con éxito.")
+
+            return idOrdenCompra
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+            return None
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+            return None
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+            return None
+        finally:
+            self.cerrarConexion()
+
+    def agregarDespachoAOrdenCompra(self, idOrdenCompra, ordenDeDespacho):
+        try:
+            self.crearConexion()
+
+            sql = ("UPDATE ordendecompra SET ordenDeDespacho = %s WHERE idOrdenDeCompra = %s")
+            values = (ordenDeDespacho, idOrdenCompra)
+
+            self._micur.execute(sql, values)
+            self._bd.commit()
+            print("Orden de compra actualizada con éxito.")
+
+            return idOrdenCompra
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+            return None
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+            return None
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+            return None
+        finally:
+            self.cerrarConexion()      
     
     def eliminarOrdenDeCompra(self, idOrdenDeCompra):
         try:

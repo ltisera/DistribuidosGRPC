@@ -28,10 +28,10 @@ def delivery_report(err, msg):
 consumer_conf = {
     'bootstrap.servers': 'localhost:29092',
     'group.id': 'python-consumer-group',
-    'auto.offset.reset': 'latest'
+    'auto.offset.reset': 'earliest'
 }
 consumer = Consumer(consumer_conf)
-consumer.subscribe(['orden-de-compra'])
+consumer.subscribe(['orden-de-compra', 'recepcion'])
 
 from DAO.stockDAO import StockDAO
 
@@ -62,7 +62,7 @@ def agregar_producto():
                 tallesNovedades.append({
                     'talle': talle,
                     'color': color,
-                    'codigo': codigo  # Incluye el código aquí
+                    'codigo': codigo
                 })
         if idProducto:
             mensaje = {
@@ -114,10 +114,17 @@ def procesar_orden(data):
     cantidad = data.get('cantidad')
     fecha_solicitud = data.get('fechaSolicitud')
     idStock = data.get('idStock')
-    
+
     odao = OrdenCompraDAO()
     odao.procesarOrdenCompra(id_tienda, id_orden_de_compra, idStock, codigo, cantidad, fecha_solicitud)
 
+def procesar_recepcion(data):
+    print(f'Procesando recepcion: {data}')
+    fecha_recepcion = data.get('fechaRecepcion')
+    orden_despacho = data.get('ordenDeDespacho')
+
+    odao = OrdenCompraDAO()
+    odao.procesarRecibo(orden_despacho, fecha_recepcion)
 
 def consumir_mensajes():
     while True:
@@ -134,7 +141,10 @@ def consumir_mensajes():
             data = json.loads(msg.value().decode('utf-8'))
             print(f'Mensaje recibido: {data}')
 
-            procesar_orden(data)
+            if msg.topic() == 'orden-de-compra':
+                procesar_orden(data)
+            elif msg.topic() == 'recepcion':
+                procesar_recepcion(data)
 
 if __name__ == '__main__':
     import threading

@@ -1,3 +1,5 @@
+import json
+import threading
 import grpc
 from concurrent import futures
 import os, sys
@@ -26,6 +28,99 @@ from DAO.usuarioDAO import UsuarioDAO
 from DAO.productoDAO import ProductoDAO
 from DAO.stockDAO import StockDAO
 from DAO.ordenCompraDAO import OrdenCompraDAO
+
+from confluent_kafka import Consumer, KafkaError
+from confluent_kafka.admin import AdminClient, NewTopic
+
+# Crear el consumidor
+consumer_conf = {
+    'bootstrap.servers': 'localhost:29092',
+    'group.id': 'python-consumer-group',
+    'auto.offset.reset': 'earliest'
+}
+consumer = Consumer(consumer_conf)
+
+# KAFKA
+def actualizar_subscripciones():
+    crear_topicos()
+    tdao = TiendaDAO()
+    tiendas = tdao.traerTodasLasTiendas()
+    topics = []
+    topics = [f"{tienda[0]}-solicitudes" for tienda in tiendas] + \
+             [f"{tienda[0]}-despacho" for tienda in tiendas]
+    
+    consumer.subscribe(topics)
+
+    print("Suscrito a los siguientes tópicos:")
+    for topic in topics:
+        print(topic)
+                       
+def crear_topicos():
+    admin_client = AdminClient({'bootstrap.servers': 'localhost:29092'})
+
+    tdao = TiendaDAO()
+    tiendas = tdao.traerTodasLasTiendas()
+    topics = []
+    for tienda in tiendas:
+        id_tienda = tienda[0]
+        topics.append(f"{id_tienda}-solicitudes")
+        topics.append(f"{id_tienda}-despacho")
+
+    existing_topics = admin_client.list_topics().topics.keys()
+
+    new_topics = []
+    for topic in topics:
+        if topic not in existing_topics:
+            new_topics.append(NewTopic(topic, num_partitions=1, replication_factor=1))
+
+    if new_topics:
+        fs = admin_client.create_topics(new_topics)
+        for topic, f in fs.items():
+            try:
+                f.result()
+                print(f'Tópico {topic} creado con éxito.')
+            except Exception as e:
+                print(f'Error al crear el tópico {topic}: {e}')
+    else:
+        print("Todos los tópicos ya existen. No se crearon nuevos.")
+
+def consumir_mensajes():
+    while True:
+        msg = consumer.poll(1.0) 
+        if msg is None:
+            continue
+        if msg.error():
+            if msg.error().code() == KafkaError._PARTITION_EOF:
+                continue
+            else:
+                print(f'Error al consumir el mensaje: {msg.error()}')
+                break
+        else:
+            data = json.loads(msg.value().decode('utf-8'))
+            print(f'Mensaje recibido: {data}')
+
+            #idTienda = extraer_id_tienda(msg.topic())
+            if msg.topic().endswith('-solicitudes'):
+                procesar_solicitud(data)
+            elif msg.topic().endswith('-despacho'):
+                procesar_despacho(data)
+
+def extraer_id_tienda(topic):
+    return topic.split('-')[0]
+
+def procesar_solicitud(data):
+    estado = data.get('estado')
+    idOrden = data.get('idOrden')
+    observaciones = data.get('observaciones')
+
+    odao = OrdenCompraDAO()
+    odao.actualizarOrdenCompra(idOrden, estado, observaciones)
+
+def procesar_despacho(data):
+    idOrdenDespacho = data.get('idOrdenDespacho')
+    idOrden = data.get('idOrden')
+    odao = OrdenCompraDAO()
+    odao.agregarDespachoAOrdenCompra(idOrden, idOrdenDespacho)
 
 # USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
@@ -195,6 +290,7 @@ class TiendaServicer(tienda_pb2_grpc.TiendaServicer):
 
             tdao = TiendaDAO()
             idTienda = tdao.agregarTienda(idTienda, direccion, ciudad, provincia, habilitado)
+            actualizar_subscripciones()
             return tienda_pb2.AgregarTiendaResponse(idTienda = idTienda)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -624,4 +720,8 @@ def serve():
     server.wait_for_termination()
 
 if __name__ == '__main__':
+    actualizar_subscripciones()
+    threading.Thread(target=consumir_mensajes, daemon=True).start()
     serve()
+    
+    
