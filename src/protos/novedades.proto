@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package novedades;
+
+service Novedades {
+  rpc AgregarNovedad(AgregarNovedadRequest) returns (AgregarNovedadResponse) {}
+  rpc EliminarNovedad(EliminarNovedadRequest) returns (EliminarNovedadResponse) {}
+  rpc TraerTodasLasNovedades(TraerTodasLasNovedadesRequest) returns (TraerTodasLasNovedadesResponse) {}
+}
+
+message NovedadGrpcDTO {
+  string codigo = 1;
+  string nombre = 2;
+  string talle = 3;
+  string color = 4;
+  string url = 5;
+}
+
+message AgregarNovedadRequest {
+  NovedadGrpcDTO novedadGrpcDTO = 1;
+}
+
+message AgregarNovedadResponse {
+  string codigo = 1;
+}
+
+message EliminarNovedadRequest {
+   string codigo = 1;
+}
+
+message EliminarNovedadResponse {
+   string codigo = 1;
+}
+
+message NovedadList {
+  repeated NovedadGrpcDTO novedades = 1;
+}
+
+message TraerTodasLasNovedadesRequest {
+}
+
+message TraerTodasLasNovedadesResponse {
+  NovedadList novedadList = 1;
+}

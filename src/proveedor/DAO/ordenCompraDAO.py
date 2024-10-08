@@ -93,13 +93,13 @@ class OrdenCompraDAO(ConexionBD):
                     sDao.disminuirStock(codigo, cantidadInt)
                     self.modificarOrdenCompra(ordenCompraId, estado, observaciones, idDespacho)
 
-                    mensaje = {
-                        'idOrden': idOrden,
-                        'estado': estado,
-                        'observaciones': observaciones,
-                    }
-                    producer.produce(f'{idTienda}-solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
-                    producer.flush()
+                mensaje = {
+                    'idOrden': idOrden,
+                    'estado': estado,
+                    'observaciones': observaciones,
+                }
+                producer.produce(f'{idTienda}-solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+                producer.flush()
             except mysql.connector.errors.IntegrityError as err:
                 print(f"Integrity Error: {str(err)}")
             except mysql.connector.Error as err:
@@ -180,6 +180,10 @@ class OrdenCompraDAO(ConexionBD):
     def verificarOrdenesDeCompra(self, idStock):
         with self: 
             try:
+                if self._micur is None:
+                    print("Error: El cursor no está inicializado.")
+                    return
+
                 sql = ("SELECT producto FROM stock WHERE idStock = %s")
                 values = (idStock,)
                 self._micur.execute(sql, values)
@@ -207,6 +211,9 @@ class OrdenCompraDAO(ConexionBD):
                     idTienda = orden[2]
                     idOrdenCompra = orden[0]
 
+                    if self._micur is None:
+                        print("Error: El cursor no está inicializado.")
+                        return
                     sql = ("SELECT cantidad FROM stock WHERE idStock = %s")
                     values = (idStock,)
                     self._micur.execute(sql, values)

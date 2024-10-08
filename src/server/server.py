@@ -22,12 +22,15 @@ from protos import producto_pb2
 from protos import producto_pb2_grpc
 from protos import ordenCompra_pb2
 from protos import ordenCompra_pb2_grpc
+from protos import novedades_pb2
+from protos import novedades_pb2_grpc
 
 from DAO.tiendaDAO import TiendaDAO
 from DAO.usuarioDAO import UsuarioDAO
 from DAO.productoDAO import ProductoDAO
 from DAO.stockDAO import StockDAO
 from DAO.ordenCompraDAO import OrdenCompraDAO
+from DAO.novedadesDAO import NovedadesDAO
 
 # KAFKA
 from confluent_kafka import Consumer, KafkaError
@@ -47,8 +50,9 @@ def actualizar_subscripciones():
     tdao = TiendaDAO()
     tiendas = tdao.traerTodasLasTiendas()
     topics = []
-    topics = [f"{tienda[0]}-solicitudes" for tienda in tiendas] + \
-             [f"{tienda[0]}-despacho" for tienda in tiendas]
+    topics.append("novedades")
+    topics += [f"{tienda[0]}-solicitudes" for tienda in tiendas]
+    topics += [f"{tienda[0]}-despacho" for tienda in tiendas]
     
     consumer.subscribe(topics)
 
@@ -63,12 +67,18 @@ def crear_topicos():
     tdao = TiendaDAO()
     tiendas = tdao.traerTodasLasTiendas()
     topics = []
+    topics.append(f"novedades")
     for tienda in tiendas:
         id_tienda = tienda[0]
         topics.append(f"{id_tienda}-solicitudes")
         topics.append(f"{id_tienda}-despacho")
 
     existing_topics = admin_client.list_topics().topics.keys()
+
+    if "novedades" in existing_topics:
+        print("El tópico 'novedades' ya existe.")
+    else:
+        print("El tópico 'novedades' no existe y será creado.")
 
     new_topics = []
     for topic in topics:
@@ -105,6 +115,8 @@ def consumir_mensajes():
                 procesar_solicitud(data)
             elif msg.topic().endswith('-despacho'):
                 procesar_despacho(data)
+            elif msg.topic().endswith('novedades'):
+                procesar_novedades(data)
 
 # PROCESAR TOPICO SOLICITUD
 def procesar_solicitud(data):
@@ -121,6 +133,23 @@ def procesar_despacho(data):
     idOrden = data.get('idOrden')
     odao = OrdenCompraDAO()
     odao.agregarDespachoAOrdenCompra(idOrden, idOrdenDespacho)
+
+# PROCESAR TOPICO NOVEDADES
+def procesar_novedades(data):
+    try:
+        nombre = data.get('nombre')
+        talles = data.get('talles')
+        url = data.get('url')
+
+
+        for talle_data in talles:
+            talle = talle_data.get('talle')
+            color = talle_data.get('color')
+            codigo = talle_data.get('codigo')
+            ndao = NovedadesDAO()
+            ndao.agregarNovedad(codigo, nombre, talle, color, url)
+    except Exception as e:
+        print(f"Error al procesar novedades: {str(e)}")
 
 # USUARIO
 class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
@@ -704,6 +733,59 @@ class OrdenCompraServicer(ordenCompra_pb2_grpc.OrdenCompraServicer):
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
             return ordenCompra_pb2.TraerTodasLasOrdenesResponse()
+
+# NOVEDADES
+class NovedadesServicer(novedades_pb2_grpc.NovedadesServicer):
+    def AgregarNovedad(self, request, context):
+        try:
+            codigo = request.novedadGrpcDTO.codigo
+            nombre = request.novedadGrpcDTO.nombre
+            talle = request.novedadGrpcDTO.talle
+            color = request.novedadGrpcDTO.color
+            url = request.novedadGrpcDTO.url
+
+            ndao = NovedadesDAO()
+            codigo = ndao.agregarNovedad(codigo, nombre, talle, color, url)
+            return novedades_pb2.AgregarNovedadResponse(codigo = codigo)
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return novedades_pb2.AgregarNovedadResponse()
+          
+    def EliminarNovedad(self, request, context):
+        try:
+            codigo = request.codigo
+
+            ndao = NovedadesDAO()
+            codigo = ndao.eliminarNovedad(codigo)
+            response = novedades_pb2.EliminarNovedadResponse(codigo=codigo)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return novedades_pb2.EliminarNovedadResponse()
+
+    def TraerTodosLosUsuarios(self, request, context):
+        try:
+            ndao = NovedadesDAO()
+            novedades = ndao.traerTodasLasNovedades()
+            novedad_list = novedades_pb2.NovedadList()
+            
+            for novedad in novedades:
+                novedad_dto = novedades_pb2.NovedadGrpcDTO(
+                    codigo=novedad[0],
+                    nombre=novedad[1],
+                    talle=novedad[2],
+                    color=novedad[3],
+                    url=novedad[4],
+                )
+                novedad_list.novedades.append(novedad_dto)
+            response = novedades_pb2.TraerTodasLasNovedadesResponse(novedad_list=novedad_list)
+            return response
+        except Exception as e:
+            context.set_details(f'Error: {str(e)}')
+            context.set_code(grpc.StatusCode.INTERNAL)
+            return novedades_pb2.TraerTodasLasNovedadesResponse()
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
