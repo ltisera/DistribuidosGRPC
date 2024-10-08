@@ -91,6 +91,16 @@ footer {
     display: block;
 }
 
+#popup.success {
+    background-color: green;
+    color: white;
+}
+
+#popup.error {
+    background-color: red;
+    color: white;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -109,15 +119,7 @@ body {
     display: flex;
     
 }
-.container {
-    display: flex;
-    justify-content: space-around;
-    margin-left: 10px;
-    margin-right: 20px;
-    max-width: 1600px;    
-    flex-flow: row wrap;
-    margin: auto;
-}
+
 .containerL {
     display: flex;
     justify-content:left;
@@ -126,14 +128,6 @@ body {
     max-width: 1600px;    
     flex-flow: row wrap;
     margin: auto;
-}
-
-.box {
-    padding: 1px;
-    margin: 0px;
-    align-content: center;
-    justify-content: center;
-    
 }
 
 .cajaFoto {
@@ -216,9 +210,23 @@ body {
     background-color: #ffffff;
 }
 
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    flex: 1 1 calc(100% / 9);
+    box-sizing: border-box;
+    padding: 8px;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @media (max-width: 768px) {
     .box {
-        flex: 1 1 100%;
-        /* Para pantallas más pequeñas, las cajas ocupan el 100% del ancho */
+        flex: 1 1 70%;
     }
 }

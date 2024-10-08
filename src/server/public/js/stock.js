@@ -64,12 +64,13 @@ function fetchStock() {
                 </div>
                 
                 <div class="box c1 ${bordeB} bordeR">${producto.idProducto}</div>
-                <div class="box c2 ${bordeB}">${producto.codigo}</div>
-                <div class="box c3 ${bordeB}">${producto.nombre}</div>
-                <div class="box c4 ${bordeB}">${producto.color}</div>
-                <div class="box c5 ${bordeB} bordeR">${producto.talle} </div>
-                <div class="box c5 ${bordeB}">${producto.cantidad}</div>             
-                <div class="box c6 ${bordeB}">
+                <div class="box c2 ${bordeB} bordeR">${producto.idStock}</div>
+                <div class="box c3 ${bordeB}">${producto.codigo}</div>
+                <div class="box c4 ${bordeB}">${producto.nombre}</div>
+                <div class="box c5 ${bordeB}">${producto.color}</div>
+                <div class="box c6 ${bordeB} bordeR">${producto.talle} </div>
+                <div class="box c6 ${bordeB}">${producto.cantidad}</div>             
+                <div class="box c7 ${bordeB}">
                     <form id="agregarStockForm" action="/agregarStock" method="post">
                         <input type="hidden" id="idStock" name="idStock" value="${producto.idStock}">
                         <input type="number" id="cantidad" name="cantidad" required>

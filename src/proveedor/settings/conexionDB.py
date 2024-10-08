@@ -38,6 +38,14 @@ class ConexionBD:
     def __exit__(self, exc_type, exc_value, traceback):
         self.cerrarConexion()
 
+    def conexiones_en_uso(self):
+        try:
+            if ConexionBD._pbd:
+                return ConexionBD._pbd._cnx_queue.qsize()
+        except Exception as e:
+            print(f"Error al obtener conexiones en uso: {str(e)}")
+
 if __name__ == '__main__':
-    a = ConexionBD()
-    a.crearConexion()
+    with ConexionBD() as conexion:
+        print("Conexión creada con éxito.")
+        print(f"Conexiones disponibles al inicio: {conexion.conexiones_en_uso()}")

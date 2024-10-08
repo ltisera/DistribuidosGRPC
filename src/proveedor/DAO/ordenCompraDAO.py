@@ -1,5 +1,6 @@
 from datetime import datetime
 import os, sys
+import traceback
 
 import mysql.connector
 import json
@@ -8,18 +9,16 @@ from DAO.ordenCompraAsociadaDAO import OrdenCompraAsociadaDAO
 from DAO.ordenDespachoDAO import OrdenDespachoDAO
 from settings.conexionDB import ConexionBD
 
-from confluent_kafka import Producer
-from confluent_kafka.admin import AdminClient, NewTopic
-
 from DAO.stockDAO import StockDAO
 
-# Configuración del productor de Kafka
+# KAFKA
+from confluent_kafka import Producer
+
+# PRODUCTOR
 conf = {
-    'bootstrap.servers': 'localhost:29092',  # Dirección del servidor Kafka
+    'bootstrap.servers': 'localhost:29092',
     'client.id': 'python-producer'
 }
-
-# Crear el productor
 producer = Producer(conf)
 
 def delivery_report(err, msg):
@@ -32,12 +31,12 @@ class OrdenCompraDAO(ConexionBD):
     def __init__(self):
         super().__init__()
 
+    # PROCESAR ORDEN COMPRA
     def procesarOrdenCompra(self, idTienda, idOrden, idStock, codigo, cantidad, fechaSolicitud):
         with self:
             try:
                 observaciones = None
                 ocaDao = OrdenCompraAsociadaDAO()
-            
                 stock = ocaDao.traerStock(idStock)
                 producto = ocaDao.traerProducto(codigo)
 
@@ -91,16 +90,16 @@ class OrdenCompraDAO(ConexionBD):
                     }
                     producer.produce(f'{idTienda}-despacho', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
                     sDao = StockDAO()
-                    sDao.modificarStock(codigo, cantidadInt)
+                    sDao.disminuirStock(codigo, cantidadInt)
                     self.modificarOrdenCompra(ordenCompraId, estado, observaciones, idDespacho)
 
-                mensaje = {
-                    'idOrden': idOrden,
-                    'estado': estado,
-                    'observaciones': observaciones,
-                }
-                producer.produce(f'{idTienda}-solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
-                producer.flush()
+                    mensaje = {
+                        'idOrden': idOrden,
+                        'estado': estado,
+                        'observaciones': observaciones,
+                    }
+                    producer.produce(f'{idTienda}-solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+                    producer.flush()
             except mysql.connector.errors.IntegrityError as err:
                 print(f"Integrity Error: {str(err)}")
             except mysql.connector.Error as err:
@@ -108,6 +107,7 @@ class OrdenCompraDAO(ConexionBD):
             except Exception as e:
                 print(f"Unexpected Error: {str(e)}")
 
+    # MODIFICAR ORDEN COMPRA
     def modificarOrdenCompra(self, idOrdenCompra, estado, observaciones, idDespacho):
         with self: 
             try:
@@ -129,6 +129,7 @@ class OrdenCompraDAO(ConexionBD):
                 print(f"Unexpected Error: {str(e)}")
             return None
 
+    # VERIFICAR DISPONIBILIDAD
     def verificarDisponibilidad(self, codigo, cantidad):
         with self:
             try:
@@ -142,6 +143,9 @@ class OrdenCompraDAO(ConexionBD):
                 if cantidad < 1:
                     return -1 #("Articulo: %s: Cantidad mal informada.", codigo)
 
+                print("Cantidad solicitada: ", cantidad)
+                print("Cantidad: ", stock_resultado[2])
+
                 if cantidad > stock_resultado[2]:
                     return 0
                 
@@ -154,6 +158,7 @@ class OrdenCompraDAO(ConexionBD):
                 print(f"Unexpected Error: {str(e)}")
             return None
 
+    # PROCESAR RECIBO DE MERCADERIA
     def procesarRecibo(self, idOrdenDespacho, fechaRecepcion):
         with self: 
             try:
@@ -171,6 +176,81 @@ class OrdenCompraDAO(ConexionBD):
                 return None
             except Exception as e:
                 print(f"Unexpected Error: {str(e)}")
+
+    def verificarOrdenesDeCompra(self, idStock):
+        with self: 
+            try:
+                sql = ("SELECT producto FROM stock WHERE idStock = %s")
+                values = (idStock,)
+                self._micur.execute(sql, values)
+                stock_resultado = self._micur.fetchone()
+
+                if stock_resultado is None:
+                    print("No se encontró el stock.")
+                    return
+
+                codigo = stock_resultado[0]
+
+                sql = ("SELECT * FROM ordendecompra WHERE codigo = %s AND estado = 'ACEPTADA' AND observaciones = %s")
+                observaciones = f'Articulo {codigo}: no se cuenta con stock disponible'
+                values = (codigo, observaciones)
+                self._micur.execute(sql, values)
+                orden_resultado = self._micur.fetchall()
+
+                if not orden_resultado:
+                    print("No se encontraron órdenes de compra aceptadas.")
+                    return
+            
+                for orden in orden_resultado:
+                    idOrdenAsociada = orden[11]
+                    cantidadOrden = orden[5]
+                    idTienda = orden[2]
+                    idOrdenCompra = orden[0]
+
+                    sql = ("SELECT cantidad FROM stock WHERE idStock = %s")
+                    values = (idStock,)
+                    self._micur.execute(sql, values)
+                    stock_resultado = self._micur.fetchone()
+                    
+                    if stock_resultado is None:
+                        print("No se encontró el stock.")
+                        return
+
+                    cantidad = stock_resultado[0]
+
+                    if(cantidad >= cantidadOrden):
+                        odDao = OrdenDespachoDAO()
+                        fechaEstimada = int(datetime.now().timestamp() * 1000 + 259200000) # DENTRO DE 3 DIAS
+                        idDespacho = odDao.agregarOrdenDespacho(fechaEstimada, idOrdenCompra)
+                        mensaje = {
+                            'idOrdenDespacho': idDespacho,
+                            'idOrden': idOrdenAsociada,
+                            'fechaEstimada': fechaEstimada,
+                        }
+                        producer.produce(f'{idTienda}-despacho', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+                        sDao = StockDAO()
+                        sDao.disminuirStock(codigo, cantidadOrden)
+                        estado = 'ACEPTADA'
+                        observaciones = None
+                        self.modificarOrdenCompra(idOrdenCompra, estado, observaciones, idDespacho)
+                        mensaje = {
+                            'idOrden': idOrdenAsociada,
+                            'estado': estado,
+                            'observaciones': observaciones,
+                        }
+                        producer.produce(f'{idTienda}-solicitudes', json.dumps(mensaje).encode('utf-8'), callback=delivery_report)
+                        producer.flush()
+                        print("Orden de compra actualizada con éxito.")
+            
+            except mysql.connector.errors.IntegrityError as err:
+                print(f"Integrity Error: {str(err)}")
+                return None
+            except mysql.connector.Error as err:
+                print(f"Database Error: {str(err)}")
+                return None
+            except Exception as e:
+                print(f"Unexpected Error: {str(e)}")
+                print(traceback.format_exc())
 
 if __name__ == '__main__':
     a = OrdenCompraDAO()

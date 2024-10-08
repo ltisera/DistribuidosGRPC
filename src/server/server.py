@@ -29,10 +29,11 @@ from DAO.productoDAO import ProductoDAO
 from DAO.stockDAO import StockDAO
 from DAO.ordenCompraDAO import OrdenCompraDAO
 
+# KAFKA
 from confluent_kafka import Consumer, KafkaError
 from confluent_kafka.admin import AdminClient, NewTopic
 
-# Crear el consumidor
+# CONSUMIDOR
 consumer_conf = {
     'bootstrap.servers': 'localhost:29092',
     'group.id': 'python-consumer-group',
@@ -40,7 +41,7 @@ consumer_conf = {
 }
 consumer = Consumer(consumer_conf)
 
-# KAFKA
+# SUBSCRIBIRSE A LOS TOPICOS
 def actualizar_subscripciones():
     crear_topicos()
     tdao = TiendaDAO()
@@ -54,7 +55,8 @@ def actualizar_subscripciones():
     print("Suscrito a los siguientes tópicos:")
     for topic in topics:
         print(topic)
-                       
+
+# CREAR TOPICOS                       
 def crear_topicos():
     admin_client = AdminClient({'bootstrap.servers': 'localhost:29092'})
 
@@ -84,6 +86,7 @@ def crear_topicos():
     else:
         print("Todos los tópicos ya existen. No se crearon nuevos.")
 
+# CONSUMIR MENSAJES
 def consumir_mensajes():
     while True:
         msg = consumer.poll(1.0) 
@@ -98,16 +101,12 @@ def consumir_mensajes():
         else:
             data = json.loads(msg.value().decode('utf-8'))
             print(f'Mensaje recibido: {data}')
-
-            #idTienda = extraer_id_tienda(msg.topic())
             if msg.topic().endswith('-solicitudes'):
                 procesar_solicitud(data)
             elif msg.topic().endswith('-despacho'):
                 procesar_despacho(data)
 
-def extraer_id_tienda(topic):
-    return topic.split('-')[0]
-
+# PROCESAR TOPICO SOLICITUD
 def procesar_solicitud(data):
     estado = data.get('estado')
     idOrden = data.get('idOrden')
@@ -116,6 +115,7 @@ def procesar_solicitud(data):
     odao = OrdenCompraDAO()
     odao.actualizarOrdenCompra(idOrden, estado, observaciones)
 
+# PROCESAR TOPICO DESPACHO
 def procesar_despacho(data):
     idOrdenDespacho = data.get('idOrdenDespacho')
     idOrden = data.get('idOrden')
@@ -141,7 +141,6 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
         return usuario_pb2.IniciarSesionResponse(idUsuario=idUsuario, casaCentral=casaCentral, idTienda=idTienda)
 
     def AgregarUsuario(self, request, context):
-        #agregado = "" 
         try:
             usuario = request.usuarioGrpcDTO.usuario
             password = request.usuarioGrpcDTO.password
@@ -153,14 +152,12 @@ class UsuarioServicer(usuario_pb2_grpc.UsuarioServicer):
 
             udao = UsuarioDAO()
             idUsuario = udao.agregarUsuario(usuario, password, nombre, apellido, habilitado, casaCentral, idTienda)
-            return usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario) # agregado = usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario)
+            return usuario_pb2.AgregarUsuarioResponse(idUsuario = idUsuario)
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
             context.set_code(grpc.StatusCode.INTERNAL)
-            return usuario_pb2.AgregarUsuarioResponse() # agregado = usuario_pb2.AgregarUsuarioResponse()
-        #return agregado
+            return usuario_pb2.AgregarUsuarioResponse()
         
-
     def ObtenerUsuario(self, request, context):
         try:
             udao = UsuarioDAO()

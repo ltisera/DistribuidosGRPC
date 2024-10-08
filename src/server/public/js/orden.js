@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mensaje) {
         let messageText = '';
+        let messageType = 'success';
+
         switch (mensaje) {
             case 'successAddOrden':
                 messageText = 'Orden agregada con éxito!';
@@ -14,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageText = 'Orden actualizada con éxito!';
                 break;
             case 'failureModifyOrden':
-                messageText = 'No se puede modificar aun!';
+                messageText = 'El estado debe ser ACEPTADA';
+                messageType = 'error';
                 break;
             case 'successDeleteOrden':
                 messageText = 'Orden eliminada con éxito!';
@@ -25,15 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (messageText) {
             console.log("ShowPopUp")
-            showPopup(messageText);
+            showPopup(messageText, messageType);
         }
     }
 });
 
-function showPopup(message) {
+function showPopup(message, type) {
     const popup = document.getElementById('popup');
     if (popup) {
         popup.textContent = message;
+        popup.classList.remove('success', 'error');
+        popup.classList.add(type === 'error' ? 'error' : 'success');
         popup.classList.add('show');
         setTimeout(() => {
             popup.classList.remove('show');
@@ -89,6 +94,8 @@ function fetchOrdenes() {
     fetch('api/ordenes')
     .then(response => response.json())
     .then(ordenes => {
+        ordenes.sort((a, b) => a.idOrdenDeCompra - b.idOrdenDeCompra);
+
         const divHtml = document.querySelector('#rellenarOrdenes');
         divHtml.innerHTML = "";
 
@@ -97,18 +104,22 @@ function fetchOrdenes() {
             if(index === ordenes.length - 1){
                 bordeB = "bordeB"
             }
+
+            const fechaSolicitud = formatTimestamp(orden.fechaSolicitud * 1);
+            const fechaRecepcion = formatTimestamp(orden.fechaRecepcion * 1);
+
             var nuevaDiv = `
             <div class="container col${1 + (index % 2)}">
                 <div class="box c1 ${bordeB} bordeR">${orden.idOrdenDeCompra}</div>
                 <div class="box c2 ${bordeB}">${orden.idStock}</div>
                 <div class="box c3 ${bordeB}">${orden.cantidad}</div>
                 <div class="box c4 ${bordeB}">${orden.estado}</div>
-                <div class="box c5 ${bordeB}">${orden.observaciones}</div>
-                <div class="box c5 ${bordeB} bordeR">${orden.fechaSolicitud}</div>
-                <div class="box c5 ${bordeB}">${orden.fechaRecepcon}</div>    
+                <div class="box c5 ${bordeB}"> ${orden.observaciones}</div>
+                <div class="box c5 ${bordeB} bordeR">${fechaSolicitud}</div>
+                <div class="box c5 ${bordeB}">${fechaRecepcion}</div>    
                 <div class="box c6 ${bordeB}">${orden.ordenDeDespacho}</div>             
                 <div class="box c7 ${bordeB}">
-                    <button class="btn-modify" onclick="modifyOrden('${orden.idOrdenDeCompra}')">Modificar</button>
+                    <button class="btn-modify" onclick="modifyOrden('${orden.idOrdenDeCompra}')">Recibir</button>
                     <button class="btn-delete" onclick="deleteOrden('${orden.idOrdenDeCompra}')">Eliminar</button>
                 </div>
             </div>
@@ -119,4 +130,14 @@ function fetchOrdenes() {
     .catch(error => {
         console.error('Error al cargar la lista de ordenes:', error);
     });
+}
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime()) || date.getTime() == 0) {
+        console.error('Timestamp inválido:', timestamp);
+        return 'Fecha inválida';
+    }
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };
+    return date.toLocaleString('es-ES', options);
 }
