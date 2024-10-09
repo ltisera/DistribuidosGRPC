@@ -1,33 +1,36 @@
-# DistribuidosGRPC
-Entrega tp GRPC de sistemas distribuidos
+# SISTEMAS DISTRIBUIDOS TP CUATRIMESTRAL
+Entrega TP de sistemas distribuidos
 
--Lenguajes a utilizar 
+### -Lenguajes a utilizar:
     -Python
     -NodeJS
--Motor Base de datos
+### -Motor Base de datos:
     -MySQL Server 9.0.1
     
-Librerias Utilizadas
-Python
-Comandos ejecutados en el cmd
+### Comandos ejecutados en el cmd:
     pip install mysql-connector-python grpcio-tools
+    pip install Flask Flask-CORS confluent-kafka
     npm install @grpc/grpc-js @grpc/proto-loader express
 
 
     py compilaProto.py <--- Usar en caso de modificar el proto
 
 
-Para Ejecutar
+### Para Ejecutar:
+    docker-compose up -d (En la carpeta de kafka)
+    py server.py
+    py cliente.py
+    py proveedor.py
+    
+    NOTA: Ejecutarlo en consolas diferentes
 
-py server.py
-py cliente.py 
-*ejecutarlo en consolas diferentes por favor
-*****
+### Librerias Utilizadas:
     pyMSQL
-    -pyFlask
-    -
+    pyFlask
+    Express
+    Concurrent
+    Grpcio
+    Grpc-js
+    ConfluentKafka
 
 
-TO-DO: https://docs.google.com/spreadsheets/d/1HK1iN5ulHTdCxRk2pE4tTWD3tOHZ0SKXRiPi5CQ2_9U/edit?usp=sharing
-
-TP KAFKA: https://docs.google.com/document/d/1-7wcBGJPYSd-5fiexKuyFXCDPuzu-72iuAAEcn7_mUU/edit?usp=sharing
