@@ -14,6 +14,7 @@ const usuarioController = require('./controllers/usuarioController');
 const tiendaController = require('./controllers/tiendaController');
 const productoController = require('./controllers/productoController');
 const ordenCompraController = require('./controllers/ordenCompraController');
+const novedadesController = require('./controllers/novedadesController');
 
 app.use(session({
   secret: 'tp-grpc',
@@ -210,6 +211,21 @@ app.get('/api/ordenes', ordenCompraController.traerOrdenes);
 app.post('/modificarOrden', ordenCompraController.modificarOrdenCompra);
 
 app.post('/eliminarOrden', ordenCompraController.eliminarOrdenCompra);
+
+// ORDEN COMPRA
+app.post('/agregarNovedad', novedadesController.agregarNovedad);
+
+app.get('/novedades', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'novedades.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/api/novedades', novedadesController.traerNovedades);
+
+app.post('/eliminarNovedad', novedadesController.eliminarNovedad);
 
 const PORT = 3000;
 app.listen(PORT, () => {

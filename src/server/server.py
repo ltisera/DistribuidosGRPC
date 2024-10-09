@@ -736,26 +736,9 @@ class OrdenCompraServicer(ordenCompra_pb2_grpc.OrdenCompraServicer):
 
 # NOVEDADES
 class NovedadesServicer(novedades_pb2_grpc.NovedadesServicer):
-    def AgregarNovedad(self, request, context):
-        try:
-            codigo = request.novedadGrpcDTO.codigo
-            nombre = request.novedadGrpcDTO.nombre
-            talle = request.novedadGrpcDTO.talle
-            color = request.novedadGrpcDTO.color
-            url = request.novedadGrpcDTO.url
-
-            ndao = NovedadesDAO()
-            codigo = ndao.agregarNovedad(codigo, nombre, talle, color, url)
-            return novedades_pb2.AgregarNovedadResponse(codigo = codigo)
-        except Exception as e:
-            context.set_details(f'Error: {str(e)}')
-            context.set_code(grpc.StatusCode.INTERNAL)
-            return novedades_pb2.AgregarNovedadResponse()
-          
     def EliminarNovedad(self, request, context):
         try:
             codigo = request.codigo
-
             ndao = NovedadesDAO()
             codigo = ndao.eliminarNovedad(codigo)
             response = novedades_pb2.EliminarNovedadResponse(codigo=codigo)
@@ -765,7 +748,7 @@ class NovedadesServicer(novedades_pb2_grpc.NovedadesServicer):
             context.set_code(grpc.StatusCode.INTERNAL)
             return novedades_pb2.EliminarNovedadResponse()
 
-    def TraerTodosLosUsuarios(self, request, context):
+    def TraerTodasLasNovedades(self, request, context):
         try:
             ndao = NovedadesDAO()
             novedades = ndao.traerTodasLasNovedades()
@@ -780,7 +763,7 @@ class NovedadesServicer(novedades_pb2_grpc.NovedadesServicer):
                     url=novedad[4],
                 )
                 novedad_list.novedades.append(novedad_dto)
-            response = novedades_pb2.TraerTodasLasNovedadesResponse(novedad_list=novedad_list)
+            response = novedades_pb2.TraerTodasLasNovedadesResponse(novedadList=novedad_list)
             return response
         except Exception as e:
             context.set_details(f'Error: {str(e)}')
@@ -793,6 +776,7 @@ def serve():
     tienda_pb2_grpc.add_TiendaServicer_to_server(TiendaServicer(), server)
     producto_pb2_grpc.add_ProductoServicer_to_server(ProductoServicer(), server)
     ordenCompra_pb2_grpc.add_OrdenCompraServicer_to_server(OrdenCompraServicer(), server)
+    novedades_pb2_grpc.add_NovedadesServicer_to_server(NovedadesServicer(), server)
     server.add_insecure_port('[::]:50051')
     server.start()
     print("Servidor gRPC iniciado en el puerto 50051")

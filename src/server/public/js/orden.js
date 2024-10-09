@@ -54,9 +54,9 @@ function modifyOrden(idOrdenDeCompra) {
         },
         body: JSON.stringify({ ordenId: idOrdenDeCompra })
     })
-    .then(response => response.text())  // Cambiado a text() para obtener la respuesta
+    .then(response => response.text())
     .then(result => {
-        console.log("Resultado de la modificación:", result);  // Para depuración
+        console.log("Resultado de la modificación:", result);
         if (result === 'failureModifyOrden') {
             window.location.href = '/ordenes?mensaje=failureModifyOrden';
         } else if (result === 'successModifyOrden') {

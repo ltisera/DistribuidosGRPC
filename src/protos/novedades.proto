@@ -25,11 +25,11 @@ message AgregarNovedadResponse {
 }
 
 message EliminarNovedadRequest {
-   string codigo = 1;
+  string codigo = 1;
 }
 
 message EliminarNovedadResponse {
-   string codigo = 1;
+  string codigo = 1;
 }
 
 message NovedadList {

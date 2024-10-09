@@ -30,7 +30,7 @@ class NovedadesDAO(ConexionBD):
         try:
             self.crearConexion()
             sql = ("DELETE FROM novedades WHERE codigo = %s")
-            values = (codigo)
+            values = (codigo,)
             self._micur.execute(sql, values)
             self._bd.commit()
             print("Novedad eliminada con éxito.")
@@ -47,7 +47,7 @@ class NovedadesDAO(ConexionBD):
     def traerTodasLasNovedades(self):
         try:
             self.crearConexion()
-            sql = ("SELECT * FROM novedades")
+            sql = ("SELECT * FROM novedades n LEFT JOIN producto p ON n.codigo = p.codigo WHERE p.codigo IS NULL")
             self._micur.execute(sql)
             resultados = self._micur.fetchall()
             return resultados
