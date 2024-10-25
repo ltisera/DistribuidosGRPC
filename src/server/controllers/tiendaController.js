@@ -169,6 +169,15 @@ function traerTiendasFiltradas(req, res) {
   }
 }
 
+// OBETENER TIENDA ACTUAL
+function obtenerTiendaActual(req, res) {
+  if (req.session.authenticated) {
+    res.json(req.session.idTienda);
+  } else {
+    res.redirect('/');
+  }
+}
+
 // AGREGAR TIENDA AUXILIAR
 function agregarTienda(idTienda, direccion, ciudad, provincia) {
   return new Promise((resolve, reject) => {
@@ -198,5 +207,6 @@ module.exports = {
   modificarTienda,
   traerTiendas,
   eliminarTienda,
-  traerTiendasFiltradas
+  traerTiendasFiltradas,
+  obtenerTiendaActual
 };

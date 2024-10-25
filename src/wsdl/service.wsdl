@@ -1,0 +1,171 @@
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://localhost:5000/soap"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             name="SoapService"
+             targetNamespace="http://localhost:5000/soap">
+
+    <!-- Mensaje órdenes -->
+    <message name="ConsultarOrdenesRequest">
+        <part name="codigo_producto" type="xsd:string" minOccurs="0"/>
+        <part name="rango_fechas" type="xsd:string" minOccurs="0"/>
+        <part name="estado" type="xsd:string" minOccurs="0"/>
+        <part name="id_tienda" type="xsd:string" minOccurs="0"/>
+    </message>
+
+    <!-- Mensaje respuesta órdenes -->
+    <message name="ConsultarOrdenesResponse">
+        <part name="ordenes" type="xsd:anyType"/>
+    </message>
+
+    <!-- Mensaje guardar filtro -->
+    <message name="GuardarFiltroRequest">
+        <part name="id_usuario" type="xsd:string"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="codigo_producto" type="xsd:string" minOccurs="0"/>
+        <part name="rango_fechas" type="xsd:string" minOccurs="0"/>
+        <part name="estado" type="xsd:string" minOccurs="0"/>
+        <part name="id_tienda" type="xsd:string" minOccurs="0"/>
+    </message>
+
+    <!-- Mensaje respuesta guardar filtro -->
+    <message name="GuardarFiltroResponse">
+    </message>
+
+    <!-- Mensaje obtener filtro -->
+    <wsdl:message name="ObtenerFiltroRequest">
+        <wsdl:part name="id" type="xsd:string"/>
+    </wsdl:message>
+
+    <!-- Mensaje respuesta obtener filtro -->
+    <wsdl:message name="ObtenerFiltroResponse">
+        <wsdl:part name="Filtro" type="xsd:anyType"/>
+    </wsdl:message>
+
+    <!-- Mensaje obtener filtros -->
+    <wsdl:message name="ObtenerFiltrosRequest">
+        <part name="id_usuario" type="xsd:string"/>
+    </wsdl:message>
+
+    <!-- Mensaje respuesta obtener filtros -->
+    <wsdl:message name="ObtenerFiltrosResponse">
+        <wsdl:part name="Filtros" type="xsd:anyType"/>
+    </wsdl:message>
+
+    <!-- Mensaje editar filtro -->
+    <message name="EditarFiltroRequest">
+        <part name="id" type="xsd:string"/>
+        <part name="nombre" type="xsd:string"/>
+        <part name="codigo_producto" type="xsd:string" minOccurs="0"/>
+        <part name="rango_fechas" type="xsd:string" minOccurs="0"/>
+        <part name="estado" type="xsd:string" minOccurs="0"/>
+        <part name="id_tienda" type="xsd:string" minOccurs="0"/>
+    </message>
+
+    <!-- Mensaje respuesta editar filtro -->
+    <message name="EditarFiltroResponse">
+    </message>
+
+    <!-- Mensaje borrar filtros -->
+    <wsdl:message name="BorrarFiltroRequest">
+        <part name="id" type="xsd:string"/>
+    </wsdl:message>
+
+    <!-- Mensaje respuesta borrar filtros -->
+    <wsdl:message name="BorrarFiltroResponse">
+    </wsdl:message>
+
+    <!-- Operaciones  -->
+    <portType name="SoapServicePortType">
+        <operation name="ConsultarOrdenes">
+            <input message="tns:ConsultarOrdenesRequest"/>
+            <output message="tns:ConsultarOrdenesResponse"/>
+        </operation>
+        <operation name="guardar_filtro">
+            <input message="tns:GuardarFiltroRequest"/>
+            <output message="tns:GuardarFiltroResponse"/>
+        </operation>
+        <operation name="obtener_filtro">
+            <input message="tns:ObtenerFiltroRequest"/>
+            <output message="tns:ObtenerFiltroResponse"/>
+        </operation>
+        <operation name="obtener_filtros">
+            <input message="tns:ObtenerFiltrosRequest"/>
+            <output message="tns:ObtenerFiltrosResponse"/>
+        </operation>
+        <operation name="editar_filtro">
+            <input message="tns:EditarFiltroRequest"/>
+            <output message="tns:EditarFiltroResponse"/>
+        </operation>
+        <operation name="borrar_filtro">
+            <input message="tns:BorrarFiltroRequest"/>
+            <output message="tns:BorrarFiltroResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Bindeo de operaciones -->
+    <binding name="SoapServiceBinding" type="tns:SoapServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="ConsultarOrdenes">
+            <soap:operation soapAction="ConsultarOrdenes"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="guardar_filtro">
+            <soap:operation soapAction="guardar_filtro"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="obtener_filtro">
+            <soap:operation soapAction="obtener_filtro"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="obtener_filtros">
+            <soap:operation soapAction="obtener_filtros"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="editar_filtro">
+            <soap:operation soapAction="editar_filtro"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="borrar_filtro">
+            <soap:operation soapAction="borrar_filtro"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Servicio -->
+    <service name="SoapService">
+        <port name="SoapServicePort" binding="tns:SoapServiceBinding">
+            <soap:address location="http://localhost:5000/soap"/>
+        </port>
+    </service>
+</definitions>

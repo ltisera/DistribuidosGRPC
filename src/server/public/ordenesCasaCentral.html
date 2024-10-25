@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Ordenes</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Informe de Ordenes</h1>
+    </header>
+
+    <nav>
+        <a href="/home">Inicio</a>
+        <a href="/usuarios">Usuarios</a>
+        <a href="/tiendas">Tiendas</a>
+        <a href="/productos">Productos</a>
+        <a href="/novedades">Novedades</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+
+    <div class="containerL">
+        <div class="colFiltro">
+            <form id="filter-form" onsubmit="event.preventDefault(); filtrarOrdenes();">
+                <label for="filtro_guardado">Seleccionar Filtro Guardado:</label>
+                <select id="filtro_guardado" name="filtro_guardado" onchange="cargarFiltroSeleccionado()">
+                    <option value="">--Seleccionar Filtro--</option>
+                </select>
+                <button id="btn-editar" onclick="abrirModalEditar()" disabled>Editar Filtro</button>
+                <button id="btn-eliminar" onclick="eliminarFiltro()" disabled>Eliminar Filtro</button>
+
+                <label for="codigo_producto">Código Producto:</label>
+                <input type="text" id="codigo_producto" name="codigo_producto">
+
+                <label for="fecha_inicio">Fecha Inicio:</label>
+                <input type="date" id="fecha_inicio" name="fecha_inicio">
+
+                <label for="fecha_fin">Fecha Fin:</label>
+                <input type="date" id="fecha_fin" name="fecha_fin">
+
+                <label for="estado">Estado:</label>
+                <select id="estado" name="estado">
+                    <option value="">--Seleccionar--</option>
+                    <option value="SOLICITADA">Solicitada</option>
+                    <option value="RECHAZADA">Rechazada</option>
+                    <option value="ACEPTADA">Aceptada</option>
+                    <option value="RECIBIDA">Recibida</option>
+                </select>
+
+                <label for="id_tienda">ID Tienda:</label>
+                <input type="text" id="id_tienda" name="id_tienda">
+
+                <button type="submit">Filtrar</button>
+            </form>
+
+            <form id="save-filter-form" onsubmit="event.preventDefault(); guardarFiltro();">
+                <label for="filtro_nombre">Nombre del Filtro:</label>
+                <input type="text" id="filtro_nombre" name="filtro_nombre" required>
+
+                <button type="submit">Guardar Filtro</button>
+            </form>
+        </div>
+
+        <div class="colTabla">
+            <div class="container colPrimera">
+                <div class="box c1">ID ORDEN</div>
+                <div class="box c2">ID STOCK</div>
+                <div class="box c3">Cantidad</div>
+                <div class="box c4">Estado</div>
+                <div class="box c5">ID TIENDA</div>
+            </div>
+            <div id="rellenarOrdenes"></div>
+        </div>
+    </div>
+
+    <div id="modal-editar" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Editar Filtro</h2>
+            <form id="editar-filtro-form" onsubmit="event.preventDefault(); editarFiltro();">
+                <label for="editar_filtro_nombre">Nombre del Filtro:</label>
+                <input type="text" id="editar_filtro_nombre" name="editar_filtro_nombre" required>
+
+                <label for="editar_codigo_producto">Código Producto:</label>
+                <input type="text" id="editar_codigo_producto" name="editar_codigo_producto">
+
+                <label for="editar_fecha_inicio">Fecha Inicio:</label>
+                <input type="date" id="editar_fecha_inicio" name="editar_fecha_inicio">
+
+                <label for="editar_fecha_fin">Fecha Fin:</label>
+                <input type="date" id="editar_fecha_fin" name="editar_fecha_fin">
+
+                <label for="editar_estado">Estado:</label>
+                <select id="editar_estado" name="editar_estado">
+                    <option value="">--Seleccionar--</option>
+                    <option value="SOLICITADA">Solicitada</option>
+                    <option value="RECHAZADA">Rechazada</option>
+                    <option value="ACEPTADA">Aceptada</option>
+                    <option value="RECIBIDA">Recibida</option>
+                </select>
+
+                <label for="editar_id_tienda">ID Tienda:</label>
+                <input type="text" id="editar_id_tienda" name="editar_id_tienda">
+
+                <button type="submit">Guardar Cambios</button>
+                <button type="button" onclick="cerrarModal()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/ordenCasaCentral.js"></script>
+</body>
+</html>
