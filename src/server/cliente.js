@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+const catalogoController = require('./controllers/catalogoController');
 const usuarioController = require('./controllers/usuarioController');
 const tiendaController = require('./controllers/tiendaController');
 const productoController = require('./controllers/productoController');
@@ -95,6 +96,24 @@ app.get('/crearTienda', (req, res) => {
 });
 
 app.post('/crearTienda', tiendaController.crearTienda);
+
+app.get('/crearCatalogo', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'crearCatalogo.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.post('/crearCatalogo', catalogoController.crearCatalogo);
+
+app.get('/catalogos', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'catalogos.html'));
+  } else {
+    res.redirect('/');
+  }
+});
 
 app.get('/tiendas', (req, res) => {
   if (req.session.authenticated) {

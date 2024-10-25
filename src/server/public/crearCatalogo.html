@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Catalogo</title>
+    <link rel="stylesheet" href="/css/crearTienda.css">
+    
+</head>
+<body>
+    <div class="form-container">
+        <h1>Crear Catalogo</h1>
+        <form id="createCatalogoForm" action="/crearCatalogo" method="post">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <button type="submit">Crear catalogo</button>
+        </form>
+    </div>
+    <script src="/js/crearCatalogo.js"></script>
+</body>
+</html>

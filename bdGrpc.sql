@@ -46,7 +46,6 @@ CREATE TABLE IF NOT EXISTS `bdgrpc`.`tienda` (
   `codigo` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idTienda`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -62,7 +61,6 @@ CREATE TABLE IF NOT EXISTS `bdgrpc`.`producto` (
   `habilitado` TINYINT NULL DEFAULT NULL,
   PRIMARY KEY (`idProducto`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -85,7 +83,6 @@ CREATE TABLE IF NOT EXISTS `bdgrpc`.`stock` (
     FOREIGN KEY (`producto`)
     REFERENCES `bdgrpc`.`producto` (`idProducto`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -107,7 +104,6 @@ CREATE TABLE IF NOT EXISTS `bdgrpc`.`ordendecompra` (
     FOREIGN KEY (`idStock`)
     REFERENCES `bdgrpc`.`stock` (`idStock`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 13
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -129,7 +125,6 @@ CREATE TABLE IF NOT EXISTS `bdgrpc`.`usuario` (
     FOREIGN KEY (`Tienda_idTienda`)
     REFERENCES `bdgrpc`.`tienda` (`idTienda`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 

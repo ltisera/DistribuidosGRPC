@@ -38,7 +38,7 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 # CONSUMIDOR
 consumer_conf = {
-    'bootstrap.servers': 'localhost:29092',
+    'bootstrap.servers': 'localhost:9092',
     'group.id': 'python-consumer-group',
     'auto.offset.reset': 'earliest'
 }
@@ -62,7 +62,7 @@ def actualizar_subscripciones():
 
 # CREAR TOPICOS                       
 def crear_topicos():
-    admin_client = AdminClient({'bootstrap.servers': 'localhost:29092'})
+    admin_client = AdminClient({'bootstrap.servers': 'localhost:9092'})
 
     tdao = TiendaDAO()
     tiendas = tdao.traerTodasLasTiendas()

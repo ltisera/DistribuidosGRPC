@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Catalogos</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="/css/catalogo.css">
+</head>
+<body>
+    <header>
+        <h1>Lista de Catalogos</h1>
+    </header>
+
+    <nav>
+        <a href="/stock">Stock</a>
+        <a href="/crearCatalogo">Crear Catalogos</a>
+        <a href="/ordenes">Ordenes</a>
+        <a href="/logout">Cerrar Sesión</a>
+    </nav>
+    
+    <div id="popup"></div>
+    
+    <div class="containerL ">
+        
+        <div class="colTabla">
+            <div class="container colPrimera">
+                <div class="box c1">ID</div>
+                <div class="box c2">Nombre</div>
+                <div class="box c6P"></div>
+            </div>
+
+            <div id="rellenarCatalogos"></div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Stockearte. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="/js/catalogo.js"></script>
+</body>
+</html>

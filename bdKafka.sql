@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `bdkafka`.`ordendedespacho` (
     FOREIGN KEY (`ordenDeCompra`)
     REFERENCES `bdkafka`.`ordendecompra` (`idOrdenDeCompra`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -59,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `bdkafka`.`ordendecompra` (
     FOREIGN KEY (`ordenDeDespacho`)
     REFERENCES `bdkafka`.`ordendedespacho` (`idOrdenDeDespacho`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -90,7 +88,6 @@ CREATE TABLE IF NOT EXISTS `bdkafka`.`stock` (
     FOREIGN KEY (`producto`)
     REFERENCES `bdkafka`.`producto` (`codigo`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 21
 DEFAULT CHARACTER SET = utf8mb3;
 
 

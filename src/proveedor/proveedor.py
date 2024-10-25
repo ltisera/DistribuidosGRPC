@@ -12,7 +12,7 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 # Configuración del productor de Kafka
 producer_conf = {
-    'bootstrap.servers': 'localhost:29092',  # Dirección del servidor Kafka
+    'bootstrap.servers': 'localhost:9092',  # Dirección del servidor Kafka
     'client.id': 'python-producer'
 }
 
@@ -27,7 +27,7 @@ def delivery_report(err, msg):
 
 # CREAR TOPICOS                       
 def crear_topicos():
-    admin_client = AdminClient({'bootstrap.servers': 'localhost:29092'})
+    admin_client = AdminClient({'bootstrap.servers': 'localhost:9092'})
     new_topics = [
         NewTopic('orden-de-compra', num_partitions=1, replication_factor=1),
         NewTopic('recepcion', num_partitions=1, replication_factor=1)
@@ -43,7 +43,7 @@ def crear_topicos():
 
 # Crear el consumidor
 consumer_conf = {
-    'bootstrap.servers': 'localhost:29092',
+    'bootstrap.servers': 'localhost:9092',
     'group.id': 'python-consumer-group',
     'auto.offset.reset': 'earliest'
 }
