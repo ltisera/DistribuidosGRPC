@@ -237,5 +237,48 @@ class OrdenCompraDAO(ConexionBD):
         
         return None
     
+    def filtrarOrdenes(self, codigo_producto, rango_fechas, estado, id_tienda):
+        try:
+            self.crearConexion()
+            sql = (
+                "SELECT o.*, s.tienda, SUM(o.cantidad) AS total_pedida "
+                "FROM ordendecompra o "
+                "INNER JOIN stock s ON o.idStock = s.idStock "
+                "INNER JOIN producto p ON s.producto = p.idProducto "
+                "WHERE 1=1"
+            )
+            params = []
+
+            if codigo_producto:
+                sql += " AND p.codigo = %s"
+                params.append(codigo_producto)
+            if rango_fechas:
+                sql += " AND fechaSolicitud BETWEEN %s AND %s"
+                params.append(rango_fechas[0])
+                params.append(rango_fechas[1])
+            if estado:
+                sql += " AND estado = %s"
+                params.append(estado)
+            if id_tienda:
+                sql += " AND s.tienda = %s"
+                params.append(id_tienda)
+
+            sql += " GROUP BY p.codigo, o.estado, s.tienda"
+
+            print("SQL: ", sql)
+            print("ID TIENDA: ", id_tienda)
+
+            self._micur.execute(sql, params)
+            resultados = self._micur.fetchall()
+            return resultados
+        except mysql.connector.errors.IntegrityError as err:
+            print(f"Integrity Error: {str(err)}")
+        except mysql.connector.Error as err:
+            print(f"Database Error: {str(err)}")
+        except Exception as e:
+            print(f"Unexpected Error: {str(e)}")
+        finally:
+            self.cerrarConexion()
+    
 if __name__ == '__main__':
     a = OrdenCompraDAO()

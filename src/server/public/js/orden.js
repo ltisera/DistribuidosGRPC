@@ -135,7 +135,6 @@ function fetchOrdenes() {
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     if (isNaN(date.getTime()) || date.getTime() == 0) {
-        console.error('Timestamp inválido:', timestamp);
         return 'Fecha inválida';
     }
     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false };

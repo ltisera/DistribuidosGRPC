@@ -85,6 +85,8 @@ app.post('/eliminarUsuario', usuarioController.eliminarUsuario);
 
 app.get('/api/usuarios/filtrados', usuarioController.traerUsuariosFiltrados);
 
+app.get('/obtenerUsuarioActual', usuarioController.obtenerUsuarioActual);
+
 // TIENDA
 
 app.get('/crearTienda', (req, res) => {
@@ -140,6 +142,8 @@ app.post('/modificarTienda', tiendaController.modificarTienda);
 app.post('/eliminarTienda', tiendaController.eliminarTienda);
 
 app.get('/api/tiendas/filtradas', tiendaController.traerTiendasFiltradas);
+
+app.get('/obtenerTiendaActual', tiendaController.obtenerTiendaActual);
 
 // PRODUCTO
 
@@ -225,13 +229,29 @@ app.get('/ordenes', (req, res) => {
   }
 });
 
+app.get('/informeOrdenes', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'informeOrdenes.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/ordenesCasaCentral', (req, res) => {
+  if (req.session.authenticated) {
+    res.sendFile(path.join(__dirname, 'public', 'ordenesCasaCentral.html'));
+  } else {
+    res.redirect('/');
+  }
+});
+
 app.get('/api/ordenes', ordenCompraController.traerOrdenes);
 
 app.post('/modificarOrden', ordenCompraController.modificarOrdenCompra);
 
 app.post('/eliminarOrden', ordenCompraController.eliminarOrdenCompra);
 
-// ORDEN COMPRA
+// NOVEDADES
 app.post('/agregarNovedad', novedadesController.agregarNovedad);
 
 app.get('/novedades', (req, res) => {

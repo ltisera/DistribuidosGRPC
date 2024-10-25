@@ -225,6 +225,15 @@ function traerUsuariosFiltrados(req, res) {
   }
 }
 
+// OBETENER USUARIO ACTUAL
+function obtenerUsuarioActual(req, res) {
+  if (req.session.authenticated) {
+    res.json(req.session.idUsuario);
+  } else {
+    res.redirect('/');
+  }
+}
+
 // AGREGAR USUARIO AUXILIAR
 function agregarUsuario(usuario, password, nombre, apellido, casaCentral, idTienda) {
   return new Promise((resolve, reject) => {
@@ -258,5 +267,6 @@ module.exports = {
   mostrarUsuario,
   modificarUsuario,
   eliminarUsuario,
-  traerUsuariosFiltrados
+  traerUsuariosFiltrados,
+  obtenerUsuarioActual
 };
