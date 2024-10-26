@@ -32,59 +32,91 @@ const fs = require('fs');
 const upload = multer({ dest: 'uploads/' });
 
 app.post('/cargarCSV', upload.single('csvFile'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No se ha proporcionado ningún archivo.');
-    }
+  if (!req.file) {
+    return res.status(400).send('No se ha proporcionado ningún archivo.');
+}
 
-      // Leer el archivo CSV
-      const csvFilePath = req.file.path;
-      const fileData = fs.readFileSync(csvFilePath, 'utf8');
-      
-      const mensajeXml = `
-          <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-              <soap:Body>
-                  <procesarCSV>
-                      <archivo>${fileData}</archivo>
-                      <nombre>${req.file.originalname}</nombre>
-                  </procesarCSV>
-              </soap:Body>
-          </soap:Envelope>
-      `;
-      const options = {
-        hostname: 'localhost',
-        port: 6000,
-        path: '/procesarCSV',
-        method: 'POST',
-        headers: {
+  // Leer el archivo CSV
+  const csvFilePath = req.file.path;
+  const fileData = fs.readFileSync(csvFilePath, 'utf8');
+
+  const mensajeXml = `
+      <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+          <soap:Body>
+              <procesarCSV>
+                  <archivo>${fileData}</archivo>
+                  <nombre>${req.file.originalname}</nombre>
+              </procesarCSV>
+          </soap:Body>
+      </soap:Envelope>
+  `;
+
+  const options = {
+      hostname: 'localhost',
+      port: 6000,
+      path: '/procesarCSV',
+      method: 'POST',
+      headers: {
           'Content-Type': 'text/xml',
           'Content-Length': Buffer.byteLength(mensajeXml),
           'SOAPAction': '' // Puede ser requerido por algunos servidores.
-        }
-      };
+      }
+  };
 
-      return new Promise((resolve, reject) => {
-        const req = http.request(options, (res) => {
-          let responseData = '';
-    
-          res.on('data', (chunk) => {
-            responseData += chunk;
-          });
-    
-          res.on('end', () => {
-            resolve(responseData); // Devolvemos la respuesta SOAP.
-          });
-        });
-    
-        req.on('error', (error) => {
-          reject(error); // En caso de error.
-        });
-        console.log("Te envio el xml EN LOTES");
-        req.write(mensajeXml); // Enviamos el cuerpo SOAP.
-        req.end();
+  const soapRequest = http.request(options, (soapRes) => {
+      let responseData = '';
+
+      soapRes.on('data', (chunk) => {
+          responseData += chunk;
       });
 
+      soapRes.on('end', () => {
+          // Aquí se procesa la respuesta SOAP
+          const errores = parseSoapResponse(responseData);
+          fs.unlink(csvFilePath, (err) => {
+              if (err) {
+                  console.error(`Error al eliminar el archivo: ${err}`);
+              } else {
+                  console.log(`Archivo ${csvFilePath} eliminado exitosamente.`);
+              }
+          });
 
+          // Devolver los errores al navegador
+          if (errores.length > 0) {
+              return res.status(400).json({ errores }); // Enviar errores como respuesta JSON
+          } else {
+              return res.status(200).json({ mensaje: 'Archivo procesado correctamente.' });
+          }
+      });
+  });
+
+  soapRequest.on('error', (error) => {
+      console.error(`Error en la solicitud SOAP: ${error.message}`);
+      res.status(500).send('Error en el servidor.');
+  });
+
+  console.log("Te envio el xml EN LOTES");
+  soapRequest.write(mensajeXml); // Enviamos el cuerpo SOAP.
+  soapRequest.end();
 });
+
+// Función para parsear la respuesta SOAP
+function parseSoapResponse(soapResponse) {
+  const start = soapResponse.indexOf('<errores>') + '<errores>'.length;
+  const end = soapResponse.indexOf('</errores>');
+  const erroresXml = soapResponse.substring(start, end);
+  
+  // Extraer los mensajes de error en un arreglo
+  const errores = [];
+  const errorMatches = erroresXml.match(/<error>(.*?)<\/error>/g);
+  if (errorMatches) {
+      errorMatches.forEach((error) => {
+          errores.push(error.replace(/<\/?error>/g, ''));
+      });
+  }
+  return errores;
+}
+
 
 
 

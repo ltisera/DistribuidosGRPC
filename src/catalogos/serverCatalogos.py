@@ -81,18 +81,14 @@ def procesarCSV():
     errores = []
     soap_request = request.data.decode('utf-8')
     # Obtener archivo del request
-    
     start_index = soap_request.find('<archivo>') + len('<archivo>')
     end_index = soap_request.find('</archivo>')
     archivo = soap_request[start_index:end_index]
-    print("Este es mi XML Filtrado")
-    print(archivo)
-    print("FIN DE mi XML Filtrado")
     if not archivo:
-        print("ROMPO")
-        print(soap_request)
-        print("NIACA")
-        return Response("No se proporcionó un archivo", status=400)
+        return Response(
+            create_soap_response("No se proporcionó un archivo"), 
+            content_type="text/xml"
+        )
 
     # Leer el archivo y procesar cada línea
     lineas = archivo.splitlines()
@@ -114,21 +110,29 @@ def procesarCSV():
             continue
 
         esCasaCentral = codigo_tienda == 1
-
         error = udao.agregarUsuario(usuario, password, nombre, apellido, True, esCasaCentral, codigo_tienda)
         if error:
             errores.append(f"Línea {num_linea}: {error}")
-    print("Me printas los errores")
-    print(errores)
-    print("ES")
-    # Formatear errores como una cadena de texto o JSON para la respuesta SOAP
-    response_content = {
-        "errores": errores,
-        "timestamp": datetime.utcnow().isoformat()  # Ejemplo de un campo adicional
-    }
-    return Response(json.dumps(response_content), content_type="application/json")
 
+    response_content = create_soap_response(errores)
+    return Response(response_content, content_type="text/xml")
 
+def create_soap_response(errores):
+    error_messages = "".join(f"<error>{error}</error>" for error in errores)
+    if not errores:
+        error_messages = "<error>No hubo errores.</error>"
+
+    return f"""<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <procesarCSVResponse>
+            <errores>
+                {error_messages}
+            </errores>
+        </procesarCSVResponse>
+    </soap:Body>
+</soap:Envelope>
+"""
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=6000)

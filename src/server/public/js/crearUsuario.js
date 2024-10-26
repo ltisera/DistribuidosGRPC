@@ -88,10 +88,11 @@ async function handleCsvUpload(event) {
             body: formData
         });
 
-        const result = await response.text();
-
         if (response.status === 400) {
-            alert(`Error: ${result}`);
+            const result = await response.json(); // Cambiar a JSON para manejar errores
+            // Concatenar errores en un string
+            const errorMessages = result.errores.join('\n'); // Usar salto de línea para separar errores
+            alert(`Errores:\n${errorMessages}`); // Mostrar todos los errores en una sola alerta
         } else {
             alert('Usuarios cargados exitosamente.');
             window.location.reload();
@@ -101,3 +102,4 @@ async function handleCsvUpload(event) {
         alert('Hubo un problema al cargar el archivo CSV.');
     }
 }
+
