@@ -24,7 +24,7 @@ function filtrarOrdenes() {
     const estado = document.getElementById('estado').value;
     const id_tienda = document.getElementById('id_tienda').value;
 
-    let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:5000/soap">
+    let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:9000/soap">
         <soap:Body>
             <tns:ConsultarOrdenes>`;
 
@@ -45,7 +45,7 @@ function filtrarOrdenes() {
         </soap:Body>
     </soap:Envelope>`;
 
-    fetch('http://localhost:5000/soap/consultar_ordenes', {
+    fetch('http://localhost:9000/soap/consultar_ordenes', {
         method: 'POST',
         headers: {
             'Content-Type': 'text/xml'
@@ -105,7 +105,7 @@ function guardarFiltro() {
         const estado = document.getElementById('estado').value;
         const id_tienda = document.getElementById('id_tienda').value;
 
-        let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:5000/soap">
+        let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:9000/soap">
         <soap:Body>
             <tns:guardar_filtro>
             <tns:id_usuario>${id_usuario}</tns:id_usuario>
@@ -128,7 +128,7 @@ function guardarFiltro() {
             </soap:Body>
         </soap:Envelope>`;
      
-        fetch('http://localhost:5000/soap/guardar_filtro', {
+        fetch('http://localhost:9000/soap/guardar_filtro', {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/xml'
@@ -152,7 +152,7 @@ function guardarFiltro() {
 
 function cargarFiltros() {
     obtenerIdUsuario().then(id_usuario => {
-        let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:5000/soap">
+        let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:9000/soap">
             <soap:Body>
                 <tns:obtener_filtros>
                     <tns:id_usuario>${id_usuario}</tns:id_usuario>
@@ -160,7 +160,7 @@ function cargarFiltros() {
             </soap:Body>
         </soap:Envelope>`;
 
-        fetch('http://localhost:5000/soap/obtener_filtros', {
+        fetch('http://localhost:9000/soap/obtener_filtros', {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/xml'
@@ -206,7 +206,7 @@ function cargarFiltroSeleccionado() {
     if (filtroId) {
         btnEditar.disabled = false;
         btnEliminar.disabled = false;
-        fetch(`http://localhost:5000/soap/obtener_filtro?id=${filtroId}`)
+        fetch(`http://localhost:9000/soap/obtener_filtro?id=${filtroId}`)
             .then(response => response.text())
             .then(resultados => {
                 const parser = new DOMParser();
@@ -241,7 +241,7 @@ function abrirModalEditar() {
     const select = document.getElementById('filtro_guardado');
     const filtroId = select.value;
 
-    fetch(`http://localhost:5000/soap/obtener_filtro?id=${filtroId}`)
+    fetch(`http://localhost:9000/soap/obtener_filtro?id=${filtroId}`)
         .then(response => response.text())
         .then(result => {
             const parser = new DOMParser();
@@ -276,7 +276,7 @@ function editarFiltro() {
         idTienda: document.getElementById('editar_id_tienda').value
     };
 
-    let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:5000/soap">
+    let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:9000/soap">
         <soap:Body>
             <tns:editar_filtro>
                 <tns:id>${filtroData.id}</tns:id>
@@ -289,7 +289,7 @@ function editarFiltro() {
         </soap:Body>
     </soap:Envelope>`;
 
-    fetch(`http://localhost:5000/soap/editar_filtro`, {
+    fetch(`http://localhost:9000/soap/editar_filtro`, {
         method: 'POST',
         headers: {
             'Content-Type': 'text/xml'
@@ -318,7 +318,7 @@ function eliminarFiltro() {
         return;
     }
 
-    const xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:5000/soap">
+    const xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:9000/soap">
         <soap:Body>
             <tns:borrar_filtro>
                 <tns:id>${filtroId}</tns:id>
@@ -326,7 +326,7 @@ function eliminarFiltro() {
         </soap:Body>
     </soap:Envelope>`;
 
-    fetch(`http://localhost:5000/soap/borrar_filtro`, {
+    fetch(`http://localhost:9000/soap/borrar_filtro`, {
         method: 'POST',
         headers: {
             'Content-Type': 'text/xml'
