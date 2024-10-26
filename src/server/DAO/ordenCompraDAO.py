@@ -265,9 +265,6 @@ class OrdenCompraDAO(ConexionBD):
 
             sql += " GROUP BY p.codigo, o.estado, s.tienda"
 
-            print("SQL: ", sql)
-            print("ID TIENDA: ", id_tienda)
-
             self._micur.execute(sql, params)
             resultados = self._micur.fetchall()
             return resultados

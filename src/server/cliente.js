@@ -34,7 +34,7 @@ const upload = multer({ dest: 'uploads/' });
 app.post('/cargarCSV', upload.single('csvFile'), async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No se ha proporcionado ningún archivo.');
-}
+  }
 
   // Leer el archivo CSV
   const csvFilePath = req.file.path;
@@ -118,26 +118,18 @@ function parseSoapResponse(soapResponse) {
 }
 
 
-
-
-
 // LOGIN
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+  res.sendFile(path.join(__dirname, 'public/html', 'login.html'));
 });
 
 app.post('/login', usuarioController.iniciarSesion);
-
-//
-app.get('/tst', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'proveedorTest.html'));
-});
 
 // HOME
 app.get('/home', (req, res) => {
   if (req.session.authenticated) {
     const usuario = encodeURIComponent(req.session.usuario);
-    res.redirect(`/home.html?usuario=${usuario}`);
+    res.redirect(`/html/home.html?usuario=${usuario}`);
   } else {
     res.redirect('/');
   }
@@ -146,7 +138,7 @@ app.get('/home', (req, res) => {
 // USUARIO
 app.get('/crearUsuario', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearUsuario.html'));
+    res.sendFile(path.join(__dirname, 'public/html/usuarios', 'crearUsuario.html'));
   } else {
     res.redirect('/');
   }
@@ -158,7 +150,7 @@ app.get('/logout', usuarioController.cerrarSesion);
 
 app.get('/usuarios', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'usuarios.html'));
+    res.sendFile(path.join(__dirname, 'public/html/usuarios', 'usuarios.html'));
   } else {
     res.redirect('/');
   }
@@ -170,7 +162,7 @@ app.get('/usuario/:idUsuario', usuarioController.mostrarUsuario);
 
 app.get('/modificarUsuario', (req, res) => {
   if (req.session.authenticated) {
-      res.sendFile(path.join(__dirname, 'public', 'modificarUsuario.html'));
+      res.sendFile(path.join(__dirname, 'public/html/usuarios', 'modificarUsuario.html'));
   } else {
       res.redirect('/');
   }
@@ -188,7 +180,7 @@ app.get('/obtenerUsuarioActual', usuarioController.obtenerUsuarioActual);
 
 app.get('/crearTienda', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearTienda.html'));
+    res.sendFile(path.join(__dirname, 'public/html/tiendas', 'crearTienda.html'));
   } else {
     res.redirect('/');
   }
@@ -198,7 +190,7 @@ app.post('/crearTienda', tiendaController.crearTienda);
 
 app.get('/crearCatalogo', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearCatalogo.html'));
+    res.sendFile(path.join(__dirname, 'public/html/catalogo', 'crearCatalogo.html'));
   } else {
     res.redirect('/');
   }
@@ -208,7 +200,7 @@ app.post('/crearCatalogo', catalogoController.crearCatalogo);
 
 app.get('/catalogos', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'catalogos.html'));
+    res.sendFile(path.join(__dirname, 'public/html/catalogo', 'catalogos.html'));
   } else {
     res.redirect('/');
   }
@@ -216,7 +208,7 @@ app.get('/catalogos', (req, res) => {
 
 app.get('/tiendas', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'tiendas.html'));
+    res.sendFile(path.join(__dirname, 'public/html/tiendas', 'tiendas.html'));
   } else {
     res.redirect('/');
   }
@@ -228,7 +220,7 @@ app.get('/tienda/:idTienda', tiendaController.mostrarTienda);
 
 app.get('/modificarTienda', (req, res) => {
   if (req.session.authenticated) {
-      res.sendFile(path.join(__dirname, 'public', 'modificarTienda.html'));
+      res.sendFile(path.join(__dirname, 'public/html/tiendas', 'modificarTienda.html'));
   } else {
       res.redirect('/');
   }
@@ -243,10 +235,9 @@ app.get('/api/tiendas/filtradas', tiendaController.traerTiendasFiltradas);
 app.get('/obtenerTiendaActual', tiendaController.obtenerTiendaActual);
 
 // PRODUCTO
-
 app.get('/crearProducto', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearProducto.html'));
+    res.sendFile(path.join(__dirname, 'public/html/productos', 'crearProducto.html'));
   } else {
     res.redirect('/');
   }
@@ -256,7 +247,7 @@ app.post('/crearProducto', productoController.crearProducto);
 
 app.get('/productos', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'productos.html'));
+    res.sendFile(path.join(__dirname, 'public/html/productos', 'productos.html'));
   } else {
     res.redirect('/');
   }
@@ -268,7 +259,7 @@ app.get('/producto/:idProducto/:talle', productoController.mostrarProducto);
 
 app.get('/modificarProducto', (req, res) => {
   if (req.session.authenticated) {
-      res.sendFile(path.join(__dirname, 'public', 'modificarProducto.html'));
+      res.sendFile(path.join(__dirname, 'public/html/productos', 'modificarProducto.html'));
   } else {
       res.redirect('/');
   }
@@ -280,7 +271,7 @@ app.post('/eliminarProducto', productoController.eliminarProducto);
 
 app.get('/agregarTalle', (req, res) => {
   if (req.session.authenticated) {
-      res.sendFile(path.join(__dirname, 'public', 'agregarTalle.html'));
+      res.sendFile(path.join(__dirname, 'public/html/productos', 'agregarTalle.html'));
   } else {
       res.redirect('/');
   }
@@ -291,10 +282,9 @@ app.post('/agregarTalle', productoController.agregarTalle);
 app.get('/api/productos/filtrados', productoController.traerProductosFiltrados);
 
 // STOCK
-
 app.get('/stock', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'stock.html'));
+    res.sendFile(path.join(__dirname, 'public/html', 'stock.html'));
   } else {
     res.redirect('/');
   }
@@ -310,7 +300,7 @@ app.post('/agregarStock', productoController.agregarStock);
 // ORDEN COMPRA
 app.get('/crearOrden', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'crearOrden.html'));
+    res.sendFile(path.join(__dirname, 'public/html/ordenes', 'crearOrden.html'));
   } else {
     res.redirect('/');
   }
@@ -320,7 +310,7 @@ app.post('/crearOrden', ordenCompraController.crearOrdenCompra);
 
 app.get('/ordenes', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'ordenes.html'));
+    res.sendFile(path.join(__dirname, 'public/html/ordenes', 'ordenes.html'));
   } else {
     res.redirect('/');
   }
@@ -328,7 +318,7 @@ app.get('/ordenes', (req, res) => {
 
 app.get('/informeOrdenes', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'informeOrdenes.html'));
+    res.sendFile(path.join(__dirname, 'public/html/ordenes', 'informeOrdenes.html'));
   } else {
     res.redirect('/');
   }
@@ -336,7 +326,7 @@ app.get('/informeOrdenes', (req, res) => {
 
 app.get('/ordenesCasaCentral', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'ordenesCasaCentral.html'));
+    res.sendFile(path.join(__dirname, 'public/html/ordenes', 'ordenesCasaCentral.html'));
   } else {
     res.redirect('/');
   }
@@ -353,7 +343,7 @@ app.post('/agregarNovedad', novedadesController.agregarNovedad);
 
 app.get('/novedades', (req, res) => {
   if (req.session.authenticated) {
-    res.sendFile(path.join(__dirname, 'public', 'novedades.html'));
+    res.sendFile(path.join(__dirname, 'public/html/novedades', 'novedades.html'));
   } else {
     res.redirect('/');
   }
