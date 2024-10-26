@@ -25,9 +25,8 @@ app.use(session({
 
 
 //CAMBIAR DE LUGAR
-
+const http = require('http'); // O https si tu server usa SSL.
 const multer = require('multer');
-const csvParser = require('csv-parser');
 const fs = require('fs');
 
 const upload = multer({ dest: 'uploads/' });
@@ -37,48 +36,54 @@ app.post('/cargarCSV', upload.single('csvFile'), async (req, res) => {
         return res.status(400).send('No se ha proporcionado ningún archivo.');
     }
 
-    try {
-        // Leer el archivo CSV
-        const csvFilePath = req.file.path;
-        const fileData = fs.readFileSync(csvFilePath, 'utf8');
-        
-        const xml = `
-            <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-                <soap:Body>
-                    <procesarCSV>
-                        <archivo>${fileData}</archivo>
-                        <nombre>${req.file.originalname}</nombre>
-                    </procesarCSV>
-                </soap:Body>
-            </soap:Envelope>
-        `;
-
-        // Enviar la solicitud SOAP
-        console.log(xml)
-        const response = await fetch('http://127.0.0.1:6000/procesarCSV', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'text/xml;charset=UTF-8',
-                'SOAPAction': 'http://127.0.0.1:6000/procesarCSV' // Cambia esto según lo que espera el servicio
-            },
-            body: xml
-        });
-
-        // Manejar la respuesta
-        const responseText = await response.text();
-        fs.unlinkSync(csvFilePath); // Eliminar el archivo temporal
-
-        if (!response.ok) {
-            console.error('Error en la respuesta del servidor SOAP:', responseText);
-            return res.status(500).send('Error al procesar el archivo con el servicio SOAP.');
+      // Leer el archivo CSV
+      const csvFilePath = req.file.path;
+      const fileData = fs.readFileSync(csvFilePath, 'utf8');
+      
+      const mensajeXml = `
+          <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+              <soap:Body>
+                  <procesarCSV>
+                      <archivo>${fileData}</archivo>
+                      <nombre>${req.file.originalname}</nombre>
+                  </procesarCSV>
+              </soap:Body>
+          </soap:Envelope>
+      `;
+      const options = {
+        hostname: 'localhost',
+        port: 6000,
+        path: '/procesarCSV',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/xml',
+          'Content-Length': Buffer.byteLength(mensajeXml),
+          'SOAPAction': '' // Puede ser requerido por algunos servidores.
         }
+      };
 
-        console.log('Respuesta del servidor SOAP:', responseText);
-        res.send('Archivo CSV enviado exitosamente.');
-    } catch (error) {
-        console.error('Error al enviar la solicitud SOAP:', error);
-        res.status(500).send('Error al procesar la solicitud.');
-    }
+      return new Promise((resolve, reject) => {
+        const req = http.request(options, (res) => {
+          let responseData = '';
+    
+          res.on('data', (chunk) => {
+            responseData += chunk;
+          });
+    
+          res.on('end', () => {
+            resolve(responseData); // Devolvemos la respuesta SOAP.
+          });
+        });
+    
+        req.on('error', (error) => {
+          reject(error); // En caso de error.
+        });
+        console.log("Te envio el xml EN LOTES");
+        req.write(mensajeXml); // Enviamos el cuerpo SOAP.
+        req.end();
+      });
+
+
 });
 
 

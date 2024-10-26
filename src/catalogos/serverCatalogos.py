@@ -75,14 +75,17 @@ def generate_soap_fault(error_message):
 
 #REVISAR
 
-@app.route("/procesarCSV", methods=["POST"])
-def procesar_csv():
+@app.route('/procesarCSV', methods=['POST'])
+def procesarCSV():
     print("ENTREEEEEE")
     errores = []
-
+    soap_request = request.data.decode('utf-8')
     # Obtener archivo del request
     archivo = request.files.get("archivo")
     if not archivo:
+        print("ROMPO")
+        print(soap_request)
+        print("NIACA")
         return Response("No se proporcionó un archivo", status=400)
 
     # Leer el archivo y procesar cada línea
