@@ -9,12 +9,27 @@ body {
     height: 100vh;
 }
 
-.form-container {
+.main-container {
+    display: flex;
+    gap: 2rem; /* Espacio entre columnas */
+}
+
+.form-container, .csv-container {
     background: #fff;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 400px;
+}
+
+.csv-container h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.csv-container label, .csv-container input, .csv-container button {
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 .form-container h1 {
@@ -37,7 +52,7 @@ body {
     border-radius: 4px;
 }
 
-.form-container button {
+button {
     width: 100%;
     padding: 0.75rem;
     border: none;
@@ -48,7 +63,6 @@ body {
     cursor: pointer;
 }
 
-.form-container button:hover {
+button:hover {
     background-color: #0056b3;
 }
-

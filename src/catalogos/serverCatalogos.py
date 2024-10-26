@@ -18,7 +18,7 @@ sys.path.append(PROTO_DIR)
 sys.path.append(os.path.join(CURRENT_DIR, 'dao'))
 
 from DAO.catalogoDAO import CatalogoDAO
-
+from DAO.usuarioDAO import UsuarioDAO
 
 app = Flask(__name__)
 
@@ -71,6 +71,53 @@ def generate_soap_fault(error_message):
    </soap:Body>
 </soap:Envelope>"""
     return Response(response, mimetype='text/xml', status=500)
+
+
+#REVISAR
+
+@app.route("/procesarCSV", methods=["POST"])
+def procesar_csv():
+    print("ENTREEEEEE")
+    errores = []
+
+    # Obtener archivo del request
+    archivo = request.files.get("archivo")
+    if not archivo:
+        return Response("No se proporcionó un archivo", status=400)
+
+    # Leer el archivo y procesar cada línea
+    lineas = archivo.read().decode("utf-8").splitlines()
+    udao = UsuarioDAO()
+    for num_linea, linea in enumerate(lineas, start=1):
+        print(linea)
+        campos = linea.split(";")
+        
+        if len(campos) != 5:
+            errores.append(f"Línea {num_linea}: número incorrecto de campos.")
+            continue
+        
+        usuario, password, nombre, apellido, codigo_tienda = campos
+
+        try:
+            codigo_tienda = int(codigo_tienda)
+        except ValueError:
+            errores.append(f"Línea {num_linea}: el campo 'codigo_tienda' no es un número.")
+            continue
+
+        esCasaCentral = codigo_tienda == 1
+
+        error = udao.agregarUsuario(usuario, password, nombre, apellido, True, esCasaCentral, codigo_tienda)
+        if error:
+            errores.append(f"Línea {num_linea}: {error}")
+
+    # Formatear errores como una cadena de texto o JSON para la respuesta SOAP
+    response_content = {
+        "errores": errores,
+        "timestamp": datetime.utcnow().isoformat()  # Ejemplo de un campo adicional
+    }
+    return Response(json.dumps(response_content), content_type="application/json")
+
+
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=6000)

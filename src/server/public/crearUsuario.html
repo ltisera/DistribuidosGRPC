@@ -5,35 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Usuario</title>
     <link rel="stylesheet" href="/css/crearUsuario.css">
-    
 </head>
 <body>
-    <div class="form-container">
-        <h1>Crear Usuario</h1>
-        <form id="createUserForm" action="/crearUsuario" method="post">
-            <label for="usuario">Nombre de Usuario:</label>
-            <input type="text" id="usuario" name="usuario" required>
+    <div class="main-container">
+        <div class="form-container">
+            <h1>Crear Usuario</h1>
+            <form id="createUserForm" action="/crearUsuario" method="post">
+                <label for="usuario">Nombre de Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required>
 
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
 
-            <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" required>
+                <label for="apellido">Apellido:</label>
+                <input type="text" id="apellido" name="apellido" required>
 
-            <label for="casaCentral">Casa Central:</label>
-            <select onchange="cambioEnSelect()" id="casaCentral" name="casaCentral" required>
-                <option value="true">Sí</option>
-                <option value="false">No</option>
-            </select>
+                <label for="casaCentral">Casa Central:</label>
+                <select onchange="cambioEnSelect()" id="casaCentral" name="casaCentral" required>
+                    <option value="true">Sí</option>
+                    <option value="false">No</option>
+                </select>
 
-            <label for="idTienda">ID de Tienda:</label>
-            <select id="idTienda" name="idTienda" required></select>
+                <label for="idTienda">ID de Tienda:</label>
+                <select id="idTienda" name="idTienda" required></select>
 
-            <button type="submit">Crear Usuario</button>
-        </form>
+                <button type="submit">Crear Usuario</button>
+            </form>
+        </div>
+
+        <div class="csv-container">
+            <h2>Cargar Usuarios desde CSV</h2>
+            <form id="uploadCsvForm" enctype="multipart/form-data">
+                <label for="csvFile">Seleccione un archivo CSV:</label>
+                <input type="file" id="csvFile" name="csvFile" accept=".csv" required>
+                <button type="submit">Cargar CSV</button>
+            </form>
+        </div>
     </div>
     <script src="/js/crearUsuario.js"></script>
 </body>

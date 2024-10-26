@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('createUserForm').addEventListener('submit', handleSubmit);
+    document.getElementById('uploadCsvForm').addEventListener('submit', handleCsvUpload);
     agregarTiendasALista();
 });
 
@@ -35,12 +36,13 @@ async function agregarTiendasALista(){
         console.error('Error al cargar la lista de tiendas:', error);
     });
 }
+
 async function handleSubmit(event) {
     event.preventDefault();
 
     const formData = new FormData(event.target);
     const data = new URLSearchParams(formData).toString();
-    
+
     try {
         const response = await fetch('/crearUsuario', {
             method: 'POST',
@@ -51,7 +53,7 @@ async function handleSubmit(event) {
         });
 
         const result = await response.text();
-        
+
         if (response.status === 400) {
             if (result.includes('El nombre de usuario ya existe')) {
                 alert("Ese nombre de usuario ya existe.");
@@ -64,5 +66,38 @@ async function handleSubmit(event) {
     } catch (error) {
         console.error('Error:', error);
         alert('Hubo un problema al crear el usuario.');
+    }
+}
+
+// Función para manejar la carga del archivo CSV
+async function handleCsvUpload(event) {
+    event.preventDefault();
+
+    const csvFile = document.getElementById('csvFile').files[0];
+    if (!csvFile) {
+        alert('Por favor seleccione un archivo CSV.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('csvFile', csvFile);
+
+    try {
+        const response = await fetch('/cargarCSV', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.text();
+
+        if (response.status === 400) {
+            alert(`Error: ${result}`);
+        } else {
+            alert('Usuarios cargados exitosamente.');
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error('Error al cargar el archivo CSV:', error);
+        alert('Hubo un problema al cargar el archivo CSV.');
     }
 }
