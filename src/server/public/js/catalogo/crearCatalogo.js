@@ -1,34 +1,79 @@
+let id_tienda_cache;
+
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('createCatalogoForm').addEventListener('submit', handleSubmit);
+    document.getElementById('createCatalogoForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        crearCatalogo();
+    });
 });
 
-async function handleSubmit(event) {
-    event.preventDefault();  // Evita el comportamiento predeterminado de enviar el formulario
+let enProceso = false;
 
-    const formData = new FormData(event.target);  // Recoge los datos del formulario
-    const data = new URLSearchParams(formData).toString();  // Convierte los datos a una cadena de URL
+function crearCatalogo() {
+    if (enProceso) return;
+    enProceso = true;
+    obtenerIdTienda().then(idTienda => {
+        const nombre = document.getElementById('nombre').value;
 
-    try {
-        // Envío de datos al servidor con fetch
-        const response = await fetch('/crearCatalogo', {
+        let xmlBody = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://localhost:8080/soap">
+            <soap:Body>
+                <tns:crear_catalogo>
+                    <tns:nombre>${nombre}</tns:nombre>
+                    <tns:id_tienda>${idTienda}</tns:id_tienda>
+                </tns:crear_catalogo>
+            </soap:Body>
+        </soap:Envelope>`;
+
+        console.log("XML", xmlBody)
+
+        fetch('http://localhost:8080/soap/crear_catalogo', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'text/xml'
             },
-            body: data
+            body: xmlBody
+        })
+        .then(response => {
+            console.log("response", response)
+            if (!response.ok) {
+                throw new Error('Error al crear el catálogo');
+            }
+            return response.text();
+        })
+        .then(responseData => {
+            console.log("Respuesta del servidor:", responseData);
+            alert("Catálogo creado exitosamente");
+        })
+        .catch(error => {
+            console.error('Error al crear catálogo:', error);
+            alert('Hubo un problema al crear el catálogo.');
+        })
+        .finally(() => {
+            enProceso = false;
+            window.location.href = '/catalogos';
         });
-
-        const result = await response.text();  // Leer la respuesta como texto
-        
-        // Manejo de la respuesta del servidor
-        if (response.status === 400) {
-            alert("Hubo un error al crear la catalogo. Verifica los datos.");
-        } else {
-            // Redirigir a otra página si la catalogo se creó correctamente
-            window.location.href = '/catalogos?mensaje=successAddCatalogo';
-        }
-    } catch (error) {
+    })
+    .catch(error => {
         console.error('Error:', error);
-        alert('Hubo un problema al crear la catalogo.');
+        enProceso = false;
+    });
+}
+
+function obtenerIdTienda() {
+    console.log("Obteniendo idTienda")
+    if (id_tienda_cache) {
+        return Promise.resolve(id_tienda_cache);
     }
+    
+    return fetch('http://localhost:3000/obtenerTiendaActual')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta: ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            id_tienda_cache = data;
+            return id_tienda_cache;
+        });
 }

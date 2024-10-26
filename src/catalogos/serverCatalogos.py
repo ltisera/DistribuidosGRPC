@@ -1,11 +1,8 @@
 from flask import Flask, request, Response
-
-from datetime import datetime
-import json
-import threading
-import grpc
-from concurrent import futures
 import os, sys
+from xml.etree import ElementTree as ET
+
+from flask_cors import CORS
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(CURRENT_DIR))
@@ -21,59 +18,69 @@ from DAO.catalogoDAO import CatalogoDAO
 from DAO.usuarioDAO import UsuarioDAO
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route('/catalogoSoap', methods=['POST'])
-def soap_server():
-    # Obtener el contenido de la solicitud
-    soap_request = request.data.decode('utf-8')
+@app.route('/soap/crear_catalogo', methods=['POST'])
+def crear_catalogo():
+    xml_data = request.data
+    root = ET.fromstring(xml_data)
+
+    print("Entro a crear catalogo")
+
+    namespaces = {'tns': 'http://localhost:8080/soap'}
+    nombre_elem = root.find('.//tns:nombre', namespaces)
+    id_tienda_elem = root.find('.//tns:id_tienda', namespaces)
+
+    nombre = nombre_elem.text if nombre_elem is not None else None
+    id_tienda = id_tienda_elem.text if id_tienda_elem is not None else None
+
+    catalogo_dao = CatalogoDAO()
+    catalogo_dao.agregarCatalogo(nombre, id_tienda)
+
+    return "Catalogo creado exitosamente", 200
+
+@app.route('/listaCatalogosSoap', methods=['POST'])
+def listar_catalogos():
+    xml_data = request.data
+    root = ET.fromstring(xml_data)
+
+    namespaces = {'tns': 'http://localhost:8080/soap'}
+    id_tienda_elem = root.find('.//tns:id_tienda', namespaces)
+    id_tienda = id_tienda_elem.text if id_tienda_elem is not None else None
+
+    cdao = CatalogoDAO()
+    resultados = cdao.obtenerCatalogos(id_tienda)
+
+    if resultados is None:
+        return "<Error>Hubo un problema al consultar las órdenes.</Error>", 500, {'Content-Type': 'text/xml'}
+
+    root = ET.Element("Resultados")
+    for item in resultados:
+        catalogo = ET.SubElement(root, "Catalogo")
+        ET.SubElement(catalogo, "IdCatalogo").text = str(item[0])
+        ET.SubElement(catalogo, "Nombre").text = str(item[1])
+        ET.SubElement(catalogo, "IdTienda").text = str(item[2])
+
+    response_xml =  ET.tostring(root, encoding='utf-8', xml_declaration=True)  
+    return response_xml, 200, {'Content-Type': 'text/xml'}
+
+@app.route('/eliminarCatalogoSoap', methods=['POST'])
+def borrar_catalogo():
+    xml_data = request.data
+    xml_doc = ET.fromstring(xml_data)
     
-    # Aquí procesamos la solicitud SOAP
-    if '<nombre>' in soap_request:
-        # Extraer el nombre del catálogo
-        start_index = soap_request.find('<nombre>') + len('<nombre>')
-        end_index = soap_request.find('</nombre>')
-        nombre = soap_request[start_index:end_index]
-        if not nombre:
-            return generate_soap_fault("Nombre del catálogo es obligatorio.")
-        else:
-            #HACER LLAMADAS PARA CREAR CATALOGO
-            catDao = CatalogoDAO()
-            catDao.agregarCatalogo(nombre)
-            print(nombre)
-        
-        # Si todo es correcto, generamos la respuesta
-        return generate_soap_response(nombre)
-    else:
-        return generate_soap_fault("Solicitud no válida.")
+    namespaces = {'tns': 'http://localhost:8080/soap'}
+    catalogo_id_elem = xml_doc.find('.//tns:id_catalogo', namespaces)
+    
+    if catalogo_id_elem is None:
+        return "ID del filtro no encontrado", 400
 
-def generate_soap_response(nombre):
-    # Respuesta SOAP exitosa
-    response = f"""<?xml version="1.0"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <crearCatalogoResponse>
-         <status>200</status>
-         <message>Catálogo '{nombre}' creado exitosamente</message>
-      </crearCatalogoResponse>
-   </soap:Body>
-</soap:Envelope>"""
-    return Response(response, mimetype='text/xml')
+    catalogo_id = catalogo_id_elem.text
 
-def generate_soap_fault(error_message):
-    # Respuesta SOAP de error
-    response = f"""<?xml version="1.0"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-   <soap:Body>
-      <soap:Fault>
-         <faultcode>SOAP-ENV:Client</faultcode>
-         <faultstring>{error_message}</faultstring>
-      </soap:Fault>
-   </soap:Body>
-</soap:Envelope>"""
-    return Response(response, mimetype='text/xml', status=500)
-
-
-#REVISAR
+    cdao = CatalogoDAO()
+    cdao.eliminarCatalogo(catalogo_id)
+    
+    return "Catalogo eliminado", 200 
 
 @app.route('/procesarCSV', methods=['POST'])
 def procesarCSV():
@@ -135,4 +142,4 @@ def create_soap_response(errores):
 """
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=6000)
+    app.run(host='127.0.0.1', port=8080)

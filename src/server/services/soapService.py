@@ -14,7 +14,7 @@ CORS(app)
 
 @app.route('/soap/wsdl', methods=['GET'])
 def get_wsdl():
-    return send_from_directory(os.path.join(os.path.dirname(__file__), '../wsdl'), 'service.wsdl')
+    return send_from_directory(os.path.join(os.path.dirname(__file__), '../../wsdl'), 'service.wsdl')
 
 def serve_flask():
     app.run(port=9000)

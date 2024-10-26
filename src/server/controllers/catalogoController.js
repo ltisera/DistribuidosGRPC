@@ -4,58 +4,53 @@ const app = express();
   
 app.use(express.json());
 
-
-
 function crearCatalogo(req, res){
-    const {nombre} = req.body;
-    const mensajeSoap = `
-      <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-        <soapenv:Body>
-          <nombre>${nombre}</nombre>
-        </soapenv:Body>
-      </soapenv:Envelope>
-    `;
+  // const {nombre} = req.body;
+  // const mensajeSoap = `
+  //   <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+  //     <soapenv:Body>
+  //       <nombre>${nombre}</nombre>
+  //     </soapenv:Body>
+  //   </soapenv:Envelope>
+  // `;
     
-    const options = {
-        hostname: 'localhost',
-        port: 6000,
-        path: '/catalogoSoap',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/xml',
-          'Content-Length': Buffer.byteLength(mensajeSoap),
-          'SOAPAction': '' // Puede ser requerido por algunos servidores.
-        }
-      };
+  // const options = {
+  //   hostname: 'localhost',
+  //   port: 8080,
+  //   path: '/catalogoSoap',
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'text/xml',
+  //     'Content-Length': Buffer.byteLength(mensajeSoap),
+  //     'SOAPAction': '' // Puede ser requerido por algunos servidores.
+  //   }
+  // };
 
-      return new Promise((resolve, reject) => {
-        const req = http.request(options, (res) => {
-          let responseData = '';
+  // return new Promise((resolve, reject) => {
+  //   const req = http.request(options, (res) => {
+  //     let responseData = '';    
+  //     res.on('data', (chunk) => {
+  //       responseData += chunk;
+  //     });
+  
+  //     res.on('end', () => {
+  //       console.log("Response Data:", responseData);
+  //       resolve(responseData); // Devolvemos la respuesta SOAP.
+  //     });
+  //   });
     
-          res.on('data', (chunk) => {
-            responseData += chunk;
-          });
-    
-          res.on('end', () => {
-            resolve(responseData); // Devolvemos la respuesta SOAP.
-          });
-        });
-    
-        req.on('error', (error) => {
-          reject(error); // En caso de error.
-        });
-        console.log("Te envio el xml");
-        req.write(mensajeSoap); // Enviamos el cuerpo SOAP.
-        req.end();
-      });
-
-
-    
+  //   req.on('error', (error) => {
+  //     reject(error); // En caso de error.
+  //   });
+  //   console.log("Te envio el xml");
+  //   req.write(mensajeSoap); // Enviamos el cuerpo SOAP.
+  //   req.end();
+  // });
 };
 
 module.exports = {
-    crearCatalogo
-  };
+  crearCatalogo
+};
 
 
 //***************************************************
