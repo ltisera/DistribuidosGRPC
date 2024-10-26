@@ -81,7 +81,13 @@ def procesarCSV():
     errores = []
     soap_request = request.data.decode('utf-8')
     # Obtener archivo del request
-    archivo = request.files.get("archivo")
+    
+    start_index = soap_request.find('<archivo>') + len('<archivo>')
+    end_index = soap_request.find('</archivo>')
+    archivo = soap_request[start_index:end_index]
+    print("Este es mi XML Filtrado")
+    print(archivo)
+    print("FIN DE mi XML Filtrado")
     if not archivo:
         print("ROMPO")
         print(soap_request)
@@ -89,7 +95,7 @@ def procesarCSV():
         return Response("No se proporcionó un archivo", status=400)
 
     # Leer el archivo y procesar cada línea
-    lineas = archivo.read().decode("utf-8").splitlines()
+    lineas = archivo.splitlines()
     udao = UsuarioDAO()
     for num_linea, linea in enumerate(lineas, start=1):
         print(linea)
@@ -112,7 +118,9 @@ def procesarCSV():
         error = udao.agregarUsuario(usuario, password, nombre, apellido, True, esCasaCentral, codigo_tienda)
         if error:
             errores.append(f"Línea {num_linea}: {error}")
-
+    print("Me printas los errores")
+    print(errores)
+    print("ES")
     # Formatear errores como una cadena de texto o JSON para la respuesta SOAP
     response_content = {
         "errores": errores,

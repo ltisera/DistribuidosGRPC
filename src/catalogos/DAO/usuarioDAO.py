@@ -24,10 +24,10 @@ class UsuarioDAO(ConexionBD):
             self._micur.execute(check_sql, (idTienda,))
             countTienda = self._micur.fetchone()
         
-            if countTienda != None:
+            if countTienda == None:
                 return("Error: La tienda no existe.")
             
-            if countTienda[4] != False:
+            if countTienda[4] == False:
                 return("Error: La tienda no esta habilitada.")
             
             sql = ("INSERT INTO usuario (usuario, password, nombre, apellido, habilitado, casaCentral, Tienda_idTienda) "
