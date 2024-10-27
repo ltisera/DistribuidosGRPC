@@ -8,7 +8,7 @@ from DAO.novedadesDAO import NovedadesDAO
 
 # CONSUMIDOR
 consumer_conf = {
-    'bootstrap.servers': 'localhost:9092',
+    'bootstrap.servers': 'localhost:29092',
     'group.id': 'python-consumer-group',
     'auto.offset.reset': 'earliest'
 }
@@ -32,7 +32,7 @@ def actualizar_subscripciones():
 
 # CREAR TOPICOS                       
 def crear_topicos():
-    admin_client = AdminClient({'bootstrap.servers': 'localhost:9092'})
+    admin_client = AdminClient({'bootstrap.servers': 'localhost:29092'})
 
     tdao = TiendaDAO()
     tiendas = tdao.traerTodasLasTiendas()

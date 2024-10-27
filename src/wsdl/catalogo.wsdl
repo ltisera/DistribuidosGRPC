@@ -1,0 +1,196 @@
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://localhost:8080/soap"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             name="SoapService"
+             targetNamespace="http://localhost:8080/soap">
+
+    <!-- Mensajes para operaciones -->
+    <message name="CrearCatalogoRequest">
+        <part name="nombre" type="xsd:string"/>
+        <part name="id_tienda" type="xsd:string"/>
+    </message>
+    
+    <message name="CrearCatalogoResponse">
+        <part name="mensaje" type="xsd:string"/>
+    </message>
+    
+    <message name="ListarCatalogosRequest">
+        <part name="id_tienda" type="xsd:string"/>
+    </message>
+    
+    <message name="ListarCatalogosResponse">
+        <part name="resultados" type="xsd:anyType"/>
+    </message>
+    
+    <message name="BorrarCatalogoRequest">
+        <part name="id_catalogo" type="xsd:string"/>
+    </message>
+    
+    <message name="BorrarCatalogoResponse">
+        <part name="mensaje" type="xsd:string"/>
+    </message>
+    
+    <message name="ProcesarCSVRequest">
+        <part name="archivo" type="xsd:string"/>
+    </message>
+    
+    <message name="ProcesarCSVResponse">
+        <part name="errores" type="xsd:string"/>
+    </message>
+    
+    <message name="ListarProductosRequest">
+        <part name="id_tienda" type="xsd:string"/>
+        <part name="id_catalogo" type="xsd:string"/>
+    </message>
+    
+    <message name="ListarProductosResponse">
+        <part name="resultados" type="xsd:anyType"/>
+    </message>
+    
+    <message name="AgregarProductosRequest">
+        <part name="id_catalogo" type="xsd:string"/>
+        <part name="productos" type="xsd:string"/>
+    </message>
+    
+    <message name="AgregarProductosResponse">
+        <part name="mensaje" type="xsd:string"/>
+    </message>
+    
+    <message name="EliminarProductosRequest">
+        <part name="id_catalogo" type="xsd:string"/>
+        <part name="productos" type="xsd:string"/>
+    </message>
+    
+    <message name="EliminarProductosResponse">
+        <part name="mensaje" type="xsd:string"/>
+    </message>
+    
+    <message name="ExportarCatalogoRequest">
+        <part name="id_catalogo" type="xsd:string"/>
+    </message>
+    
+    <message name="ExportarCatalogoResponse">
+        <part name="pdf" type="xsd:base64Binary"/>
+    </message>
+
+    <!-- Operaciones -->
+    <portType name="SoapServicePortType">
+        <operation name="CrearCatalogo">
+            <input message="tns:CrearCatalogoRequest"/>
+            <output message="tns:CrearCatalogoResponse"/>
+        </operation>
+        <operation name="ListarCatalogos">
+            <input message="tns:ListarCatalogosRequest"/>
+            <output message="tns:ListarCatalogosResponse"/>
+        </operation>
+        <operation name="BorrarCatalogo">
+            <input message="tns:BorrarCatalogoRequest"/>
+            <output message="tns:BorrarCatalogoResponse"/>
+        </operation>
+        <operation name="ProcesarCSV">
+            <input message="tns:ProcesarCSVRequest"/>
+            <output message="tns:ProcesarCSVResponse"/>
+        </operation>
+        <operation name="ListarProductos">
+            <input message="tns:ListarProductosRequest"/>
+            <output message="tns:ListarProductosResponse"/>
+        </operation>
+        <operation name="AgregarProductos">
+            <input message="tns:AgregarProductosRequest"/>
+            <output message="tns:AgregarProductosResponse"/>
+        </operation>
+        <operation name="EliminarProductos">
+            <input message="tns:EliminarProductosRequest"/>
+            <output message="tns:EliminarProductosResponse"/>
+        </operation>
+        <operation name="ExportarCatalogo">
+            <input message="tns:ExportarCatalogoRequest"/>
+            <output message="tns:ExportarCatalogoResponse"/>
+        </operation>
+    </portType>
+
+    <!-- Bindeo de operaciones -->
+    <binding name="SoapServiceBinding" type="tns:SoapServicePortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="CrearCatalogo">
+            <soap:operation soapAction="CrearCatalogo"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ListarCatalogos">
+            <soap:operation soapAction="ListarCatalogos"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="BorrarCatalogo">
+            <soap:operation soapAction="BorrarCatalogo"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ProcesarCSV">
+            <soap:operation soapAction="ProcesarCSV"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ListarProductos">
+            <soap:operation soapAction="ListarProductos"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="AgregarProductos">
+            <soap:operation soapAction="AgregarProductos"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="EliminarProductos">
+            <soap:operation soapAction="EliminarProductos"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="ExportarCatalogo">
+            <soap:operation soapAction="ExportarCatalogo"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- Servicio -->
+    <service name="SoapService">
+        <port name="SoapServicePort" binding="tns:SoapServiceBinding">
+            <soap:address location="http://localhost:8080/soap"/>
+        </port>
+    </service>
+</definitions>

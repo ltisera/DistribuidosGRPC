@@ -10,7 +10,7 @@
       "url": "http://localhost:9000/soap"
     },
     {
-      "url": "http://localhost:8080/soap"
+      "url": "http://localhost:8080"
     }
   ],
   "paths": {
@@ -183,7 +183,7 @@
     },
     "/soap/crear_catalogo": {
       "post": {
-        "summary": "Crear un catálogo",
+        "summary": "Crear un nuevo catálogo",
         "requestBody": {
           "required": true,
           "content": {
@@ -191,22 +191,30 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "nombre": { "type": "string" },
-                  "id_tienda": { "type": "string" }
+                  "nombre": {
+                    "type": "string"
+                  },
+                  "id_tienda": {
+                    "type": "string"
+                  }
                 }
               }
             }
+          },
+          "responses": {
+            "200": {
+              "description": "Catálogo creado exitosamente"
+            },
+            "400": {
+              "description": "Error en la creación del catálogo"
+            }
           }
-        },
-        "responses": {
-          "200": { "description": "Catálogo creado exitosamente" },
-          "400": { "description": "Error al crear el catálogo" }
         }
       }
     },
     "/listaCatalogosSoap": {
       "post": {
-        "summary": "Listar catálogos por ID de tienda",
+        "summary": "Listar catálogos por tienda",
         "requestBody": {
           "required": true,
           "content": {
@@ -214,22 +222,21 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id_tienda": { "type": "string" }
+                  "id_tienda": {
+                    "type": "string"
+                  }
                 }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Lista de catálogos obtenida exitosamente",
-            "content": {
-              "application/xml": {
-                "schema": { "type": "object" }
-              }
-            }
           },
-          "500": { "description": "Error al obtener la lista de catálogos" }
+          "responses": {
+            "200": {
+              "description": "Listado de catálogos"
+            },
+            "500": {
+              "description": "Error en la consulta"
+            }
+          }
         }
       }
     },
@@ -243,21 +250,27 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "id_catalogo": { "type": "string" }
+                  "id_catalogo": {
+                    "type": "string"
+                  }
                 }
               }
             }
+          },
+          "responses": {
+            "200": {
+              "description": "Catálogo eliminado"
+            },
+            "400": {
+              "description": "ID del catálogo no encontrado"
+            }
           }
-        },
-        "responses": {
-          "200": { "description": "Catálogo eliminado exitosamente" },
-          "400": { "description": "ID del catálogo no encontrado" }
         }
       }
     },
     "/procesarCSV": {
       "post": {
-        "summary": "Procesar un archivo CSV de usuarios",
+        "summary": "Procesar archivo CSV de usuarios",
         "requestBody": {
           "required": true,
           "content": {
@@ -267,23 +280,141 @@
                 "properties": {
                   "archivo": {
                     "type": "string",
-                    "description": "Contenido del archivo CSV"
+                    "format": "binary"
                   }
                 }
               }
             }
+          },
+          "responses": {
+            "200": {
+              "description": "Usuarios procesados"
+            },
+            "400": {
+              "description": "Error en el procesamiento"
+            }
           }
-        },
-        "responses": {
-          "200": {
-            "description": "Archivo CSV procesado exitosamente",
-            "content": {
-              "application/xml": {
-                "schema": { "type": "object" }
+        }
+      }
+    },
+    "/listaProductosSoap": {
+      "post": {
+        "summary": "Listar productos por tienda y catálogo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_tienda": {
+                    "type": "string"
+                  },
+                  "id_catalogo": {
+                    "type": "string"
+                  }
+                }
               }
             }
           },
-          "400": { "description": "Error en el procesamiento del archivo" }
+          "responses": {
+            "200": {
+              "description": "Listado de productos"
+            },
+            "500": {
+              "description": "Error en la consulta"
+            }
+          }
+        }
+      }
+    },
+    "/agregarProductosSoap": {
+      "post": {
+        "summary": "Agregar productos a un catálogo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_catalogo": {
+                    "type": "string"
+                  },
+                  "productos": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Productos agregados con éxito"
+            },
+            "500": {
+              "description": "Error al agregar productos"
+            }
+          }
+        }
+      }
+    },
+    "/eliminarProductosSoap": {
+      "post": {
+        "summary": "Eliminar productos de un catálogo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_catalogo": {
+                    "type": "string"
+                  },
+                  "productos": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Productos eliminados con éxito"
+            },
+            "500": {
+              "description": "Error al eliminar productos"
+            }
+          }
+        }
+      }
+    },
+    "/exportarCatalogoSoap": {
+      "post": {
+        "summary": "Exportar un catálogo a PDF",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_catalogo": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "PDF del catálogo"
+            },
+            "500": {
+              "description": "Error al exportar catálogo"
+            }
+          }
         }
       }
     }

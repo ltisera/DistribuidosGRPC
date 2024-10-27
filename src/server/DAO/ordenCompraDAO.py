@@ -12,7 +12,7 @@ from DAO.stockDAO import StockDAO
 
 # Configuración del productor de Kafka
 conf = {
-    'bootstrap.servers': 'localhost:9092',  # Dirección del servidor Kafka
+    'bootstrap.servers': 'localhost:29092',  # Dirección del servidor Kafka
     'client.id': 'python-producer'
 }
 
