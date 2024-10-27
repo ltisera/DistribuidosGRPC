@@ -1,0 +1,291 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Stockearte",
+    "description": "Documentación de Stockearte.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9000/soap"
+    },
+    {
+      "url": "http://localhost:8080/soap"
+    }
+  ],
+  "paths": {
+    "/guardar_filtro": {
+      "post": {
+        "summary": "Guardar un filtro",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_usuario": { "type": "string" },
+                  "nombre": { "type": "string" },
+                  "codigo_producto": { "type": "string" },
+                  "rango_fechas": {
+                    "type": "string",
+                    "description": "Formato: 'YYYY-MM-DD,YYYY-MM-DD'"
+                  },
+                  "estado": { "type": "string" },
+                  "id_tienda": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Filtro guardado exitosamente" },
+          "400": { "description": "Error al guardar el filtro" }
+        }
+      }
+    },
+    "/consultar_ordenes": {
+      "post": {
+        "summary": "Consultar órdenes",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigo_producto": { "type": "string" },
+                  "rango_fechas": { "type": "string" },
+                  "estado": { "type": "string" },
+                  "id_tienda": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Resultado de las órdenes consultadas",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "object" }
+              }
+            }
+          },
+          "500": { "description": "Error en la consulta de órdenes" }
+        }
+      }
+    },
+    "/obtener_filtros": {
+      "post": {
+        "summary": "Obtener filtros por usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_usuario": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Filtros obtenidos exitosamente",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "object" }
+              }
+            }
+          },
+          "500": { "description": "Error al obtener los filtros" }
+        }
+      }
+    },
+    "/obtener_filtro": {
+      "get": {
+        "summary": "Obtener un filtro por ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtro obtenido exitosamente",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "object" }
+              }
+            }
+          },
+          "404": { "description": "Filtro no encontrado" }
+        }
+      }
+    },
+    "/editar_filtro": {
+      "post": {
+        "summary": "Editar un filtro existente",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "nombre": { "type": "string" },
+                  "codigo_producto": { "type": "string" },
+                  "rango_fechas": {
+                    "type": "string",
+                    "description": "Formato: 'YYYY-MM-DD,YYYY-MM-DD'"
+                  },
+                  "estado": { "type": "string" },
+                  "id_tienda": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Filtro editado exitosamente" },
+          "400": { "description": "Error en la edición del filtro" }
+        }
+      }
+    },
+    "/borrar_filtro": {
+      "post": {
+        "summary": "Eliminar un filtro",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Filtro eliminado exitosamente" },
+          "400": { "description": "ID del filtro no encontrado" }
+        }
+      }
+    },
+    "/soap/crear_catalogo": {
+      "post": {
+        "summary": "Crear un catálogo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "id_tienda": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Catálogo creado exitosamente" },
+          "400": { "description": "Error al crear el catálogo" }
+        }
+      }
+    },
+    "/listaCatalogosSoap": {
+      "post": {
+        "summary": "Listar catálogos por ID de tienda",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_tienda": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lista de catálogos obtenida exitosamente",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "object" }
+              }
+            }
+          },
+          "500": { "description": "Error al obtener la lista de catálogos" }
+        }
+      }
+    },
+    "/eliminarCatalogoSoap": {
+      "post": {
+        "summary": "Eliminar un catálogo",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id_catalogo": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Catálogo eliminado exitosamente" },
+          "400": { "description": "ID del catálogo no encontrado" }
+        }
+      }
+    },
+    "/procesarCSV": {
+      "post": {
+        "summary": "Procesar un archivo CSV de usuarios",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/xml": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "archivo": {
+                    "type": "string",
+                    "description": "Contenido del archivo CSV"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Archivo CSV procesado exitosamente",
+            "content": {
+              "application/xml": {
+                "schema": { "type": "object" }
+              }
+            }
+          },
+          "400": { "description": "Error en el procesamiento del archivo" }
+        }
+      }
+    }
+  }
+}

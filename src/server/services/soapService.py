@@ -16,6 +16,16 @@ CORS(app)
 def get_wsdl():
     return send_from_directory(os.path.join(os.path.dirname(__file__), '../../wsdl'), 'service.wsdl')
 
+@app.route('/swagger.json', methods=['GET'])
+def swagger_spec():
+    swagger_path = os.path.join(os.path.dirname(__file__), '../swagger-doc/swagger.json')
+    print(f"Swagger JSON path: {swagger_path}")
+
+    if not os.path.exists(swagger_path):
+        return "Swagger JSON no encontrado", 404 
+
+    return send_from_directory(os.path.dirname(swagger_path), 'swagger.json')
+
 def serve_flask():
     app.run(port=9000)
 
