@@ -9,9 +9,8 @@ Entrega TP de sistemas distribuidos
     
 ### Comandos ejecutados en el cmd:
     pip install mysql-connector-python grpcio-tools
-    pip install Flask Flask-CORS confluent-kafka
+    pip install Flask Flask-CORS confluent-kafka Pillow fpdf
     npm install @grpc/grpc-js @grpc/proto-loader express multer
-
 
     py compilaProto.py <--- Usar en caso de modificar el proto
 
@@ -34,6 +33,8 @@ Entrega TP de sistemas distribuidos
     Grpc-js
     ConfluentKafka
     Multer
+    FPDF
+    Pillow
 
 
 bin\windows\zookeeper-server-start.bat config\zookeeper.properties
