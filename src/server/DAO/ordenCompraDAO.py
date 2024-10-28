@@ -241,7 +241,7 @@ class OrdenCompraDAO(ConexionBD):
         try:
             self.crearConexion()
             sql = (
-                "SELECT p.codigo, o.estado, s.tienda, SUM(o.cantidad) AS total_pedida, p.nombre, p.foto "
+                "SELECT o.*, s.tienda, SUM(o.cantidad) AS total_pedida "
                 "FROM ordendecompra o "
                 "INNER JOIN stock s ON o.idStock = s.idStock "
                 "INNER JOIN producto p ON s.producto = p.idProducto "
