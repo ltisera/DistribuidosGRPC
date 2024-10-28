@@ -31,6 +31,14 @@ function filtrarOrdenes() {
     if (codigo_producto) {
         xmlBody += `<tns:codigo_producto>${codigo_producto}</tns:codigo_producto>`;
     }
+    if(!rango_fechas[0])
+        {
+            rango_fechas[0]="1971-1-1";
+        }
+    if(!rango_fechas[1])
+        {
+            rango_fechas[1]=new Date().toJSON().slice(0, 10);
+        }
     if (rango_fechas[0] && rango_fechas[1]) {
         xmlBody += `<tns:rango_fechas>${rango_fechas[0]},${rango_fechas[1]}</tns:rango_fechas>`;
     }
@@ -66,15 +74,19 @@ function filtrarOrdenes() {
         divHtml.innerHTML = "";
 
         for (let orden of ordenes) {
-            const idOrden = orden.getElementsByTagName("IdOrden")[0].textContent;
             const idStock = orden.getElementsByTagName("Producto")[0].textContent;
             const cantidad = orden.getElementsByTagName("CantidadTotal")[0].textContent;
             const estado = orden.getElementsByTagName("Estado")[0].textContent;
             const tienda = orden.getElementsByTagName("Tienda")[0].textContent;
+            const foto = orden.getElementsByTagName("Foto")[0].textContent;
+            const nombre = orden.getElementsByTagName("Nombre")[0].textContent;
     
             const nuevaDiv = `
                 <div class="container col">
-                    <div class="box c1">${idOrden}</div>
+                    <div>
+                        <img class="box cajaFoto" src=${foto}></img>
+                    </div>
+                    <div class="box c2">${nombre}</div>
                     <div class="box c2">${idStock}</div>
                     <div class="box c3">${cantidad}</div>
                     <div class="box c4">${estado}</div>

@@ -64,10 +64,8 @@ def consultar_ordenes():
             if start_date and end_date:
                 rango_fechas = [
                     int(datetime.strptime(start_date, '%Y-%m-%d').timestamp()) * 1000,
-                    int(datetime.strptime(end_date, '%Y-%m-%d').timestamp()) * 1000
+                    int(datetime.strptime(end_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59).timestamp()) * 1000
                 ]
-            else:
-                rango_fechas = None
 
     odao = OrdenCompraDAO()
     resultados = odao.filtrarOrdenes(codigo_producto, rango_fechas, estado, id_tienda)
@@ -83,15 +81,12 @@ def convertir_a_xml(data):
     for item in data:
         orden = ET.SubElement(root, "Orden")
 
-        ET.SubElement(orden, "IdOrden").text = str(item[0])
-        ET.SubElement(orden, "Producto").text = str(item[1])
-        ET.SubElement(orden, "Estado").text = str(item[3])
-        ET.SubElement(orden, "Observaciones").text = str(item[4])
-        ET.SubElement(orden, "FechaSolicitud").text = str(item[5])
-        ET.SubElement(orden, "FechaRecepcion").text = str(item[6])
-        ET.SubElement(orden, "OrdenDespacho").text = str(item[7])
-        ET.SubElement(orden, "Tienda").text = str(item[8])
-        ET.SubElement(orden, "CantidadTotal").text = str(item[9])
+        ET.SubElement(orden, "Producto").text = str(item[0])
+        ET.SubElement(orden, "Estado").text = str(item[1])
+        ET.SubElement(orden, "Tienda").text = str(item[2])
+        ET.SubElement(orden, "CantidadTotal").text = str(item[3])
+        ET.SubElement(orden, "Nombre").text = str(item[4])
+        ET.SubElement(orden, "Foto").text = str(item[5])
 
     return ET.tostring(root, encoding='utf-8', xml_declaration=True)  
 
